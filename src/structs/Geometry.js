@@ -24,8 +24,8 @@
 
   };
 
-  AWD.BaseStruct.extend( Geometry.prototype );
+  require( './BaseStruct' ).extend( Geometry.prototype );
 
-  AWD.Geometry = Geometry;
+  module.exports = Geometry;
 
 }());

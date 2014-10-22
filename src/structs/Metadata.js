@@ -1,8 +1,10 @@
 (function(){
 
-  var DEFAULT = "unknown",
-      Consts = AWD.Consts;
 
+  var Consts      = require( "../consts" ),
+      Properties  = require( "../types/properties" );
+
+  var DEFAULT = "unknown";
 
   var Metadata = function(){
     this.timeStamp        = 0;
@@ -18,7 +20,7 @@
 
     read : function( reader ){
 
-      var props = new AWD.Properties({
+      var props = new Properties({
         1:Consts.AWD_FIELD_UINT32,
         2:Consts.AWD_FIELD_STRING,
         3:Consts.AWD_FIELD_STRING,
@@ -55,8 +57,8 @@
   };
 
 
-  AWD.BaseStruct.extend( Metadata.prototype );
+  require( './BaseStruct' ).extend( Metadata.prototype );
 
-  AWD.Metadata = Metadata;
+  module.exports = Metadata;
 
 }());

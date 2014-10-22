@@ -11,9 +11,9 @@
       root.AWD = factory();
   }
 }(this, function () {
-  var AWD;
 
-//xxx
+  var AWD = require( './awd' );
 
   return AWD;
+
 }));

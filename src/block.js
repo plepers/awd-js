@@ -1,5 +1,8 @@
-(function ( AWD ) {
+(function () {
 
+  var BufferReader  = require( './bufferReader' ),
+      Metadata      = require( './structs/Metadata' ),
+      Container     = require( './structs/Container' );
 
   var Block = function( ) {
 
@@ -45,7 +48,7 @@
       var Class = _StructFactory( this );
 
       if( Class ) {
-        var reader = new AWD.BufferReader( this.buffer );
+        var reader = new BufferReader( this.buffer );
 
         this.data = new Class();
         this.data.init( awd );
@@ -65,9 +68,9 @@
 
     switch( type ) {
       case 255 :
-        return AWD.Metadata;
+        return Metadata;
       case 22 :
-        return AWD.Container;
+        return Container;
       default :
         return null;
     }
@@ -75,6 +78,6 @@
   };
 
 
-  AWD.Block = Block;
+  module.exports = Block;
 
-}( AWD ));
+}());

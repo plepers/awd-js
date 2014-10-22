@@ -1,0 +1,54 @@
+{
+  "name": "awd",
+  "description": "AWD tools for javascript",
+  "version": "0.0.0",
+  "homepage": "https://github.com/plepers/awd-js",
+  "author": {
+    "name": "Pierre Lepers",
+    "email": "pierre.lepers@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/plepers/awd-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/plepers/awd-js/issues"
+  },
+  "licenses": [
+    {
+      "type": "WTFPL",
+      "url": "https://github.com/plepers/awd-js/blob/master/LICENSE-WTFPL"
+    }
+  ],
+  "main": "src/index",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "devDependencies": {
+    "browserify-fs": "^1.0.0",
+    "expect.js": "^0.3.1",
+    "grunt": "~0.4.5",
+    "grunt-browserify": "^3.0.1",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-karma": "^0.9.0",
+    "grunt-mocha-test": "^0.12.1",
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-mocha": "^0.1.9",
+    "load-grunt-tasks": "^0.6.0"
+  },
+  "keywords": [],
+  "browser": {
+    "fs": "./test/utils/fs-browser.js"
+  },
+  "dependencies": {
+    "string.prototype.codepointat": "^0.2.0"
+  }
+}

@@ -1,6 +1,9 @@
 (function(){
 
   // var Consts = AWD.Consts;
+  var AwdString   = require( "../types/awdString" ),
+      Container   = require( "./Container" ),
+      Geometry    = require( "./Geometry" );
 
 
   var Mesh = function(){
@@ -18,13 +21,13 @@
       var mtx = this.awd.makeMatrix3D();
       mtx.read( reader );
 
-      this.name = AWD.Parser.parseVarString( reader );
+      this.name = AwdString.read( reader );
 
 
       var geom_id = reader.U32();
 
 
-      var match = this.awd.getAssetByID(parent_id, [ AWD.Geometry ] );
+      var match = this.awd.getAssetByID(parent_id, [ Geometry ] );
       if ( match[0] ) {
         this.geometry = match[1];
       } else {
@@ -32,7 +35,7 @@
       }
 
       // match = this.awd.getAssetByID(geom_id, [AWD.Container, AWD.Light, AWD.Mesh, AWD.Entity, AWD.SegmentSet ] );
-      match = this.awd.getAssetByID(geom_id, [AWD.Container, AWD.Mesh ] );
+      match = this.awd.getAssetByID(geom_id, [Container, Mesh ] );
       if ( match[0] ) {
         this.parent = match[1];
 
@@ -50,8 +53,8 @@
 
   };
 
-  AWD.BaseStruct.extend( Mesh.prototype );
+  require( './BaseStruct' ).extend( Mesh.prototype );
 
-  AWD.Mesh = Mesh;
+  module.exports = Mesh;
 
 }());

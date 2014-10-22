@@ -1,6 +1,6 @@
-(function ( AWD ) {
+(function () {
 
-  var Consts = AWD.Consts;
+  var Consts = require( "../consts" );
 
   var Properties = function( expected ) {
 
@@ -146,6 +146,6 @@
   };
 
 
-  AWD.Properties = Properties;
+  module.exports = Properties;
 
-}( AWD ));
+}());

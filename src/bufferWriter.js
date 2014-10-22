@@ -1,4 +1,4 @@
-(function ( AWD ) {
+(function () {
 
 
   var BufferWriter = function( buffer, byteOffset, byteLength ){
@@ -126,7 +126,7 @@
 
 
 
-  AWD.BufferWriter = BufferWriter;
+  module.exports = BufferWriter;
 
-}( AWD ));
+}());
 

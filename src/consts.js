@@ -1,4 +1,4 @@
-(function ( AWD ) {
+(function () {
 
 
   var Consts = {};
@@ -50,6 +50,6 @@
   Consts.MAGIC   = 4282180;
 
 
-  AWD.Consts = Consts;
+  module.exports = Consts;
 
-}( AWD ));
+}());

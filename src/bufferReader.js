@@ -1,4 +1,4 @@
-(function ( AWD ) {
+(function () {
 
   var BufferReader = function( buffer, byteOffset, byteLength ){
 
@@ -107,7 +107,7 @@
 
   };
 
-  AWD.BufferReader = BufferReader;
+  module.exports = BufferReader;
 
-}( AWD ));
+}());
 

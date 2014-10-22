@@ -1,6 +1,6 @@
-(function ( AWD ) {
+(function () {
 
-  var Consts = AWD.Consts;
+  var Consts = require( "./consts" );
 
   var Header = function() {
 
@@ -75,6 +75,6 @@
   };
 
 
-  AWD.Header = Header;
+  module.exports = Header;
 
-}( AWD ));
+}());

@@ -1,4 +1,4 @@
-(function ( AWD ) {
+(function () {
 
 
   var Matrix3D = function( accuracy ) {
@@ -63,6 +63,6 @@
   };
 
 
-  AWD.Matrix3D = Matrix3D;
+  module.exports = Matrix3D;
 
-}( AWD ));
+}());

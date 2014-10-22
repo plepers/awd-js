@@ -1,7 +1,5 @@
 (function(){
 
-  //var Consts = AWD.Consts;
-
   var BaseStruct = {
 
     extend : function( proto ){
@@ -14,11 +12,12 @@
 
     init : function( awd ){
       this.awd = awd;
+      this.pData = null;
     }
 
   };
 
 
-  AWD.BaseStruct = BaseStruct;
+  module.exports = BaseStruct;
 
 }());

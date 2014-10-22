@@ -1,7 +1,8 @@
 (function(){
 
   // var Consts = AWD.Consts;
-
+  var Properties  = require( "../types/properties" ),
+      AwdString   = require( "../types/awdString" );
 
   var Primitive = function(){
     this.name = "";
@@ -11,9 +12,9 @@
   Primitive.prototype = {
 
     read : function( reader ){
-      this.name = AWD.Parser.parseVarString();
+      this.name = AwdString.read( reader );
       this.type = reader.U8();
-      this.props = new AWD.Properties();
+      this.props = new Properties();
       this.props.read( reader );
     },
 
@@ -25,8 +26,8 @@
 
   };
 
-  AWD.BaseStruct.extend( Primitive.prototype );
+  require( './BaseStruct' ).extend( Primitive.prototype );
 
-  AWD.Primitive = Primitive;
+  module.exports = Primitive;
 
 }());

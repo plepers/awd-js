@@ -1,6 +1,11 @@
 (function(){
 
-  var Consts = AWD.Consts;
+  var Consts      = require( "../consts" ),
+      Properties  = require( "../types/properties" ),
+      AwdString   = require( "../types/awdString" ),
+      Mesh        = require( "./Mesh" );
+
+  var PolysContainer = require( "Polys" ).Container;
 
 
   var Container = function(){
@@ -17,11 +22,11 @@
       var mtx = this.awd.makeMatrix3D();
       mtx.read( reader );
 
-      this.name = AWD.Parser.parseVarString( reader );
+      this.name = AwdString.read( reader );
 
       var mtxType = this.awd.header.matrixNrType;
 
-      var props = new AWD.Properties({
+      var props = new Properties({
         1: mtxType,
         2: mtxType,
         3: mtxType,
@@ -36,7 +41,7 @@
 
 
       // var match = this.awd.getAssetByID(parent_id, [AWD.Container, AWD.Light, AWD.Mesh, AWD.Entity, AWD.SegmentSet ] );
-      var match = this.awd.getAssetByID(parent_id, [ AWD.Container, AWD.Mesh ] );
+      var match = this.awd.getAssetByID(parent_id, [ Container, Mesh ] );
       if ( match[0] ) {
         this.parent = match[1];
 
@@ -61,8 +66,8 @@
 
   };
 
-  AWD.BaseStruct.extend( Container.prototype );
+  require( './BaseStruct' ).extend( Container.prototype );
 
-  AWD.Container = Container;
+  module.exports = Container;
 
 }());

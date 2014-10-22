@@ -1,7 +1,13 @@
 /* jshint -W020 */
-AWD = function(){
+var Header    = require( './header' ),
+    Parser    = require( './parser' ),
+    Matrix3D  = require( './types/matrix' ),
+    Geometry  = require( './structs/Geometry' ),
+    Mesh      = require( './structs/Mesh' );
 
-  this.header = new AWD.Header();
+var AWD = function(){
+
+  this.header = new Header();
 
   this._blocks = [];
   this._blocksById = [];
@@ -17,67 +23,69 @@ AWD.prototype = {
   },
 
   parse : function( buffer ){
-    AWD.Parser.parse( buffer, this );
+    Parser.parse( buffer, this );
   },
 
   makeMatrix3D : function() {
-    return new AWD.Matrix3D( this.header.accuracyMatrix );
+    return new Matrix3D( this.header.accuracyMatrix );
   },
 
   getAssetByID : function( assetID, assetTypesToGet, extraTypeInfo )
-    {
-      var returnArray = [],
-          typeCnt = 0,
-          _blocks = this._blocksById;
+  {
+    var returnArray = [],
+        typeCnt = 0,
+        _blocks = this._blocksById;
 
-      if (assetID > 0) {
+    if (assetID > 0) {
 
-        if ( _blocks[assetID] && _blocks[assetID].data ) {
+      if ( _blocks[assetID] && _blocks[assetID].data ) {
 
-          while ( typeCnt < assetTypesToGet.length ) {
+        while ( typeCnt < assetTypesToGet.length ) {
 
-            if ( _blocks[assetID].data instanceof assetTypesToGet[typeCnt] ) {
-              //if the right assetType was found
-              if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "CubeTexture" ) ) {
+          if ( _blocks[assetID].data instanceof assetTypesToGet[typeCnt] ) {
+            //if the right assetType was found
+            if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "CubeTexture" ) ) {
 
-                if ( _blocks[assetID].data instanceof AWD.BitmapCubeTexture ) {
-                  returnArray.push( true );
-                  returnArray.push( _blocks[assetID].data );
-                  return returnArray;
-                }
-
-              }
-
-              if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "SingleTexture" ) ) {
-
-                if (_blocks[assetID].data instanceof AWD.BitmapTexture ) {
-                  returnArray.push( true );
-                  returnArray.push( _blocks[assetID].data );
-                  return returnArray;
-                }
-
-              } else {
+              if ( _blocks[assetID].data instanceof AWD.BitmapCubeTexture ) {
                 returnArray.push( true );
                 returnArray.push( _blocks[assetID].data );
                 return returnArray;
-
               }
+
             }
 
-            if ((assetTypesToGet[typeCnt] === AWD.Geometry ) && ( _blocks[assetID].data instanceof AWD.Mesh )) {
+            if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "SingleTexture" ) ) {
+
+              if (_blocks[assetID].data instanceof AWD.BitmapTexture ) {
+                returnArray.push( true );
+                returnArray.push( _blocks[assetID].data );
+                return returnArray;
+              }
+
+            } else {
               returnArray.push( true );
-              returnArray.push( _blocks[assetID].data.geometry );
+              returnArray.push( _blocks[assetID].data );
               return returnArray;
+
             }
-            typeCnt++;
           }
+
+          if ((assetTypesToGet[typeCnt] === Geometry ) && ( _blocks[assetID].data instanceof Mesh )) {
+            returnArray.push( true );
+            returnArray.push( _blocks[assetID].data.geometry );
+            return returnArray;
+          }
+          typeCnt++;
         }
       }
-      // if the function has not returned anything yet, the asset is not found, or the found asset is not the right type.
-      returnArray.push(false);
-      returnArray.push( null );
-
-      return returnArray;
     }
+    // if the function has not returned anything yet, the asset is not found, or the found asset is not the right type.
+    returnArray.push(false);
+    returnArray.push( null );
+
+    return returnArray;
+  }
 
 };
+
+module.exports = AWD;
