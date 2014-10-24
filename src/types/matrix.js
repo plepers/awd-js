@@ -1,5 +1,8 @@
 (function () {
 
+  var Polys       = require( "polys" ),
+      PMatrix     = Polys.Matrix4;
+
 
   var Matrix3D = function( accuracy ) {
     this.data = [];
@@ -8,14 +11,36 @@
 
   Matrix3D.prototype = {
 
+
     read : function( reader )
     {
       this.parseMatrix43RawData( reader, this.data );
     },
 
+
     write : function( writer )
     {
-      writer.xx();
+      this.writeMatrix43RawData( writer, this.data );
+    },
+
+
+    toPolysData : function(){
+      var res = new PMatrix(),
+          rdata = res.data,
+          data = this.data;
+      for (var i = 0; i < 16; i++) {
+        rdata[i] = data[i];
+      }
+      return res;
+    },
+
+
+    fromPolysData : function( pdata ){
+      var rdata = pdata.data,
+          data  = this.data;
+      for (var i = 0; i < 16; i++) {
+        data[i] = rdata[i];
+      }
     },
 
     parseMatrix43RawData : function( reader, data )
@@ -58,6 +83,28 @@
       }
 
       return mtx_raw;
+    },
+
+
+    writeMatrix43RawData : function( writer, data )
+    {
+
+      var mtx_raw = data;
+      var write_func = this.accuracy ? writer.F64 : writer.F32;
+
+      write_func.call( writer, mtx_raw[0]  );
+      write_func.call( writer, mtx_raw[1]  );
+      write_func.call( writer, mtx_raw[2]  );
+      write_func.call( writer, mtx_raw[4]  );
+      write_func.call( writer, mtx_raw[5]  );
+      write_func.call( writer, mtx_raw[6]  );
+      write_func.call( writer, mtx_raw[8]  );
+      write_func.call( writer, mtx_raw[9]  );
+      write_func.call( writer, mtx_raw[10] );
+      write_func.call( writer, mtx_raw[12] );
+      write_func.call( writer, mtx_raw[13] );
+      write_func.call( writer, mtx_raw[14] );
+
     }
 
   };

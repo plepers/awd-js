@@ -1,9 +1,9 @@
 /* jshint -W020 */
 var Header    = require( './header' ),
     Parser    = require( './parser' ),
-    Matrix3D  = require( './types/matrix' ),
-    Geometry  = require( './structs/Geometry' ),
-    Mesh      = require( './structs/Mesh' );
+    Writer    = require( './writer' ),
+    Consts    = require( './consts' ),
+    Matrix3D  = require( './types/matrix' );
 
 var AWD = function(){
 
@@ -26,11 +26,15 @@ AWD.prototype = {
     Parser.parse( buffer, this );
   },
 
+  write : function() {
+    return Writer.write( this );
+  },
+
   makeMatrix3D : function() {
     return new Matrix3D( this.header.accuracyMatrix );
   },
 
-  getAssetByID : function( assetID, assetTypesToGet, extraTypeInfo )
+  getAssetByID : function( assetID, assetTypesToGet )
   {
     var returnArray = [],
         typeCnt = 0,
@@ -42,35 +46,15 @@ AWD.prototype = {
 
         while ( typeCnt < assetTypesToGet.length ) {
 
-          if ( _blocks[assetID].data instanceof assetTypesToGet[typeCnt] ) {
-            //if the right assetType was found
-            if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "CubeTexture" ) ) {
+          if ( _blocks[assetID].data.type === assetTypesToGet[typeCnt] ) {
 
-              if ( _blocks[assetID].data instanceof AWD.BitmapCubeTexture ) {
-                returnArray.push( true );
-                returnArray.push( _blocks[assetID].data );
-                return returnArray;
-              }
+            returnArray.push( true );
+            returnArray.push( _blocks[assetID].data );
+            return returnArray;
 
-            }
-
-            if ( ( assetTypesToGet[typeCnt] === AWD.Texture ) && (extraTypeInfo === "SingleTexture" ) ) {
-
-              if (_blocks[assetID].data instanceof AWD.BitmapTexture ) {
-                returnArray.push( true );
-                returnArray.push( _blocks[assetID].data );
-                return returnArray;
-              }
-
-            } else {
-              returnArray.push( true );
-              returnArray.push( _blocks[assetID].data );
-              return returnArray;
-
-            }
           }
 
-          if ((assetTypesToGet[typeCnt] === Geometry ) && ( _blocks[assetID].data instanceof Mesh )) {
+          if ((assetTypesToGet[typeCnt] === Consts.TYPE_GEOMETRY ) && ( _blocks[assetID].data.type ===  Consts.TYPE_MESH )) {
             returnArray.push( true );
             returnArray.push( _blocks[assetID].data.geometry );
             return returnArray;

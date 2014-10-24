@@ -104,6 +104,6 @@ module.exports = function(grunt) {
 
 
   // Default task.
-  grunt.registerTask('default', [ 'jshint', 'browserify', 'mochaTest:node']);
+  grunt.registerTask('default', [ 'copy:dev', 'jshint', 'browserify', 'mochaTest:node']);
 
 };

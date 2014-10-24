@@ -4,6 +4,8 @@
 
   var Header = function() {
 
+    this.size = 12;
+
     this.version = {
       major : 0,
       minor : 0
@@ -68,7 +70,24 @@
 
     write : function( writer )
     {
-      writer.xx();
+      // Magic
+      writer.U8( 0x41 );
+      writer.U8( 0x57 );
+      writer.U8( 0x44 );
+
+      writer.U8( this.version.major );
+      writer.U8( this.version.minor );
+
+      var flags =
+        ( this.streaming                  ? 1    : 0 ) |
+        ( this.accuracyMatrix             ? 1<<1 : 0 ) |
+        ( this.accuracyGeo                ? 1<<2 : 0 ) |
+        ( this.accuracyProps              ? 1<<3 : 0 );
+
+      writer.U16( flags );
+
+      writer.U8( this.compression );
+      writer.U32( this.bodylen );
     },
 
 

@@ -38,8 +38,23 @@
 
     },
 
+
     write : function( writer ) {
-      return writer;
+      var props = new Properties({
+        1:Consts.AWD_FIELD_UINT32,
+        2:Consts.AWD_FIELD_STRING,
+        3:Consts.AWD_FIELD_STRING,
+        4:Consts.AWD_FIELD_STRING,
+        5:Consts.AWD_FIELD_STRING
+      });
+
+      props.set( 1, this.timeStamp );
+      props.set( 2, this.encoderName      );
+      props.set( 3, this.encoderVersion   );
+      props.set( 4, this.generatorName    );
+      props.set( 5, this.generatorVersion );
+
+      props.write( writer );
     },
 
     toString : function(){

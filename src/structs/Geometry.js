@@ -1,11 +1,10 @@
 (function(){
 
-  // var Consts = AWD.Consts;
+  var Consts      = require( "../consts" );
 
 
   var Geometry = function(){
-    this.name = "";
-    this.parent = null;
+    this.type = Consts.TYPE_GEOMETRY;
   };
 
   Geometry.prototype = {
@@ -14,6 +13,11 @@
 
       return reader;
 
+    },
+
+
+    write : function( writer ) {
+      writer.U32( 0xFFFFFFFF );
     },
 
     toString : function(){

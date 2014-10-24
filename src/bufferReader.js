@@ -73,6 +73,9 @@
     },
 
     readBytes : function( destBuffer, length ){
+      if( length === undefined ) {
+        length = destBuffer.byteLength;
+      }
       var output = new Int8Array( destBuffer );
       var source = new Int8Array( this.buffer, this.ptr, length );
       output.set( source );

@@ -1,62 +1,104 @@
 (function () {
 
-  var BufferReader  = require( './bufferReader' ),
+  var DefaultStruct = require( './structs/DefaultStruct' ),
       Metadata      = require( './structs/Metadata' ),
       Container     = require( './structs/Container' );
+      // Mesh          = require( './structs/Mesh' );
 
   var Block = function( ) {
 
+    this.oid    = 0;
     this.id     = 0;
     this.ns     = 0;
     this.type   = 0;
     this.flags  = 0;
     this.size   = 0;
 
-    this.buffer = null;
     this.data   = null;
 
   };
 
   Block.prototype = {
 
-    read : function( reader )
+    read : function( reader, awd )
     {
-
+      this.oid    =
       this.id     = reader.U32();
+
       this.ns     = reader.U8();
       this.type   = reader.U8();
       this.flags  = reader.U8();
+      this.size   = reader.U32();
 
-      var size    = reader.U32(),
-          buffer  = new ArrayBuffer( size );
+      this._parseData( reader, awd );
 
-      reader.readBytes( buffer, size );
-
-      this.size   = size;
-      this.buffer = buffer;
 
     },
 
     write : function( writer )
     {
-      writer.xx();
+      writer.U32( this.id );
+      writer.U8(  this.ns );
+      writer.U8(  this.type );
+      writer.U8(  this.flags );
+
+      var p = writer.ptr;
+      writer.ptr += 4;
+
+      this.data.write( writer );
+
+      var ep = writer.ptr;
+
+      this.size = ep - p - 4;
+
+      writer.ptr = p;
+      writer.U32( this.size );
+
+      writer.ptr = ep;
+
     },
 
 
-    parseData : function( awd ){
+    prepareAndAdd : function( list ){
 
-      var Class = _StructFactory( this );
-
-      if( Class ) {
-        var reader = new BufferReader( this.buffer );
-
-        this.data = new Class();
-        this.data.init( awd );
-        this.data.read( reader );
-        return true;
+      if( list.indexOf( this ) > -1 ){
+        return;
       }
 
-      return false;
+      this.data.prepareBlock();
+
+      var dependencies = this.data.getDependencies();
+
+      if( dependencies !== null ) {
+
+        for (var i = 0, l = dependencies.length; i < l; i++) {
+          dependencies[i].block.prepareAndAdd( list );
+        }
+
+      }
+
+      this.id = list.length + 1;
+
+      list.push( this );
+
+    },
+
+
+    _parseData : function( reader, awd ){
+
+      this.data = _StructFactory( this );
+
+      this.data.init( awd, this );
+
+      var p = reader.ptr;
+
+      this.data.read( reader );
+
+      if( reader.ptr - p !== this.size ){
+        console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - this.size );
+        reader.ptr = p+this.size;
+      }
+
     }
 
 
@@ -68,14 +110,44 @@
 
     switch( type ) {
       case 255 :
-        return Metadata;
+        return new Metadata();
       case 22 :
-        return Container;
+        return new Container();
+      // case 23 :
+      //   return new Mesh();
       default :
-        return null;
+        return new DefaultStruct( block );
     }
 
   };
+
+
+
+
+
+
+  // var BlockList = function() {
+  //   this._blocks = [];
+  // };
+
+  // BlockList.prototype = {
+
+  //   append : function(block) {
+  //     if( this._blocks.indexOf( block ) === -1 ) {
+  //       this._blocks.push( block );
+  //     }
+  //   },
+
+
+  //   remove : function( block ) {
+  //     var index = this._blocks.indexOf( block );
+  //     if( index > -1 ) {
+  //       this._blocks.splice( index, 1 );
+  //     }
+  //   }
+
+
+  // }
 
 
   module.exports = Block;

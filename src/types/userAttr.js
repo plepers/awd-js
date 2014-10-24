@@ -1,7 +1,7 @@
 (function () {
 
   var Consts    = require( "../consts" ),
-      AwdString = require( "./awdSting" );
+      AwdString = require( "./awdString" );
 
 
   var UserAttributes = {

@@ -18,8 +18,7 @@
 
       while( reader.bytesAvailable() > 0 ) {
         block = new Block();
-        block.read( reader );
-        block.parseData( awd );
+        block.read( reader, awd );
         awd.addBlock( block );
 
         console.log( block.type, block.id, ( block.data !== null ) ? block.data.toString() : 'null' );

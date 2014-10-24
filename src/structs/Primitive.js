@@ -18,6 +18,12 @@
       this.props.read( reader );
     },
 
+
+
+    write : function( writer ) {
+      writer.U32( 0xFFFFFFFF );
+    },
+
     toString : function(){
 
     }
