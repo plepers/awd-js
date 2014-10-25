@@ -2,14 +2,17 @@
 
   // var Consts = AWD.Consts;
   var AwdString   = require( "../types/awdString" ),
-      UserAttr    = require( "../types/userAttr" ),
-      typesMisc   = require( "../types/misc" ),
+      Container   = require( "./Container" ),
       Consts      = require( "../consts" );
 
 
   var Mesh = function(){
     this.type = Consts.TYPE_MESH;
     this.pData = {};
+    Container.super( this );
+
+    this.geometry = null;
+    this.materials = [];
   };
 
   Mesh.prototype = {
@@ -18,25 +21,35 @@
 
       var parent_id = reader.U32();
 
-      var mtx = this.awd.makeMatrix3D();
-      mtx.read( reader );
+      this.matrix.read( this.awd, reader );
 
-      var name = AwdString.read( reader );
+      this.name = AwdString.read( reader );
 
 
       var geom_id = reader.U32();
 
       var num_mats = reader.U16();
 
+
       for (var i = 0; i < num_mats; i++) {
         var mat_id = reader.U32();
-        console.log( mat_id );
+        var matRes = this.awd.getAssetByID( mat_id, [ Consts.TYPE_MATERIAL ] );
+
+        if ((!matRes[0]) && (mat_id > 0)) {
+          throw new Error("Could not find Material Nr " + i + " (ID = " + mat_id + " ) for this Mesh");
+        }
+
+        if(mat_id > 0){
+          this.materials.push( matRes[1] );
+        }
       }
 
 
-      var pivot = typesMisc.parsePivot( this.awd, reader );
+      this.pivot.parsePivot( this.awd, reader );
+      this.extras.read( reader );
 
-      var extras = UserAttr.read( reader );
+
+
 
 
       var match = this.awd.getAssetByID( geom_id, [ Consts.TYPE_GEOMETRY ] );
@@ -48,6 +61,11 @@
 
       match = this.awd.getAssetByID(parent_id, [ Consts.TYPE_CONTAINER, Consts.TYPE_MESH, Consts.TYPE_LIGHT, Consts.TYPE_ENTITY, Consts.TYPE_SEGMENT_SET ] );
       if ( match[0] ) {
+        // weak dependency w/ other types
+        if( match[1].addChild !== undefined ) {
+          match[1].addChild( this );
+        }
+
         this.parent = match[1];
 
       } else if (parent_id > 0) {
@@ -56,19 +74,44 @@
 
 
 
-      var pData = this.pData;
-
-      pData.matrix  = mtx.toPolysData();
-      pData.pivot   = pivot;
-      pData.name    = name;
-      pData.extras  = extras;
-
     },
 
 
 
     write : function( writer ) {
-      writer.U32( 0xFFFFFFFF );
+
+      var parent_id = 0;
+      var parent = this.parent;
+      if( parent ) {
+        parent_id = parent.block.id;
+      }
+
+      var geom_id = 0;
+      var geom = this.geometry;
+      if( geom ) {
+        geom_id = geom.block.id;
+      }
+
+
+
+
+
+
+      writer.U32( parent_id );
+      this.matrix.write( this.awd, writer );
+      AwdString.write( this.name, writer );
+      writer.U32( geom_id );
+
+      var ml = this.materials.length;
+      writer.U16( ml );
+      for (var i = 0; i < ml; i++) {
+        var mat = this.materials[i];
+        writer.U32( mat.block.id );
+
+      }
+
+      this.pivot.writePivot( this.awd, writer );
+      this.extras.write( writer );
     },
 
 
@@ -76,10 +119,15 @@
     getDependencies : function(){
       var res = [];
 
-      // todo materials
+      var ml = this.materials.length;
 
-      if( this.pData.parent && this.pData.parent.struct ) {
-        res.push( this.pData.parent.struct );
+      for (var i = 0; i < ml; i++) {
+        var mat = this.materials[i];
+        res.push( mat );
+      }
+
+      if( this.parent && this.parent.struct ) {
+        res.push( this.parent );
       }
 
       if( this.geometry ) {
@@ -101,6 +149,7 @@
 
   require( './BaseStruct' ).extend( Mesh.prototype );
 
+  Container.extend( Mesh.prototype );
   module.exports = Mesh;
 
 }());

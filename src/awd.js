@@ -2,8 +2,7 @@
 var Header    = require( './header' ),
     Parser    = require( './parser' ),
     Writer    = require( './writer' ),
-    Consts    = require( './consts' ),
-    Matrix3D  = require( './types/matrix' );
+    Consts    = require( './consts' );
 
 var AWD = function(){
 
@@ -30,10 +29,6 @@ AWD.prototype = {
     return Writer.write( this );
   },
 
-  makeMatrix3D : function() {
-    return new Matrix3D( this.header.accuracyMatrix );
-  },
-
   getAssetByID : function( assetID, assetTypesToGet )
   {
     var returnArray = [],
@@ -46,7 +41,7 @@ AWD.prototype = {
 
         while ( typeCnt < assetTypesToGet.length ) {
 
-          if ( _blocks[assetID].data.type === assetTypesToGet[typeCnt] ) {
+          if ( (_blocks[assetID].data.type & assetTypesToGet[typeCnt]) !== 0) {
 
             returnArray.push( true );
             returnArray.push( _blocks[assetID].data );
@@ -54,7 +49,7 @@ AWD.prototype = {
 
           }
 
-          if ((assetTypesToGet[typeCnt] === Consts.TYPE_GEOMETRY ) && ( _blocks[assetID].data.type ===  Consts.TYPE_MESH )) {
+          if ((assetTypesToGet[typeCnt] === Consts.TYPE_GEOMETRY ) && ( (_blocks[assetID].data.type & Consts.TYPE_MESH) !== 0)) {
             returnArray.push( true );
             returnArray.push( _blocks[assetID].data.geometry );
             return returnArray;

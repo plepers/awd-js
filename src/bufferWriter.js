@@ -15,6 +15,8 @@
 
     this.length = this.view.byteLength;
 
+    this.skips = [];
+
   };
 
   BufferWriter.prototype = {
@@ -45,13 +47,13 @@
 
     skipBlockSize : function(){
       this.ptr += 4;
-      this._skipedPtr = this.ptr;
+      return this.ptr;
     },
 
-    writeBlockSize : function(){
-      var size = this.ptr - this._skipedPtr;
+    writeBlockSize : function( ptr ){
+      var size = this.ptr - ptr;
       var restorePtr = this.ptr;
-      this.ptr = this._skipedPtr - 4;
+      this.ptr = ptr - 4;
       this.U32( size );
       this.ptr = restorePtr;
     },

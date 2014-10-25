@@ -4,23 +4,22 @@
       PMatrix     = Polys.Matrix4;
 
 
-  var Matrix3D = function( accuracy ) {
+  var Matrix3D = function() {
     this.data = [];
-    this.accuracy = accuracy;
   };
 
   Matrix3D.prototype = {
 
 
-    read : function( reader )
+    read : function( awd, reader )
     {
-      this.parseMatrix43RawData( reader, this.data );
+      this.parseMatrix43RawData( awd, reader, this.data );
     },
 
 
-    write : function( writer )
+    write : function( awd, writer )
     {
-      this.writeMatrix43RawData( writer, this.data );
+      this.writeMatrix43RawData( awd, writer, this.data );
     },
 
 
@@ -43,10 +42,10 @@
       }
     },
 
-    parseMatrix43RawData : function( reader, data )
+    parseMatrix43RawData : function( awd, reader, data )
     {
       var mtx_raw = data;
-      var read_func = this.accuracy ? reader.F64 : reader.F32;
+      var read_func = awd.header.accuracyMatrix ? reader.F64 : reader.F32;
 
       mtx_raw[0]  = read_func.call(reader);
       mtx_raw[1]  = read_func.call(reader);
@@ -86,11 +85,11 @@
     },
 
 
-    writeMatrix43RawData : function( writer, data )
+    writeMatrix43RawData : function( awd, writer, data )
     {
 
       var mtx_raw = data;
-      var write_func = this.accuracy ? writer.F64 : writer.F32;
+      var write_func = awd.header.accuracyMatrix ? writer.F64 : writer.F32;
 
       write_func.call( writer, mtx_raw[0]  );
       write_func.call( writer, mtx_raw[1]  );

@@ -47,7 +47,7 @@
     write : function( writer )
     {
 
-      writer.skipBlockSize();
+      var sptr = writer.skipBlockSize();
 
       var vars = this.vars;
 
@@ -60,7 +60,10 @@
         this.writeAttrValue( type, val, writer );
       }
 
-      writer.writeBlockSize();
+      writer.writeBlockSize( sptr );
+
+      //writer.U32( 0 ); //todo don't know why
+
 
 
     },

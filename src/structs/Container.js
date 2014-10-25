@@ -2,17 +2,23 @@
 
   var UserAttr    = require( "../types/userAttr" ),
       AwdString   = require( "../types/awdString" ),
-      typesMisc   = require( "../types/misc" ),
+      Vec3        = require( "../types/vec3" ),
+      Matrix4     = require( "../types/matrix" ),
       Consts      = require( "../consts" );
 
-  var Polys       = require( "polys" ),
-      PContainer  = Polys.Container;
+  // var Polys       = require( "polys" ),
+  //     PContainer  = Polys.Container;
 
 
 
   var Container = function(){
     this.type = Consts.TYPE_CONTAINER;
-    this.pData = new PContainer();
+    //this.pData = new PContainer();
+
+    Container.super( this );
+
+
+
   };
 
   Container.prototype = {
@@ -22,29 +28,27 @@
 
       var parent_id = reader.U32();
 
-      var mtx = this.awd.makeMatrix3D();
-      mtx.read( reader );
+      this.matrix.read( this.awd, reader );
+
+      this.name = AwdString.read( reader );
+
+      this.pivot.parsePivot( this.awd, reader );
+
+      this.extras.read( reader );
 
 
-      var name = AwdString.read( reader );
-
-      var pivot = typesMisc.parsePivot( this.awd, reader );
-
-      var extras = UserAttr.read( reader );
-
-      var pData = this.pData;
-
-      pData.matrix  = mtx.toPolysData();
-      pData.pivot   = pivot;
-      pData.name    = name;
-      pData.extras  = extras;
 
       // var match = this.awd.getAssetByID(parent_id, [AWD.Container, AWD.Light, AWD.Mesh, AWD.Entity, AWD.SegmentSet ] );
       var match = this.awd.getAssetByID(parent_id, [Consts.TYPE_CONTAINER, Consts.TYPE_MESH, Consts.TYPE_LIGHT, Consts.TYPE_ENTITY, Consts.TYPE_SEGMENT_SET ] );
 
       if ( match[0] )
       {
-        match[1].pData.addChild( pData );
+        // weak dependency w/ other types
+        if( match[1].addChild !== undefined ) {
+          match[1].addChild( this );
+        }
+
+        this.parent = match[1];
       }
       else if (parent_id > 0)
       {
@@ -58,39 +62,68 @@
     write : function( writer ) {
 
       var parent_id = 0;
-      var parent = this.pData.parent;
-      if( parent && parent.struct ) {
-        parent_id = parent.struct.id;
+      var parent = this.parent;
+      if( parent ) {
+        parent_id = parent.block.id;
       }
 
-
-      var mtx = this.awd.makeMatrix3D();
-      mtx.fromPolysData( this.pData.matrix );
 
 
 
       writer.U32( parent_id );
-      mtx.write( writer );
-      AwdString.write( this.pData.name, writer );
-      typesMisc.writePivot( this.pData.pivot, this.awd, writer );
+      this.matrix.write( this.awd, writer );
+
+      AwdString.write( this.name, writer );
+      this.pivot.writePivot( this.awd, writer );
+      this.extras.write( writer );
 
     },
 
     getDependencies : function(){
-      var parent = this.pData.parent;
-      if( parent && parent.struct ) {
-        return [parent.struct];
+      var parent = this.parent;
+      if( parent ) {
+        return [parent];
       }
       return null;
     },
 
 
     toString : function(){
-      return "[Container " + this.pData.name + "]";
+      return "[Container " + this.name + "]";
+    },
+
+
+    addChild : function( child ){
+      if( this.children.indexOf( child ) === -1 ) {
+        this.children.push( child );
+        child.parent = this;
+      }
+    },
+
+    removeChild : function( child ) {
+      var index = this.children.indexOf( child );
+      if( index > -1 ) {
+        this.children.splice( index, 1 );
+        child.parent = null;
+      }
     }
 
 
 
+  };
+
+  Container.extend = function( proto ){
+    proto.addChild = Container.prototype.addChild;
+    proto.removeChild = Container.prototype.removeChild;
+  };
+
+  Container.super = function( obj ){
+    obj.parent = null;
+    obj.children = [];
+    obj.matrix = new Matrix4();
+    obj.name = "";
+    obj.pivot = new Vec3();
+    obj.extras = new UserAttr();
   };
 
   require( './BaseStruct' ).extend( Container.prototype );

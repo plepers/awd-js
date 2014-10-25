@@ -2,8 +2,9 @@
 
   var DefaultStruct = require( './structs/DefaultStruct' ),
       Metadata      = require( './structs/Metadata' ),
-      Container     = require( './structs/Container' );
-      // Mesh          = require( './structs/Mesh' );
+      Container     = require( './structs/Container' ),
+      Mesh          = require( './structs/Mesh' ),
+      Geometry      = require( './structs/Geometry' );
 
   var Block = function( ) {
 
@@ -42,19 +43,11 @@
       writer.U8(  this.type );
       writer.U8(  this.flags );
 
-      var p = writer.ptr;
-      writer.ptr += 4;
+      var sptr = writer.skipBlockSize();
 
       this.data.write( writer );
 
-      var ep = writer.ptr;
-
-      this.size = ep - p - 4;
-
-      writer.ptr = p;
-      writer.U32( this.size );
-
-      writer.ptr = ep;
+      writer.writeBlockSize( sptr );
 
     },
 
@@ -113,8 +106,10 @@
         return new Metadata();
       case 22 :
         return new Container();
-      // case 23 :
-      //   return new Mesh();
+      case 23 :
+        return new Mesh();
+      case 1 :
+        return new Geometry();
       default :
         return new DefaultStruct( block );
     }

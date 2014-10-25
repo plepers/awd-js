@@ -1,17 +1,13 @@
-
+var Consts = require( "../consts" );
 
 var DefaultStruct = function( block ) {
   this.block = block;
   this.awd = null;
   this.buf = null;
-  this.type = 0;
+  this.type = Consts.TYPE_GENERIC;
 };
 
 DefaultStruct.prototype = {
-
-  init : function( awd ){
-    this.awd = awd;
-  },
 
   read : function( reader ){
     // store data to write back
@@ -55,7 +51,7 @@ DefaultStruct.prototype = {
 
 
 
-  require( './BaseStruct' ).extend( DefaultStruct.prototype );
+require( './BaseStruct' ).extend( DefaultStruct.prototype );
 
 
 module.exports = DefaultStruct;

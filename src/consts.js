@@ -51,27 +51,29 @@
 
 
 
-  Consts.TYPE_ENTITY                 = 1;
-  Consts.TYPE_SKYBOX                 = 2;
-  Consts.TYPE_CAMERA                 = 3;
-  Consts.TYPE_SEGMENT_SET            = 4;
-  Consts.TYPE_MESH                   = 5;
-  Consts.TYPE_GEOMETRY               = 6;
-  Consts.TYPE_SKELETON               = 7;
-  Consts.TYPE_SKELETON_POSE          = 8;
-  Consts.TYPE_CONTAINER              = 9;
-  Consts.TYPE_TEXTURE                = 10;
-  Consts.TYPE_TEXTURE_PROJECTOR      = 11;
-  Consts.TYPE_MATERIAL               = 12;
-  Consts.TYPE_ANIMATION_SET          = 13;
-  Consts.TYPE_ANIMATION_STATE        = 14;
-  Consts.TYPE_ANIMATION_NODE         = 15;
-  Consts.TYPE_ANIMATOR               = 16;
-  Consts.TYPE_STATE_TRANSITION       = 17;
-  Consts.TYPE_LIGHT                  = 18;
-  Consts.TYPE_LIGHT_PICKER           = 19;
-  Consts.TYPE_SHADOW_MAP_METHOD      = 20;
-  Consts.TYPE_EFFECTS_METHOD         = 21;
+  Consts.TYPE_ENTITY                 = 1 << 1;
+  Consts.TYPE_SKYBOX                 = 1 << 2;
+  Consts.TYPE_CAMERA                 = 1 << 3;
+  Consts.TYPE_SEGMENT_SET            = 1 << 4;
+  Consts.TYPE_MESH                   = 1 << 5;
+  Consts.TYPE_GEOMETRY               = 1 << 6;
+  Consts.TYPE_SKELETON               = 1 << 7;
+  Consts.TYPE_SKELETON_POSE          = 1 << 8;
+  Consts.TYPE_CONTAINER              = 1 << 9;
+  Consts.TYPE_TEXTURE                = 1 << 10;
+  Consts.TYPE_TEXTURE_PROJECTOR      = 1 << 11;
+  Consts.TYPE_MATERIAL               = 1 << 12;
+  Consts.TYPE_ANIMATION_SET          = 1 << 13;
+  Consts.TYPE_ANIMATION_STATE        = 1 << 14;
+  Consts.TYPE_ANIMATION_NODE         = 1 << 15;
+  Consts.TYPE_ANIMATOR               = 1 << 16;
+  Consts.TYPE_STATE_TRANSITION       = 1 << 17;
+  Consts.TYPE_LIGHT                  = 1 << 18;
+  Consts.TYPE_LIGHT_PICKER           = 1 << 19;
+  Consts.TYPE_SHADOW_MAP_METHOD      = 1 << 20;
+  Consts.TYPE_EFFECTS_METHOD         = 1 << 21;
+
+  Consts.TYPE_GENERIC                = ~0;
 
 
   module.exports = Consts;

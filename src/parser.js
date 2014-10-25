@@ -20,8 +20,7 @@
         block = new Block();
         block.read( reader, awd );
         awd.addBlock( block );
-
-        console.log( block.type, block.id, ( block.data !== null ) ? block.data.toString() : 'null' );
+        console.log( ' --------- block ', block.type, block.id, ( block.data !== null ) ? block.data.toString() : 'null' );
       }
 
 

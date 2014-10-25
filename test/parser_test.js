@@ -13,7 +13,7 @@ describe( "parser test", function(){
 
   beforeEach(function( done ){
 
-    fs.readFile('./test/samples/PolarBear.awd', function (err, data) {
+    fs.readFile('./test/samples/apple.awd', function (err, data) {
       if (err) {
         done( err );
       }
