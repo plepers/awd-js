@@ -12,6 +12,18 @@
 
   {
 
+    subGeomFactory : function() {
+      var sg = new SubGeom();
+      sg.bufferFactory = this.bufferFactory;
+      return sg;
+    },
+
+
+    bufferFactory : function() {
+      return new VertexBuffer();
+    },
+
+
     init : function( ){
       this.model = Consts.MODEL_GEOMETRY;
 
@@ -46,7 +58,7 @@
 
       for (var i = 0; i < num_subs; i++) {
 
-        subGeom = new SubGeom();
+        subGeom =this.subGeomFactory();
         subGeom.read( this.awd, reader );
         subGeoms.push( subGeom );
 
@@ -109,6 +121,7 @@
     this.extras = new UserAttr();
   };
 
+
   SubGeom.prototype = {
 
     read : function( awd, reader ) {
@@ -134,12 +147,34 @@
       var buffer;
       var accuracy = awd.header.accuracyGeo;
 
+      var nverts = -1;
+
       while( reader.ptr < gend ){
 
-        buffer = new VertexBuffer();
+        buffer = this.bufferFactory();
         buffer.read( reader, accuracy );
+
+        if( !buffer.isIndex && buffer.numVertices > -1 ) {
+          if( nverts > -1 && buffer.numVertices !== nverts) {
+            console.log( "Warn buffers in geom has differents num vertices", nverts, buffer.numVertices);
+          }
+          nverts = buffer.numVertices;
+        }
+
         this.buffers.push( buffer );
 
+      }
+
+      if( nverts === -1 ){
+        console.log( "Error, Can't resolve geom buffers sizes");
+      }
+
+      // solve size
+      for (var i = 0, l = this.buffers.length; i < l; i++) {
+        buffer = this.buffers[i];
+        if( buffer.numVertices === -1 && !buffer.isIndex ){
+          buffer.solveSize( nverts );
+        }
       }
 
       this.extras.read( reader );
@@ -225,85 +260,33 @@
       JOIN_IDX  = 6,
       JOIN_WGT  = 7;
 
-  var T_FLOAT = 4,
-      T_SHORT = 2;
-
-
-
-  var BufferInfos = {
-
-    position : {
-      name: 'position',
-      type: POS,
-      size: 3,
-      ftype: T_FLOAT
-    },
-
-    indices : {
-      name: 'index',
-      type: IDX,
-      size: 3,
-      ftype: T_SHORT
-    },
-
-    uvs : {
-      name: 'uv',
-      type: UVS,
-      size: 2,
-      ftype: T_FLOAT
-    },
-
-    normals : {
-      name: 'normal',
-      type: NRM,
-      size: 3,
-      ftype: T_FLOAT
-    },
-
-    tangents : {
-      name: 'tangent',
-      type: TGT,
-      size: 3,
-      ftype: T_FLOAT
-    },
-
-    join_indices : {
-      name: 'join_index',
-      type: TGT,
-      size: -1,
-      ftype: T_SHORT
-    },
-
-    join_weight : {
-      name: 'join_weight',
-      type: TGT,
-      size: -1,
-      ftype: T_FLOAT
-    },
-
-
-  };
-
-
 
 
   var VertexBuffer = function(){
     this.data = null;
-    this.length = 0;
-    this.size = 0;
-    this.infos = null;
+    this.numVertices = -1;
+
+    this.type = 0;
+    this.components = 0;
+    this.ftype = Consts.T_FLOAT;
+
+    this.isIndex = false;
   };
 
   VertexBuffer.HEAD_SIZE = 6; // type, ftype, len
 
   VertexBuffer.prototype = {
 
-    allocate : function( numVerts, infos ){
-      this.length = numVerts;
-      this.size = ( infos.size > 0 ) ? infos.size : 1;
+    allocate : function( size, ftype, accuracy ){
 
-      var Class = getArray( infos.ftype );
-      this.data = new Class( numVerts * this.size );
+      var Class = getArray( ftype, accuracy );
+      this.data = new Class( size );
+    },
+
+
+    solveSize : function( numVerts ){
+      this.numVertices = numVerts;
+      this.components = this.data.length / numVerts;
     },
 
 
@@ -314,18 +297,26 @@
           str_end   = reader.ptr + str_len;
 
 
-      var infos = getBufferInfos( str_type );
-      this.infos = infos;
 
-      if( infos.ftype !== str_ftype ) {
-        console.log( 'SubGeom str_ftype mismatch :' + str_ftype );
+      var size = getBufferSize( str_type );
+
+      this.isIndex    = str_type === IDX;
+      this.type       = str_type;
+      this.components = size;
+      this.ftype      = str_ftype;
+
+
+      var typeSize = getTypeSize( str_ftype, accuracy );
+      var numVals = str_len / typeSize;
+
+      if( size !== -1 ){
+        this.numVertices = numVals / size;
       }
 
-      var numVerts = getNumVerts( str_len, accuracy, infos );
-      this.allocate( numVerts, infos );
+      this.allocate( numVals, str_ftype, accuracy );
 
 
-      var read = getReadFunc( infos.ftype, accuracy, reader );
+      var read = getReadFunc( str_ftype, accuracy, reader );
       var data = this.data;
       var c = 0;
 
@@ -337,14 +328,12 @@
     },
 
     write : function( writer, accuracy ){
-      var infos = this.infos;
-
-      writer.U8( infos.type );
-      writer.U8( infos.ftype );
+      writer.U8( this.type );
+      writer.U8( this.ftype );
 
       var sptr = writer.skipBlockSize();
 
-      var writeFn = getWriteFunc( infos.ftype, accuracy, writer );
+      var writeFn = getWriteFunc( this.ftype, accuracy, writer );
       var data = this.data;
 
 
@@ -359,70 +348,71 @@
 
   };
 
-    var getReadFunc = function( type, accuracy, reader ){
-    if( type === T_FLOAT ){
+
+  var getTypeSize = function( type, accuracy ){
+    if( type === Consts.T_FLOAT ){
+      return accuracy ? 8 : 4;
+    }
+    if( type === Consts.T_SHORT ){
+      return 2;
+    }
+  };
+
+  var getReadFunc = function( type, accuracy, reader ){
+    if( type === Consts.T_FLOAT ){
       return accuracy ? reader.F64 : reader.F32;
     }
-    if( type === T_SHORT ){
+    if( type === Consts.T_SHORT ){
       return reader.U16;
     }
   };
 
   var getWriteFunc = function( type, accuracy, writer ){
-    if( type === T_FLOAT ){
+    if( type === Consts.T_FLOAT ){
       return accuracy ? writer.F64 : writer.F32;
     }
-    if( type === T_SHORT ){
+    if( type === Consts.T_SHORT ){
       return writer.U16;
     }
   };
 
 
-  var getNumVerts = function( byteLength, accuracy, infos ){
-
-    var size = ( infos.size > 0 ) ? infos.size : 1;
-    var type = infos.ftype;
-
-    if( type === T_FLOAT ){
-      var perComp = accuracy ? 8 : 4;
-      return byteLength / perComp / size;
+  var getArray = function( type, accuracy ){
+    if( type === Consts.T_FLOAT ){
+      return accuracy ? Float64Array : Float32Array;
     }
-    if( type === T_SHORT ){
-      return byteLength / 2 / size;
-    }
-  };
-
-  var getArray = function( type ){
-    if( type === T_FLOAT ){
-      return Float64Array;
-    }
-    if( type === T_SHORT ){
+    if( type === Consts.T_SHORT ){
       return Uint16Array;
     }
   };
 
 
-  var getBufferInfos = function( type ){
+  var getBufferSize = function( type ){
 
     switch( type ){
+
       case POS      :
-        return BufferInfos.position;
       case IDX      :
-        return BufferInfos.indices;
-      case UVS      :
-        return BufferInfos.uvs;
       case NRM      :
-        return BufferInfos.normals;
       case TGT      :
-        return BufferInfos.tangents;
-      case JOIN_IDX :
-        return BufferInfos.join_indices;
-      case JOIN_WGT :
-        return BufferInfos.join_weight;
+        return 3;
+
+      case UVS      :
+        return 2;
+
+      case JOIN_WGT      :
+      case JOIN_IDX      :
+        return -1;
+
+      default :
+        return -1;
     }
 
   };
 
+
+  Geometry.SubGeom        = SubGeom;
+  Geometry.VertexBuffer   = VertexBuffer;
 
   module.exports = Geometry;
 

@@ -1,10 +1,6 @@
 (function () {
 
-  var DefaultStruct = require( './structs/DefaultStruct' ),
-      Metadata      = require( './structs/Metadata' ),
-      Container     = require( './structs/Container' ),
-      Mesh          = require( './structs/Mesh' ),
-      Geometry      = require( './structs/Geometry' );
+
 
   var Block = function( ) {
 
@@ -57,8 +53,7 @@
       if( list.indexOf( this ) > -1 ){
         return;
       }
-
-      this.data.prepareBlock();
+      this.data.prepareBlock( this );
 
       var dependencies = this.data.getDependencies();
 
@@ -79,7 +74,7 @@
 
     _parseData : function( reader, awd ){
 
-      this.data = _StructFactory( this );
+      this.data = awd.structFactory( this );
 
       this.data._setup( awd, this );
 
@@ -96,27 +91,6 @@
 
 
   };
-
-
-  var _StructFactory = function( block ){
-    var type = block.type;
-
-    switch( type ) {
-      case Metadata.TYPE :
-        return new Metadata();
-      case Container.TYPE :
-        return new Container();
-      case Mesh.TYPE :
-        return new Mesh();
-      case Geometry.TYPE :
-        return new Geometry();
-      default :
-        return new DefaultStruct( block );
-    }
-
-  };
-
-
 
 
 

@@ -1,7 +1,9 @@
 (function () {
 
   var Consts    = require( "../consts" ),
-      AwdString = require( "./awdString" );
+      AwdString = require( "./awdString" ),
+      Writer    = require( "../bufferWriter" ),
+      Reader    = require( "../bufferReader" );
 
   var UserAttributes = function(){
     this.attributes = {};
@@ -10,6 +12,15 @@
 
 
   UserAttributes.prototype = {
+
+    clone : function() {
+      var writer = new Writer( 64 );
+      this.write( writer );
+      var copy = new UserAttributes();
+      copy.read( new Reader( writer.buffer ) );
+      return copy;
+    },
+
 
     addAttribute : function( name, value, type, ns ){
       var attrib = {

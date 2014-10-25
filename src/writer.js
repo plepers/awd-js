@@ -24,6 +24,7 @@
 
       for (var i = 0, l = blocks.length; i < l; i++) {
         block = blocks[i];
+        block.data._setup( awd, block );
 
         block.prepareAndAdd( sorted );
       }

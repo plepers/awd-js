@@ -50,6 +50,10 @@
     MAGIC   : 4282180,
 
 
+    // BUFFERS TYPES
+
+    T_FLOAT : 4,
+    T_SHORT : 2,
 
 
     // TYPES
@@ -88,8 +92,6 @@
 
     MODEL_GENERIC                : ~0,
 
-
-    AWDJS_NS                    : 33,
     DEFAULT_NS                  : 0
   };
 

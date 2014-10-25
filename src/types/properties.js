@@ -1,7 +1,9 @@
 (function () {
 
-  var Consts = require( "../consts" ),
-      awdString = require( './awdString' );
+  var Consts    = require( "../consts" ),
+      awdString = require( './awdString' ),
+      Writer    = require( "../bufferWriter" ),
+      Reader    = require( "../bufferReader" );
 
   var Properties = function( expected ) {
 
@@ -11,6 +13,16 @@
   };
 
   Properties.prototype = {
+
+
+    clone : function() {
+      var writer = new Writer( 64 );
+      this.write( writer );
+      var copy = new Properties( this.expected ); // todo also clone expected
+      copy.read( new Reader( writer.buffer ) );
+      return copy;
+    },
+
 
     read : function( reader )
     {
