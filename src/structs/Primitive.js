@@ -2,14 +2,19 @@
 
   // var Consts = AWD.Consts;
   var Properties  = require( "../types/properties" ),
-      AwdString   = require( "../types/awdString" );
+      AwdString   = require( "../types/awdString" ),
+      Consts      = require( "../consts" ),
+      BaseStruct  = require( './BaseStruct' );
 
-  var Primitive = function(){
-    this.name = "";
-    this.type = 0;
-  };
+  var Primitive = BaseStruct.createStruct( Consts.PRIMITIVE, Consts.DEFAULT_NS,
 
-  Primitive.prototype = {
+  {
+
+    init : function( ){
+      this.name = "";
+      this.model = Consts.MODEL_GEOMETRY;
+    },
+
 
     read : function( reader ){
       this.name = AwdString.read( reader );
@@ -30,9 +35,8 @@
 
 
 
-  };
+  } );
 
-  require( './BaseStruct' ).extend( Primitive.prototype );
 
   module.exports = Primitive;
 

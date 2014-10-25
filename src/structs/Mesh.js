@@ -3,19 +3,23 @@
   // var Consts = AWD.Consts;
   var AwdString   = require( "../types/awdString" ),
       Container   = require( "./Container" ),
-      Consts      = require( "../consts" );
+      Consts      = require( "../consts" ),
+      BaseStruct  = require( './BaseStruct' );
 
 
-  var Mesh = function(){
-    this.type = Consts.TYPE_MESH;
-    this.pData = {};
-    Container.super( this );
+  var Mesh = BaseStruct.createStruct( Consts.MESH, Consts.DEFAULT_NS,
 
-    this.geometry = null;
-    this.materials = [];
-  };
+  {
 
-  Mesh.prototype = {
+    init : function( ){
+      this.model = Consts.MODEL_MESH;
+      this.pData = {};
+      Container.super( this );
+
+      this.geometry = null;
+      this.materials = [];
+    },
+
 
     read : function( reader ){
 
@@ -33,7 +37,7 @@
 
       for (var i = 0; i < num_mats; i++) {
         var mat_id = reader.U32();
-        var matRes = this.awd.getAssetByID( mat_id, [ Consts.TYPE_MATERIAL ] );
+        var matRes = this.awd.getAssetByID( mat_id, [ Consts.MODEL_MATERIAL ] );
 
         if ((!matRes[0]) && (mat_id > 0)) {
           throw new Error("Could not find Material Nr " + i + " (ID = " + mat_id + " ) for this Mesh");
@@ -52,14 +56,14 @@
 
 
 
-      var match = this.awd.getAssetByID( geom_id, [ Consts.TYPE_GEOMETRY ] );
+      var match = this.awd.getAssetByID( geom_id, [ Consts.MODEL_GEOMETRY ] );
       if ( match[0] ) {
         this.geometry = match[1];
       } else {
         //throw new Error("Could not find a geometry for this Mesh");
       }
 
-      match = this.awd.getAssetByID(parent_id, [ Consts.TYPE_CONTAINER, Consts.TYPE_MESH, Consts.TYPE_LIGHT, Consts.TYPE_ENTITY, Consts.TYPE_SEGMENT_SET ] );
+      match = this.awd.getAssetByID(parent_id, [ Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
       if ( match[0] ) {
         // weak dependency w/ other types
         if( match[1].addChild !== undefined ) {
@@ -126,7 +130,7 @@
         res.push( mat );
       }
 
-      if( this.parent && this.parent.struct ) {
+      if( this.parent ) {
         res.push( this.parent );
       }
 
@@ -145,11 +149,10 @@
 
 
 
-  };
-
-  require( './BaseStruct' ).extend( Mesh.prototype );
+  } );
 
   Container.extend( Mesh.prototype );
+
   module.exports = Mesh;
 
 }());

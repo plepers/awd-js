@@ -81,7 +81,7 @@
 
       this.data = _StructFactory( this );
 
-      this.data.init( awd, this );
+      this.data._setup( awd, this );
 
       var p = reader.ptr;
 
@@ -102,13 +102,13 @@
     var type = block.type;
 
     switch( type ) {
-      case 255 :
+      case Metadata.TYPE :
         return new Metadata();
-      case 22 :
+      case Container.TYPE :
         return new Container();
-      case 23 :
+      case Mesh.TYPE :
         return new Mesh();
-      case 1 :
+      case Geometry.TYPE :
         return new Geometry();
       default :
         return new DefaultStruct( block );

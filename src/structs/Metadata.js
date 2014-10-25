@@ -2,20 +2,22 @@
 
 
   var Consts      = require( "../consts" ),
-      Properties  = require( "../types/properties" );
+      Properties  = require( "../types/properties" ),
+      BaseStruct  = require( './BaseStruct' );
 
   var DEFAULT = "unknown";
 
-  var Metadata = function(){
-    this.timeStamp        = 0;
-    this.encoderName      = DEFAULT;
-    this.encoderVersion   = DEFAULT;
-    this.generatorName    = DEFAULT;
-    this.generatorVersion = DEFAULT;
-  };
+  var Metadata = BaseStruct.createStruct( Consts.METADATA, Consts.DEFAULT_NS,
 
-  Metadata.prototype = {
+  {
 
+    init : function( ){
+      this.timeStamp        = 0;
+      this.encoderName      = DEFAULT;
+      this.encoderVersion   = DEFAULT;
+      this.generatorName    = DEFAULT;
+      this.generatorVersion = DEFAULT;
+    },
 
 
     read : function( reader ){
@@ -69,10 +71,8 @@
 
 
 
-  };
+  } );
 
-
-  require( './BaseStruct' ).extend( Metadata.prototype );
 
   module.exports = Metadata;
 

@@ -4,18 +4,22 @@
   var Consts      = require( '../consts' ),
       AwdString   = require( '../types/awdString' ),
       UserAttr    = require( '../types/userAttr' ),
-      Properties  = require( '../types/properties' );
+      Properties  = require( '../types/properties' ),
+      BaseStruct  = require( './BaseStruct' );
 
 
-  var Geometry = function(){
-    this.type = Consts.TYPE_GEOMETRY;
+  var Geometry = BaseStruct.createStruct( Consts.GEOMETRY, Consts.DEFAULT_NS,
 
-    this.name = '';
-    this.extras = new UserAttr();
-    this.subGeoms = [];
-  };
+  {
 
-  Geometry.prototype = {
+    init : function( ){
+      this.model = Consts.MODEL_GEOMETRY;
+
+      this.name = '';
+      this.extras = new UserAttr();
+      this.subGeoms = [];
+    },
+
 
     read : function( reader ){
 
@@ -90,12 +94,7 @@
 
 
 
-  };
-
-  require( './BaseStruct' ).extend( Geometry.prototype );
-
-
-
+  } );
 
 
 
@@ -151,16 +150,7 @@
     write : function( awd, writer ) {
       var sptr = writer.skipBlockSize();
 
-      var geomType = awd.header.geoNrType;
-
-      var props = new Properties({
-        1: geomType,
-        2: geomType
-      });
-      props.set( 1, 1.0 );
-      props.set( 2, 1.0 );
-      props.write( writer );
-
+      this.writeProps( awd, writer );
 
       var accuracy = awd.header.accuracyGeo;
 
@@ -169,8 +159,56 @@
         buffer.write( writer, accuracy );
       }
 
-
       writer.writeBlockSize( sptr );
+
+      this.extras.write( writer );
+    },
+
+    writeProps : function( awd, writer ) {
+
+      var geomType = awd.header.geoNrType;
+      //var accuracy = awd.header.accuracyGeo;
+
+      var props = new Properties({
+        1: geomType,
+        2: geomType
+      });
+      props.set( 1, 1.0 );
+      props.set( 2, 1.0 );
+
+      // if( pad === true ){
+      //   // add dummy props to align
+      //   // vertex buffer on 4 or 8 bytes
+      //   var align = accuracy ? 8 : 4;
+
+      //   // ptr after props and buffer head
+      //   //                         prop val    props heads
+      //   var basePtr = writer.ptr + 2*align   +    4+12 +          VertexBuffer.HEAD_SIZE;
+
+      //   console.log( "guessed ptr for buffer : ", basePtr );
+      //   var diff = align - (basePtr % align);
+
+      //   // need padding
+      //   if( diff !== 0 ) {
+
+      //     basePtr += 7; // prop header type 16 + len 32 + val U8
+      //     diff = 1 + align - (basePtr % align);
+
+      //     var array = [];
+      //     while( diff-- > 0 ){
+      //       array.push( 0 );
+      //     }
+
+      //     // props.expected[0xFF] = Consts.AWD_FIELD_UINT8;
+      //     // props.set( 0xFF, array );
+
+      //   }
+
+
+      // }
+
+      props.write( writer );
+
     }
 
   };
@@ -246,7 +284,82 @@
 
   };
 
-  var getReadFunc = function( type, accuracy, reader ){
+
+
+
+  var VertexBuffer = function(){
+    this.data = null;
+    this.length = 0;
+    this.size = 0;
+    this.infos = null;
+  };
+
+  VertexBuffer.HEAD_SIZE = 6; // type, ftype, len
+
+  VertexBuffer.prototype = {
+
+    allocate : function( numVerts, infos ){
+      this.length = numVerts;
+      this.size = ( infos.size > 0 ) ? infos.size : 1;
+
+      var Class = getArray( infos.ftype );
+      this.data = new Class( numVerts * this.size );
+    },
+
+
+    read : function( reader, accuracy ){
+      var str_type  = reader.U8(),
+          str_ftype = reader.U8(),
+          str_len   = reader.U32(),
+          str_end   = reader.ptr + str_len;
+
+
+      var infos = getBufferInfos( str_type );
+      this.infos = infos;
+
+      if( infos.ftype !== str_ftype ) {
+        console.log( 'SubGeom str_ftype mismatch :' + str_ftype );
+      }
+
+      var numVerts = getNumVerts( str_len, accuracy, infos );
+      this.allocate( numVerts, infos );
+
+
+      var read = getReadFunc( infos.ftype, accuracy, reader );
+      var data = this.data;
+      var c = 0;
+
+      while( reader.ptr < str_end ){
+        data[c++] = read.call( reader );
+      }
+
+
+    },
+
+    write : function( writer, accuracy ){
+      var infos = this.infos;
+
+      writer.U8( infos.type );
+      writer.U8( infos.ftype );
+
+      var sptr = writer.skipBlockSize();
+
+      var writeFn = getWriteFunc( infos.ftype, accuracy, writer );
+      var data = this.data;
+
+
+      for (var i = 0, l = data.length; i < l; i++) {
+        writeFn.call( writer, data[i] );
+      }
+
+      writer.writeBlockSize( sptr );
+    },
+
+
+
+  };
+
+    var getReadFunc = function( type, accuracy, reader ){
     if( type === T_FLOAT ){
       return accuracy ? reader.F64 : reader.F32;
     }
@@ -309,77 +422,6 @@
     }
 
   };
-
-
-  var VertexBuffer = function(){
-    this.data = null;
-    this.length = 0;
-    this.size = 0;
-    this.infos = null;
-  };
-
-  VertexBuffer.prototype = {
-
-    allocate : function( numVerts, infos ){
-      this.length = numVerts;
-      this.size = ( infos.size > 0 ) ? infos.size : 1;
-
-      var Class = getArray( infos.ftype );
-      this.data = new Class( numVerts * this.size );
-    },
-
-
-    read : function( reader, accuracy ){
-      var str_type  = reader.U8(),
-          str_ftype = reader.U8(),
-          str_len   = reader.U32(),
-          str_end   = reader.ptr + str_len;
-
-
-      var infos = getBufferInfos( str_type );
-      this.infos = infos;
-
-      if( infos.ftype !== str_ftype ) {
-        console.log( 'SubGeom str_ftype mismatch :' + str_ftype );
-      }
-
-      var numVerts = getNumVerts( str_len, accuracy, infos );
-      this.allocate( numVerts, infos );
-
-
-      var read = getReadFunc( infos.ftype, accuracy, reader );
-      var data = this.data;
-      var c = 0;
-
-      while( reader.ptr < str_end ){
-        data[c++] = read.call( reader );
-      }
-
-
-    },
-
-    write : function( writer, accuracy ){
-      var infos = this.infos;
-
-      writer.U8( infos.type );
-      writer.U8( infos.ftype );
-
-      var sptr = writer.skipBlockSize();
-
-      var writeFn = getWriteFunc( infos.ftype, accuracy, writer );
-      var data = this.data;
-
-      for (var i = 0, l = data.length; i < l; i++) {
-        writeFn.call( writer, data[i] );
-      }
-
-      writer.writeBlockSize( sptr );
-    },
-
-
-
-  };
-
 
 
   module.exports = Geometry;

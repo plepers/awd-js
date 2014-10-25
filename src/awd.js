@@ -41,7 +41,7 @@ AWD.prototype = {
 
         while ( typeCnt < assetTypesToGet.length ) {
 
-          if ( (_blocks[assetID].data.type & assetTypesToGet[typeCnt]) !== 0) {
+          if ( (_blocks[assetID].data.model & assetTypesToGet[typeCnt]) !== 0) {
 
             returnArray.push( true );
             returnArray.push( _blocks[assetID].data );
@@ -49,7 +49,7 @@ AWD.prototype = {
 
           }
 
-          if ((assetTypesToGet[typeCnt] === Consts.TYPE_GEOMETRY ) && ( (_blocks[assetID].data.type & Consts.TYPE_MESH) !== 0)) {
+          if ((assetTypesToGet[typeCnt] === Consts.MODEL_GEOMETRY ) && ( (_blocks[assetID].data.model & Consts.MODEL_MESH) !== 0)) {
             returnArray.push( true );
             returnArray.push( _blocks[assetID].data.geometry );
             return returnArray;

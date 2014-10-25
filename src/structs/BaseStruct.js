@@ -1,38 +1,47 @@
 (function(){
 
-  var BaseStruct = {
+  var BaseStruct = {};
 
-    extend : function( proto ){
-      proto.init = _proto.init;
 
-      if( ! proto.getDependencies ) {
-        proto.getDependencies = _proto.getDependencies;
-      }
 
-      if( ! proto.prepareBlock ) {
-        proto.prepareBlock = _proto.prepareBlock;
-      }
-    }
+  var _structSetup = function( awd, block ){
+    this.awd = awd;
+    this.block = block;
+  };
+
+  var getDependencies = function(){
+    return null;
+  };
+
+  var prepareBlock = function(){
 
   };
 
-  var _proto = {
+  var init = function(){
 
-    init : function( awd, block ){
-      this.awd = awd;
-      this.block = block;
-      if( this.pData ) {
-        this.pData.struct = this;
-      }
-    },
+  };
 
-    getDependencies : function(){
-      return null;
-    },
 
-    prepareBlock : function(){
+  BaseStruct.createStruct = function( type, ns, proto ){
 
+    var Struct = function(){
+      this.type = type;
+      this.ns = ns;
+      this.init();
+    };
+
+    Struct.TYPE = type;
+
+    Struct.prototype._setup           = _structSetup;
+    Struct.prototype.getDependencies  = getDependencies;
+    Struct.prototype.prepareBlock     = prepareBlock;
+    Struct.prototype.init             = init;
+
+    for( var key in proto ){
+      Struct.prototype[key] = proto[key];
     }
+
+    return Struct;
 
   };
 

@@ -4,24 +4,18 @@
       AwdString   = require( "../types/awdString" ),
       Vec3        = require( "../types/vec3" ),
       Matrix4     = require( "../types/matrix" ),
-      Consts      = require( "../consts" );
-
-  // var Polys       = require( "polys" ),
-  //     PContainer  = Polys.Container;
+      Consts      = require( "../consts" ),
+      BaseStruct  = require( './BaseStruct' );
 
 
+  var Container = BaseStruct.createStruct( Consts.CONTAINER, Consts.DEFAULT_NS,
 
-  var Container = function(){
-    this.type = Consts.TYPE_CONTAINER;
-    //this.pData = new PContainer();
+  {
 
-    Container.super( this );
-
-
-
-  };
-
-  Container.prototype = {
+    init : function( ){
+      this.model = Consts.MODEL_CONTAINER;
+      Container.super( this );
+    },
 
     read : function( reader ){
 
@@ -39,7 +33,7 @@
 
 
       // var match = this.awd.getAssetByID(parent_id, [AWD.Container, AWD.Light, AWD.Mesh, AWD.Entity, AWD.SegmentSet ] );
-      var match = this.awd.getAssetByID(parent_id, [Consts.TYPE_CONTAINER, Consts.TYPE_MESH, Consts.TYPE_LIGHT, Consts.TYPE_ENTITY, Consts.TYPE_SEGMENT_SET ] );
+      var match = this.awd.getAssetByID(parent_id, [Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
 
       if ( match[0] )
       {
@@ -110,7 +104,7 @@
 
 
 
-  };
+  } );
 
   Container.extend = function( proto ){
     proto.addChild = Container.prototype.addChild;
@@ -126,7 +120,6 @@
     obj.extras = new UserAttr();
   };
 
-  require( './BaseStruct' ).extend( Container.prototype );
 
   module.exports = Container;
 
