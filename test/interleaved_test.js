@@ -19,7 +19,7 @@ describe( "interleaved geometries test", function(){
 
   before(function( done ){
 
-    fs.readFile('./test/samples/fish.awd', function (err, data) {
+    fs.readFile('./test/samples/fish_c4d.awd', function (err, data) {
       if (err) {
         done( err );
       }
@@ -49,6 +49,10 @@ describe( "interleaved geometries test", function(){
     expect( ig.subGeoms[0].buffers.length ).to.be.equal( 2 );
     expect( ig.subGeoms[0].buffers.length ).to.be.equal( 2 );
 
+    // index
+    expect( ig.subGeoms[0].buffers[0].ftype ).to.be.equal( Consts.AWD_FIELD_UINT16);
+    // ...
+    expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_FLOAT32);
 
   });
 

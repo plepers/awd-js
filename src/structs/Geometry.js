@@ -145,14 +145,13 @@
       }
 
       var buffer;
-      var accuracy = awd.header.accuracyGeo;
 
       var nverts = -1;
 
       while( reader.ptr < gend ){
 
         buffer = this.bufferFactory();
-        buffer.read( reader, accuracy );
+        buffer.read( reader );
 
         if( !buffer.isIndex && buffer.numVertices > -1 ) {
           if( nverts > -1 && buffer.numVertices !== nverts) {
@@ -187,11 +186,10 @@
 
       this.writeProps( awd, writer );
 
-      var accuracy = awd.header.accuracyGeo;
 
       for (var i = 0, l = this.buffers.length; i < l; i++) {
         var buffer = this.buffers[i];
-        buffer.write( writer, accuracy );
+        buffer.write( writer );
       }
 
       writer.writeBlockSize( sptr );
@@ -260,6 +258,21 @@
       JOIN_IDX  = 6,
       JOIN_WGT  = 7;
 
+  //
+  // C4D exporter bug
+  // https://github.com/awaytools/AwayExtensions-C4D/pull/3
+
+  var fixC4D_Type = function( val ){
+    if( val === 2 ){
+      return Consts.AWD_FIELD_UINT16;
+    }
+    else if( val === 4 ){
+      return Consts.AWD_FIELD_FLOAT32;
+    }
+    return val;
+  };
+
+
 
 
   var VertexBuffer = function(){
@@ -277,9 +290,12 @@
 
   VertexBuffer.prototype = {
 
-    allocate : function( size, ftype, accuracy ){
+    allocate : function( size, ftype){
 
-      var Class = getArray( ftype, accuracy );
+      var Class = getArray( ftype );
+      if( Class === undefined ){
+        console.log( ftype );
+      }
       this.data = new Class( size );
     },
 
@@ -290,11 +306,18 @@
     },
 
 
-    read : function( reader, accuracy ){
+    read : function( reader ){
       var str_type  = reader.U8(),
           str_ftype = reader.U8(),
           str_len   = reader.U32(),
           str_end   = reader.ptr + str_len;
+
+      str_ftype = fixC4D_Type( str_ftype );
+      if( str_ftype !== Consts.AWD_FIELD_UINT16 &&
+          str_ftype !== Consts.AWD_FIELD_FLOAT32 &&
+          str_ftype !== Consts.AWD_FIELD_FLOAT64 ) {
+        console.log( "WARN unexpected stream data type ", str_ftype, str_type, str_len );
+      }
 
 
 
@@ -306,17 +329,17 @@
       this.ftype      = str_ftype;
 
 
-      var typeSize = getTypeSize( str_ftype, accuracy );
+      var typeSize = getTypeSize( str_ftype );
       var numVals = str_len / typeSize;
 
       if( size !== -1 ){
         this.numVertices = numVals / size;
       }
 
-      this.allocate( numVals, str_ftype, accuracy );
+      this.allocate( numVals, str_ftype );
 
 
-      var read = getReadFunc( str_ftype, accuracy, reader );
+      var read = getReadFunc( str_ftype, reader );
       var data = this.data;
       var c = 0;
 
@@ -327,13 +350,13 @@
 
     },
 
-    write : function( writer, accuracy ){
+    write : function( writer ){
       writer.U8( this.type );
       writer.U8( this.ftype );
 
       var sptr = writer.skipBlockSize();
 
-      var writeFn = getWriteFunc( this.ftype, accuracy, writer );
+      var writeFn = getWriteFunc( this.ftype, writer );
       var data = this.data;
 
 
@@ -349,41 +372,61 @@
   };
 
 
-  var getTypeSize = function( type, accuracy ){
-    if( type === Consts.T_FLOAT ){
-      return accuracy ? 8 : 4;
+  var getTypeSize = function( type ){
+    switch( type ){
+
+      case Consts.AWD_FIELD_UINT16 :
+        return 2;
+      case Consts.AWD_FIELD_FLOAT32 :
+        return 4;
+      case Consts.AWD_FIELD_FLOAT64 :
+        return 8;
     }
-    if( type === Consts.T_SHORT ){
-      return 2;
-    }
+    throw new Error( "WARN getTypeSize - unexpected stream data type "+ type );
   };
 
-  var getReadFunc = function( type, accuracy, reader ){
-    if( type === Consts.T_FLOAT ){
-      return accuracy ? reader.F64 : reader.F32;
+  var getReadFunc = function( type, reader ){
+    switch( type ){
+
+      case Consts.AWD_FIELD_UINT16 :
+        return reader.U16;
+      case Consts.AWD_FIELD_FLOAT32 :
+        return reader.F32;
+      case Consts.AWD_FIELD_FLOAT64 :
+        return reader.F64;
     }
-    if( type === Consts.T_SHORT ){
-      return reader.U16;
-    }
+    throw new Error( "WARN getReadFunc - unexpected stream data type "+ type );
+
   };
 
-  var getWriteFunc = function( type, accuracy, writer ){
-    if( type === Consts.T_FLOAT ){
-      return accuracy ? writer.F64 : writer.F32;
+  var getWriteFunc = function( type, writer ){
+    switch( type ){
+
+      case Consts.AWD_FIELD_UINT16 :
+        return writer.U16;
+      case Consts.AWD_FIELD_FLOAT32 :
+        return writer.F32;
+      case Consts.AWD_FIELD_FLOAT64 :
+        return writer.F64;
     }
-    if( type === Consts.T_SHORT ){
-      return writer.U16;
-    }
+    throw new Error( "WARN getWriteFunc - unexpected stream data type "+ type );
+
   };
 
 
-  var getArray = function( type, accuracy ){
-    if( type === Consts.T_FLOAT ){
-      return accuracy ? Float64Array : Float32Array;
+  var getArray = function( type ){
+
+    switch( type ){
+
+      case Consts.AWD_FIELD_UINT16 :
+        return Uint16Array;
+      case Consts.AWD_FIELD_FLOAT32 :
+        return Float32Array;
+      case Consts.AWD_FIELD_FLOAT64 :
+        return Float64Array;
     }
-    if( type === Consts.T_SHORT ){
-      return Uint16Array;
-    }
+    throw new Error( "WARN getArray - unexpected stream data type "+ type );
+
   };
 
 
@@ -413,6 +456,12 @@
 
   Geometry.SubGeom        = SubGeom;
   Geometry.VertexBuffer   = VertexBuffer;
+
+  Geometry.getTypeSize  = getTypeSize;
+  Geometry.getReadFunc  = getReadFunc;
+  Geometry.getWriteFunc = getWriteFunc;
+  Geometry.getArray     = getArray;
+  Geometry.fixC4D_Type  = fixC4D_Type;
 
   module.exports = Geometry;
 

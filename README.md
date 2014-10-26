@@ -3,11 +3,13 @@
 AWD tools for javascript
 
 ## Getting Started
-Install the module with: `npm install awd-js`
+Install the module with: `npm install awd`
 
 ```javascript
-var awd_js = require('awd-js');
-awd_js.awesome(); // "awesome"
+
+var awd = require('awd');
+awd.parse( buffer );
+
 ```
 
 ## Documentation
@@ -23,5 +25,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 _(Nothing yet)_
 
 ## License
-Copyright (c) 2014 Pierre Lepers  
+Copyright (c) 2014 Pierre Lepers
 Licensed under the WTFPL license.

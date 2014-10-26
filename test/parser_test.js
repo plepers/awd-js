@@ -30,7 +30,7 @@ describe( "parser test", function(){
 
 
 
-  it( "awd load ploar bear", function(){
+  it( "awd load polar bear", function(){
 
 
     var awd = new Awd( );
@@ -47,6 +47,57 @@ describe( "parser test", function(){
     re.parse( buf );
 
   });
+
+
+
+
+  it( "read all", function( done ){
+
+    var files = [
+      "3DS_exporter.awd",
+      "apple.awd",
+      "bridge.awd",
+      "buddha.awd",
+      "fish_c4d.awd",
+      "fish_ab.awd",
+      "haikus.awd",
+      "jellyfish.awd",
+      "lantern.awd",
+      "lilypads.awd",
+      "rock_ark.awd",
+      "stone.awd",
+      "tree.awd"
+    ];
+
+    var numFiles = files.length;
+
+    for (var i = 0, l = files.length; i < l; i++) {
+      var file = files[i];
+
+      (function( file ){
+
+
+        fs.readFile('./test/samples/'+file, function (err, data) {
+          if (err) {
+            done( err );
+          }
+
+          var awdBuffer = butils.toArrayBuffer( data );
+          var awd = new Awd( );
+          console.log( "parse", file );
+          awd.parse( awdBuffer );
+          numFiles--;
+          console.log( "read ", file, awd._blocks.length );
+          if( numFiles === 0 ) {
+            done();
+          }
+        });
+      }( file ));
+    }
+
+  });
+
+
 
 });
 

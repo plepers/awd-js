@@ -8,6 +8,7 @@ var DefaultStruct = require( './structs/DefaultStruct' ),
     Metadata      = require( './structs/Metadata' ),
     Container     = require( './structs/Container' ),
     Mesh          = require( './structs/Mesh' ),
+    Texture       = require( './structs/Texture' ),
     Geometry      = require( './structs/Geometry' );
 
 var AWD = function(){
@@ -118,6 +119,8 @@ AWD.prototype = {
         return new Mesh();
       case Geometry.TYPE :
         return new Geometry();
+      case Texture.TYPE :
+        return new Texture();
       default :
         return new DefaultStruct( block );
     }

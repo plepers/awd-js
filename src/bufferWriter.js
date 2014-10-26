@@ -125,6 +125,9 @@
     },
 
     writeBytes : function( srcBuffer, length ){
+      if( length === undefined ) {
+        length = srcBuffer.byteLength;
+      }
       //console.log( this.buffer.byteLength, this.ptr, length );
       this._ensureSize( length );
       //console.log( this.buffer.byteLength, this.ptr, length );

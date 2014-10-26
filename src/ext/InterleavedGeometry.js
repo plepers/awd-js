@@ -7,57 +7,18 @@ var Ext         = require( './ext' ),
 
 
 
-var getTypeSize = function( type, accuracy ){
-  if( type === Consts.T_FLOAT ){
-    return accuracy ? 8 : 4;
-  }
-  if( type === Consts.T_SHORT ){
-    return 2;
-  }
-};
-
-var getReadFunc = function( type, accuracy, reader ){
-  if( type === Consts.T_FLOAT ){
-    return accuracy ? reader.F64 : reader.F32;
-  }
-  if( type === Consts.T_SHORT ){
-    return reader.U16;
-  }
-};
-
-var getWriteFunc = function( type, accuracy, writer ){
-  if( type === Consts.T_FLOAT ){
-    return accuracy ? writer.F64 : writer.F32;
-  }
-  if( type === Consts.T_SHORT ){
-    return writer.U16;
-  }
-};
-
-var getArray = function( type, accuracy ){
-  if( type === Consts.T_FLOAT ){
-    return accuracy ? Float64Array : Float32Array;
-  }
-  if( type === Consts.T_SHORT ){
-    return Uint16Array;
-  }
-};
-
-
-
-
 var VertexBuffer = function(){
   this.data = null;
   this.attributes = [];
-  this.ftype = Consts.T_FLOAT;
+  this.ftype = Consts.AWD_FIELD_FLOAT32;
 };
 
 VertexBuffer.HEAD_SIZE = 6; // type, ftype, len
 
 VertexBuffer.prototype = {
 
-  allocate : function( len, ftype, accuracy ){
-    var Class = getArray( ftype, accuracy );
+  allocate : function( len, ftype ){
+    var Class = BaseGeom.getArray( ftype );
     this.data = new Class( len );
   },
 
@@ -72,7 +33,7 @@ vert size
   len : 3
 */
 
-  read : function( reader, accuracy ){
+  read : function( reader ){
     var num_attr  = reader.U8(),
         str_ftype = reader.U8(),
         attribs   = this.attributes;
@@ -110,14 +71,14 @@ vert size
         str_end   = reader.ptr + str_len;
 
 
-    var typeSize = getTypeSize( str_ftype );
+    var typeSize = BaseGeom.getTypeSize( str_ftype );
     var numVals = str_len / typeSize;
 
     this.numVertices = numVals / vSize;
 
-    this.allocate( numVals, str_ftype, accuracy );
+    this.allocate( numVals, str_ftype );
 
-    var read = getReadFunc( str_ftype, accuracy, reader );
+    var read = BaseGeom.getReadFunc( str_ftype, reader );
     var data = this.data;
     var c = 0;
 
@@ -128,7 +89,7 @@ vert size
 
   },
 
-  write : function( writer, accuracy ){
+  write : function( writer ){
     var attribs = this.attributes,
         i, l;
 
@@ -144,7 +105,7 @@ vert size
 
     // align to 4 or 8 bytes
     // take in account u32 str_len
-    var tsize = getTypeSize( this.ftype, accuracy );
+    var tsize = BaseGeom.getTypeSize( this.ftype );
     var pad = tsize - ((writer.ptr+5) % tsize);
     writer.U8( pad );
     for( i = 0; i< pad; i++){
@@ -155,7 +116,7 @@ vert size
 
     var sptr = writer.skipBlockSize();
 
-    var writeFn = getWriteFunc( this.ftype, accuracy, writer );
+    var writeFn = BaseGeom.getWriteFunc( this.ftype, writer );
     var data = this.data;
 
     // console.log( "write i buffer , data len : ", writer.ptr%4 );
@@ -176,7 +137,7 @@ vert size
 //
 // her we convert classic buffer to fewer interleaved ones
 //
-var convertSubGeom = function( geom, accuracy ) {
+var convertSubGeom = function( geom ) {
 
   var res = new BaseGeom.SubGeom();
   res.extras = geom.extras.clone();
@@ -202,7 +163,7 @@ var convertSubGeom = function( geom, accuracy ) {
 
       // todo copy
       buffer.data = buf.data;
-      buffer.ftype = Consts.T_SHORT;
+      buffer.ftype = Consts.AWD_FIELD_UINT16;
       buffer.isIndex = true;
       res.buffers.push( buffer );
 
@@ -232,6 +193,7 @@ var convertSubGeom = function( geom, accuracy ) {
 
     buffer = new VertexBuffer();
     res.buffers.push( buffer );
+
     buffer.ftype = ftype;
 
     var readers = [];
@@ -255,9 +217,9 @@ var convertSubGeom = function( geom, accuracy ) {
     }
 
 
-    var Class = getArray( ftype );
+    var Class = BaseGeom.getArray( ftype );
     var data = new Class( readers.length * nVerts );
-    var read_func = getReadFunc( ftype, accuracy, readers[0] );
+    var read_func = BaseGeom.getReadFunc( ftype, readers[0] );
 
     var c = 0;
 
@@ -285,14 +247,14 @@ var Geometry = BaseStruct.createStruct(
   BaseGeom.prototype
 );
 
-Geometry.prototype.fromGeometry = function( g, accuracy ) {
+Geometry.prototype.fromGeometry = function( g ) {
   this.name = g.name;
   this.extras = g.extras.clone();
 
   for (var i = 0, l = g.subGeoms.length; i < l; i++) {
     var sg = g.subGeoms[i];
 
-    this.subGeoms.push( convertSubGeom( sg, accuracy ) );
+    this.subGeoms.push( convertSubGeom( sg ) );
   }
 };
 

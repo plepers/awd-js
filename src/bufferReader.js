@@ -85,11 +85,11 @@
     readUTFBytes : function ( len ) {
 
       // TODO: Use native implementations if/when available
-
+      var end = this.ptr + len;
       var out = [], c = 0,
           c1, c2, c3;
 
-      while ( out.length < len ) {
+      while ( this.ptr < end ) {
         c1 = this.U8();
         if (c1 < 128) {
           out[c++] = String.fromCharCode(c1);

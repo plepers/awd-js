@@ -16,7 +16,7 @@ describe( "Parse geometry", function(){
 
   before(function( done ){
 
-    fs.readFile('./test/samples/fish.awd', function (err, data) {
+    fs.readFile('./test/samples/fish_c4d.awd', function (err, data) {
       if (err) {
         done( err );
       }

@@ -50,11 +50,6 @@
     MAGIC   : 4282180,
 
 
-    // BUFFERS TYPES
-
-    T_FLOAT : 4,
-    T_SHORT : 2,
-
 
     // TYPES
 
@@ -63,6 +58,7 @@
     PRIMITIVE   : 11,
     CONTAINER   : 22,
     MESH        : 23,
+    TEXTURE     : 82,
     METADATA    : 255,
 
 

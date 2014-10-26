@@ -137,7 +137,7 @@
           break;
         case Consts.AWD_FIELD_STRING:
           writer.U32( awdString.getUTFBytesLength( value ) );
-          writer.U16( value.length ); // unexpected
+          // writer.U16( value.length ); // unexpected
           writer.writeUTFBytes( value );
           return;
 
@@ -209,10 +209,13 @@
           read_func = reader.F64;
           break;
         case Consts.AWD_FIELD_STRING:
-          var len2 = reader.U16(); // unexpected
-          if( len2 !== len ) {
-            console.log( "!!" );
+          // unexpected U16 len field
+          // produced by Prefab exporter
+          var len2 = reader.U16();
+          if( len2 === len ) {
+            console.log( "WARN may be Prefab bug / String property bug!!" );
           }
+          reader.ptr -= 2;
 
           var s = reader.readUTFBytes( len );
           return s;
