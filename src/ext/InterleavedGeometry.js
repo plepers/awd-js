@@ -80,10 +80,19 @@ vert size
     this.ftype = str_ftype;
 
     var vSize = 0;
+    this.isIndex = false;
 
     for (var i = 0; i < num_attr; i++) {
       var type = reader.U8(),
           len  = reader.U8();
+
+      // index buff
+      if( type === 2 ){
+        if( num_attr > 1 ){
+          console.warn( "interleaved index buffer is not alone" );
+        }
+        this.isIndex = true;
+      }
 
       vSize += len;
 
@@ -125,9 +134,6 @@ vert size
 
     writer.U8( attribs.length );
     writer.U8( this.ftype );
-
-
-
 
 
     for ( i = 0, l = attribs.length; i < l; i++) {
@@ -197,6 +203,7 @@ var convertSubGeom = function( geom, accuracy ) {
       // todo copy
       buffer.data = buf.data;
       buffer.ftype = Consts.T_SHORT;
+      buffer.isIndex = true;
       res.buffers.push( buffer );
 
       continue;
@@ -230,15 +237,11 @@ var convertSubGeom = function( geom, accuracy ) {
     var readers = [];
     var j;
 
-    console.log( "add i buffers ftype ", key );
-
     for ( i = 0, l = list.length; i < l; i++) {
 
 
       buf = list[i];
       var reader = new BufferReader( buf.data.buffer );
-
-      console.log( "      buffer type ", buf.type );
 
       buffer.attributes.push({
         type : buf.type,
@@ -257,8 +260,6 @@ var convertSubGeom = function( geom, accuracy ) {
     var read_func = getReadFunc( ftype, accuracy, readers[0] );
 
     var c = 0;
-
-    console.log( "  nverts / readers", nVerts, readers.length );
 
     for ( i = 0; i < nVerts; i++) {
 
@@ -303,7 +304,6 @@ Geometry.prototype.subGeomFactory = function() {
 
 
 Geometry.prototype.bufferFactory = function() {
-  console.log( "create I buffer " );
   return new VertexBuffer();
 };
 

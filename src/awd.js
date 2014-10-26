@@ -41,6 +41,19 @@ AWD.prototype = {
     return Writer.write( this );
   },
 
+  getDatasByType : function( type, ns ){
+    if( ns === undefined ){
+      ns = Consts.DEFAULT_NS;
+    }
+    var res = [];
+    for (var i = 0, l = this._blocks.length; i < l; i++) {
+      if( this._blocks[i].data.type === type && this._blocks[i].data.ns === ns ){
+        res.push( this._blocks[i].data );
+      }
+    }
+    return res;
+  },
+
   getAssetByID : function( assetID, assetTypesToGet )
   {
     var returnArray = [],

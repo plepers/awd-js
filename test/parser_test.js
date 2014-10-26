@@ -36,17 +36,14 @@ describe( "parser test", function(){
     var awd = new Awd( );
     awd.parse( polarBear );
 
-    console.log( "---------------------------- write awd")
     var buf = awd.write();
 
     fs.writeFile( './test/output/test.awd', butils.fromArrayBuffer( buf ), function (err) {
       if (err) throw err;
-      console.log('It\'s saved!');
     } );
 
 
     var re = new Awd( );
-    console.log( "---------------------------- reparse awd")
     re.parse( buf );
 
   });
