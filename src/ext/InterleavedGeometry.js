@@ -61,29 +61,21 @@ VertexBuffer.prototype = {
     this.data = new Class( len );
   },
 
-
-
 /*
-
 num attr
 vert size
-
   type : pos
   len : 3
   type : uvs
   len : 2
   type : nrm
   len : 3
-
-
-
-
 */
 
   read : function( reader, accuracy ){
     var num_attr  = reader.U8(),
         str_ftype = reader.U8(),
-        attribs = this.attributes;
+        attribs   = this.attributes;
 
     this.ftype = str_ftype;
 
@@ -100,6 +92,9 @@ vert size
         len : len
       } );
     }
+
+    var padding   = reader.U8();
+    reader.ptr += padding;
 
 
     var str_len   = reader.U32(),
@@ -131,18 +126,33 @@ vert size
     writer.U8( attribs.length );
     writer.U8( this.ftype );
 
+
+
+
+
     for ( i = 0, l = attribs.length; i < l; i++) {
       var attr = attribs[i];
        writer.U8( attr.type );
        writer.U8( attr.len );
     }
 
+    // align to 4 or 8 bytes
+    // take in account u32 str_len
+    var tsize = getTypeSize( this.ftype, accuracy );
+    var pad = tsize - ((writer.ptr+5) % tsize);
+    writer.U8( pad );
+    for( i = 0; i< pad; i++){
+      writer.U8( 0 );
+    }
+
+
+
     var sptr = writer.skipBlockSize();
 
     var writeFn = getWriteFunc( this.ftype, accuracy, writer );
     var data = this.data;
 
-    console.log( "write i buffer , data len : ", data.length );
+    // console.log( "write i buffer , data len : ", writer.ptr%4 );
 
 
     for ( i = 0, l = data.length; i < l; i++) {
