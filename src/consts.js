@@ -88,6 +88,17 @@
 
     MODEL_GENERIC                : ~0,
 
+
+
+    // BUFFER TYPES
+    POSITION            : 1,
+    INDEX               : 2,
+    UVS                 : 3,
+    NORMAL              : 4,
+    TANGENT             : 5,
+    JOIN_IDX            : 6,
+    JOIN_WGT            : 7,
+
     DEFAULT_NS                  : 0
   };
 

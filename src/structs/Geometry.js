@@ -124,6 +124,32 @@
 
   SubGeom.prototype = {
 
+
+    getBuffersByType : function( type, res ){
+
+      if( res === undefined ){
+        res = [];
+      }
+      var i;
+      if( type instanceof Array ) {
+        for ( i = 0, l = type.length; i < l; i++) {
+          getBuffersByType( type[i], res );
+        }
+      }
+      else {
+
+        for (i = 0, l = this.buffers.length; i < l; i++) {
+          if( this.buffers[i].type === type ){
+            res.push( this.buffers[i] );
+          }
+        }
+
+      }
+      return res;
+    },
+
+
+
     read : function( awd, reader ) {
 
       var glen = reader.U32(),
@@ -250,14 +276,6 @@
 
 
 
-  var POS       = 1,
-      IDX       = 2,
-      UVS       = 3,
-      NRM       = 4,
-      TGT       = 5,
-      JOIN_IDX  = 6,
-      JOIN_WGT  = 7;
-
   //
   // C4D exporter bug
   // https://github.com/awaytools/AwayExtensions-C4D/pull/3
@@ -323,7 +341,7 @@
 
       var size = getBufferSize( str_type );
 
-      this.isIndex    = str_type === IDX;
+      this.isIndex    = str_type === Consts.INDEX;
       this.type       = str_type;
       this.components = size;
       this.ftype      = str_ftype;
@@ -434,17 +452,17 @@
 
     switch( type ){
 
-      case POS      :
-      case IDX      :
-      case NRM      :
-      case TGT      :
+      case Consts.POSITION   :
+      case Consts.INDEX      :
+      case Consts.NORMAL     :
+      case Consts.TANGENT    :
         return 3;
 
-      case UVS      :
+      case Consts.UVS      :
         return 2;
 
-      case JOIN_WGT      :
-      case JOIN_IDX      :
+      case Consts.JOIN_WGT      :
+      case Consts.JOIN_IDX      :
         return -1;
 
       default :
