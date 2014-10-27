@@ -130,10 +130,10 @@
       if( res === undefined ){
         res = [];
       }
-      var i;
+      var i, l;
       if( type instanceof Array ) {
         for ( i = 0, l = type.length; i < l; i++) {
-          getBuffersByType( type[i], res );
+          this.getBuffersByType( type[i], res );
         }
       }
       else {

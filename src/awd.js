@@ -42,16 +42,30 @@ AWD.prototype = {
     return Writer.write( this );
   },
 
-  getDatasByType : function( type, ns ){
+  getDatasByType : function( type, ns, res ){
     if( ns === undefined ){
       ns = Consts.DEFAULT_NS;
     }
-    var res = [];
-    for (var i = 0, l = this._blocks.length; i < l; i++) {
-      if( this._blocks[i].data.type === type && this._blocks[i].data.ns === ns ){
-        res.push( this._blocks[i].data );
+    if( res === undefined ){
+      res = [];
+    }
+    var i, l;
+    if( type instanceof Array ) {
+      for ( i = 0, l = type.length; i < l; i++) {
+        this.getDatasByType( type[i], ns, res );
       }
     }
+    else {
+
+      for ( i = 0, l = this._blocks.length; i < l; i++) {
+        if( this._blocks[i].data.type === type && this._blocks[i].data.ns === ns ){
+          res.push( this._blocks[i].data );
+        }
+      }
+
+    }
+
+
     return res;
   },
 
