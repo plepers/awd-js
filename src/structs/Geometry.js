@@ -29,6 +29,7 @@
 
       this.name = '';
       this.extras = new UserAttr();
+      this.props = new Properties({});
       this.subGeoms = [];
     },
 
@@ -39,10 +40,10 @@
       var num_subs = reader.U16();
 
       var geomType = this.awd.header.geoNrType;
-      var props = new Properties({
-        1: geomType,
-        2: geomType
-      });
+
+      var props = this.props;
+      props.expected[1] = geomType;
+      props.expected[2] = geomType;
 
       props.read( reader );
 
@@ -79,10 +80,10 @@
 
       var geomType = this.awd.header.geoNrType;
 
-      var props = new Properties({
-        1: geomType,
-        2: geomType
-      });
+      var props = this.props;
+      props.expected[1] = geomType;
+      props.expected[2] = geomType;
+
       props.set( 1, 1.0 );
       props.set( 2, 1.0 );
       props.write( writer );
@@ -119,6 +120,7 @@
   var SubGeom = function(){
     this.buffers = [];
     this.extras = new UserAttr();
+    this.props = new Properties({});
   };
 
 
@@ -156,10 +158,11 @@
           gend = reader.ptr + glen;
 
       var geomType = awd.header.geoNrType;
-      var props = new Properties({
-        1: geomType,
-        2: geomType
-      });
+
+      var props = this.props;
+      props.expected[1] = geomType;
+      props.expected[2] = geomType;
+
       props.read( reader );
 
 
@@ -210,6 +213,7 @@
     write : function( awd, writer ) {
       var sptr = writer.skipBlockSize();
 
+
       this.writeProps( awd, writer );
 
 
@@ -228,43 +232,14 @@
       var geomType = awd.header.geoNrType;
       //var accuracy = awd.header.accuracyGeo;
 
-      var props = new Properties({
-        1: geomType,
-        2: geomType
-      });
+
+      var props = this.props;
+      props.expected[1] = geomType;
+      props.expected[2] = geomType;
+
       props.set( 1, 1.0 );
       props.set( 2, 1.0 );
 
-      // if( pad === true ){
-      //   // add dummy props to align
-      //   // vertex buffer on 4 or 8 bytes
-      //   var align = accuracy ? 8 : 4;
-
-      //   // ptr after props and buffer head
-      //   //                         prop val    props heads
-      //   var basePtr = writer.ptr + 2*align   +    4+12 +          VertexBuffer.HEAD_SIZE;
-
-      //   console.log( "guessed ptr for buffer : ", basePtr );
-      //   var diff = align - (basePtr % align);
-
-      //   // need padding
-      //   if( diff !== 0 ) {
-
-      //     basePtr += 7; // prop header type 16 + len 32 + val U8
-      //     diff = 1 + align - (basePtr % align);
-
-      //     var array = [];
-      //     while( diff-- > 0 ){
-      //       array.push( 0 );
-      //     }
-
-      //     // props.expected[0xFF] = Consts.AWD_FIELD_UINT8;
-      //     // props.set( 0xFF, array );
-
-      //   }
-
-
-      // }
 
       props.write( writer );
 

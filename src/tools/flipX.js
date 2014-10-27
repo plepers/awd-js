@@ -28,7 +28,7 @@ module.exports = function( awd ){
         var buffer = buffers[m];
 
 
-        if( buffer.components != 3 ) {
+        if( buffer.components !== 3 ) {
           throw new Error( "invalid number of components, should be 3, is "+ buffer.components  );
         }
 
@@ -59,4 +59,4 @@ module.exports = function( awd ){
 //    matrix.data[12] = -matrix.data[12];
 //  }
 
-}
+};

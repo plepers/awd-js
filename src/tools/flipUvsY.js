@@ -9,7 +9,7 @@ module.exports = function( awd ){
 
 
 
-  geoms = awd.getDatasByType( Consts.GEOMETRY );
+  var geoms = awd.getDatasByType( Consts.GEOMETRY );
 
   var i, j;
   for (i = 0, j = geoms.length; i < j; i++) {
@@ -26,7 +26,7 @@ module.exports = function( awd ){
         var buffer = buffers[m];
 
 
-        if( buffer.components != 2 ) {
+        if( buffer.components !== 2 ) {
           throw new Error( "invalid number of components, should be 3, is "+ buffer.components  );
         }
 
@@ -42,4 +42,4 @@ module.exports = function( awd ){
     }
 
   }
-}
+};

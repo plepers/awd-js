@@ -140,7 +140,8 @@ vert size
 var convertSubGeom = function( geom ) {
 
   var res = new BaseGeom.SubGeom();
-  res.extras = geom.extras.clone();
+  res.extras  = geom.extras.clone();
+  res.props   = geom.props.clone();
 
   //
   var buffers = geom.buffers;
@@ -250,6 +251,7 @@ var Geometry = BaseStruct.createStruct(
 Geometry.prototype.fromGeometry = function( g ) {
   this.name = g.name;
   this.extras = g.extras.clone();
+  this.props = g.props.clone();
 
   for (var i = 0, l = g.subGeoms.length; i < l; i++) {
     var sg = g.subGeoms[i];
