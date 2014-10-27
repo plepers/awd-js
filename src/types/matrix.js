@@ -1,8 +1,5 @@
 (function () {
 
-  var Polys       = require( "polys" ),
-      PMatrix     = Polys.Matrix4;
-
 
   var Matrix3D = function() {
     this.data = [];
@@ -23,24 +20,7 @@
     },
 
 
-    toPolysData : function(){
-      var res = new PMatrix(),
-          rdata = res.data,
-          data = this.data;
-      for (var i = 0; i < 16; i++) {
-        rdata[i] = data[i];
-      }
-      return res;
-    },
 
-
-    fromPolysData : function( pdata ){
-      var rdata = pdata.data,
-          data  = this.data;
-      for (var i = 0; i < 16; i++) {
-        data[i] = rdata[i];
-      }
-    },
 
     parseMatrix43RawData : function( awd, reader, data )
     {
