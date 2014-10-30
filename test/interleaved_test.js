@@ -5,7 +5,6 @@ var Awd = require('../src/awd'),
     expect  = require('expect.js'),
     butils = require( './utils/buffer_utils'),
     Interleaved = require( '../src/ext/InterleavedGeometry'),
-    facto = require( '../src/ext/factory'),
     Ext = require( '../src/ext/ext'),
     Consts = require( '../src/consts');
 
@@ -26,7 +25,7 @@ describe( "interleaved geometries test", function(){
 
       awdBuf = butils.toArrayBuffer( data );
       awd = new Awd( );
-      awd.addFactory( Ext.NS, facto );
+      awd.addExtension( Ext.getExtension() );
 
       awd.parse( awdBuf );
 
@@ -74,10 +73,10 @@ describe( "interleaved geometries test", function(){
 
 
     var re = new Awd( );
-    re.addFactory( Ext.NS, facto );
+    re.addExtension( Ext.getExtension() );
     re.parse( buf );
 
-    var geoms = re.getDatasByType( Ext.INTERLEAVED_GEOM, Ext.NS );
+    var geoms = re.getDatasByType( Ext.INTERLEAVED_GEOM, Ext.URI );
 
 
     expect( geoms.length ).to.be.equal( 1 );

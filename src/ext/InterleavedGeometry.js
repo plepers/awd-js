@@ -1,4 +1,4 @@
-var Ext         = require( './ext' ),
+var ExtInfos    = require( './extInfos' ),
     BaseGeom    = require( '../structs/Geometry' ),
     BaseStruct  = require( '../structs/BaseStruct' ),
     BufferReader= require( '../bufferReader' ),
@@ -34,6 +34,7 @@ vert size
 */
 
   read : function( reader ){
+
     var num_attr  = reader.U8(),
         str_ftype = reader.U8(),
         attribs   = this.attributes;
@@ -48,7 +49,7 @@ vert size
           len  = reader.U8();
 
       // index buff
-      if( type === 2 ){
+      if( type === Consts.INDEX ){
         if( num_attr > 1 ){
           console.warn( "interleaved index buffer is not alone" );
         }
@@ -90,6 +91,7 @@ vert size
   },
 
   write : function( writer ){
+
     var attribs = this.attributes,
         i, l;
 
@@ -243,8 +245,8 @@ var convertSubGeom = function( geom ) {
 
 
 var Geometry = BaseStruct.createStruct(
-  Ext.INTERLEAVED_GEOM,
-  Ext.NS,
+  ExtInfos.INTERLEAVED_GEOM,
+  ExtInfos.URI,
   BaseGeom.prototype
 );
 

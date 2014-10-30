@@ -7,7 +7,7 @@
 
   var DEFAULT = "unknown";
 
-  var Metadata = BaseStruct.createStruct( Consts.METADATA, Consts.DEFAULT_NS,
+  var Metadata = BaseStruct.createStruct( Consts.METADATA, null,
 
   {
 

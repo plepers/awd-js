@@ -8,7 +8,7 @@
       BaseStruct  = require( './BaseStruct' );
 
 
-  var Geometry = BaseStruct.createStruct( Consts.GEOMETRY, Consts.DEFAULT_NS,
+  var Geometry = BaseStruct.createStruct( Consts.GEOMETRY, null,
 
   {
 

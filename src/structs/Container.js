@@ -8,7 +8,7 @@
       BaseStruct  = require( './BaseStruct' );
 
 
-  var Container = BaseStruct.createStruct( Consts.CONTAINER, Consts.DEFAULT_NS,
+  var Container = BaseStruct.createStruct( Consts.CONTAINER, null,
 
   {
 

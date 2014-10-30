@@ -1,6 +1,7 @@
 (function(){
 
-  var Consts      = require( "../consts" );
+  var Consts      = require( "../consts" ),
+      Block       = require( "../block" );
 
 
   var DefaultStruct = {
@@ -8,6 +9,18 @@
     _setup : function( awd, block ){
       this.awd = awd;
       this.block = block;
+
+      // Generic specific
+      if( this.nsUri === -1 ){
+        this.ns = -1;
+      } else {
+        var ext = awd.getExtension( this.nsUri );
+        if( ext ){
+          this.ns = ext.nsId;
+        }else {
+          this.ns = 0;
+        }
+      }
     },
 
     init : function( ){
@@ -62,6 +75,13 @@
       if( this.ns > -1 ){
         block.ns = this.ns;
       }
+    },
+
+    createBlock : function(){
+      var block = new Block();
+      this.prepareBlock( block );
+      block.data = this;
+      return block;
     }
 
 
@@ -71,11 +91,12 @@
 
 
 
-  BaseStruct.createStruct = function( type, ns, proto ){
+  BaseStruct.createStruct = function( type, nsUri, proto ){
 
     var Struct = function(){
       this.type = type;
-      this.ns = ns;
+      this.nsUri = nsUri;
+      this.ns = 0;
       this.init();
     };
 

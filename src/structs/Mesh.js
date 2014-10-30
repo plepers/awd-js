@@ -7,7 +7,7 @@
       BaseStruct  = require( './BaseStruct' );
 
 
-  var Mesh = BaseStruct.createStruct( Consts.MESH, Consts.DEFAULT_NS,
+  var Mesh = BaseStruct.createStruct( Consts.MESH, null,
 
   {
 

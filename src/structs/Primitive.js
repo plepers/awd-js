@@ -6,7 +6,7 @@
       Consts      = require( "../consts" ),
       BaseStruct  = require( './BaseStruct' );
 
-  var Primitive = BaseStruct.createStruct( Consts.PRIMITIVE, Consts.DEFAULT_NS,
+  var Primitive = BaseStruct.createStruct( Consts.PRIMITIVE, null,
 
   {
 

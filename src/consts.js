@@ -59,6 +59,7 @@
     CONTAINER   : 22,
     MESH        : 23,
     TEXTURE     : 82,
+    NAMESPACE   : 254,
     METADATA    : 255,
 
 

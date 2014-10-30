@@ -7,7 +7,7 @@
       BaseStruct  = require( './BaseStruct' ),
       UserAttr    = require( "../types/userAttr" );
 
-  var Texture = BaseStruct.createStruct( Consts.Texture, Consts.DEFAULT_NS,
+  var Texture = BaseStruct.createStruct( Consts.Texture, null,
 
   {
 

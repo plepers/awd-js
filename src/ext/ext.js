@@ -1,8 +1,21 @@
+var Extension           = require( '../extension' ),
+    InterleavedGeometry = require( './InterleavedGeometry' ),
+    ExtInfos            = require( './extInfos' );
 
-var Ext = {
-  NS  : 33,
 
-  INTERLEAVED_GEOM : 1
+var structs = [
+  InterleavedGeometry
+];
+
+
+var Ext = ExtInfos;
+
+
+Ext.getExtension = function(){
+  var extension = new Extension( ExtInfos.URI );
+  extension.addStructs( structs );
+  return extension;
 };
+
 
 module.exports = Ext;

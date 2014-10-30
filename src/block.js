@@ -17,7 +17,7 @@
 
   Block.prototype = {
 
-    read : function( reader, awd )
+    read : function( reader )
     {
       this.oid    =
       this.id     = reader.U32();
@@ -27,7 +27,6 @@
       this.flags  = reader.U8();
       this.size   = reader.U32();
 
-      this._parseData( reader, awd );
 
 
     },
@@ -56,6 +55,8 @@
       this.data.prepareBlock( this );
 
       var dependencies = this.data.getDependencies();
+      // add namespace here?
+
 
       if( dependencies !== null ) {
 
@@ -69,26 +70,7 @@
 
       list.push( this );
 
-    },
-
-
-    _parseData : function( reader, awd ){
-
-      this.data = awd.structFactory( this );
-
-      this.data._setup( awd, this );
-
-      var p = reader.ptr;
-
-      this.data.read( reader );
-
-      if( reader.ptr - p !== this.size ){
-        console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - this.size );
-        reader.ptr = p+this.size;
-      }
-
     }
-
 
   };
 
