@@ -1,6 +1,6 @@
 var ExtInfos    = require( './extInfos' ),
-    BaseGeom    = require( '../structs/Geometry' ),
-    BaseStruct  = require( '../structs/BaseStruct' ),
+    BaseGeom    = require( '../std/Geometry' ),
+    BaseStruct  = require( '../std/BaseStruct' ),
     BufferReader= require( '../bufferReader' ),
     Consts      = require( '../consts' );
 

@@ -1,6 +1,6 @@
 
-var DefaultStruct = require( './structs/DefaultStruct' ),
-    Namespace     = require( './structs/Namespace' );
+var DefaultStruct = require( './std/DefaultStruct' ),
+    Namespace     = require( './std/Namespace' );
 
 
 var Extention = function( nsUri ){

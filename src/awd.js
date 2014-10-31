@@ -4,7 +4,7 @@ var Header        = require( './header' ),
     Consts        = require( './consts' ),
     Block         = require( './block' ),
     BufferReader  = require( './bufferReader' ),
-    DefaultStruct = require( './structs/DefaultStruct' ),
+    DefaultStruct = require( './std/DefaultStruct' ),
     stdExt        = require( './stdExt' );
 
 
