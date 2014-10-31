@@ -11,19 +11,19 @@
 
     init : function( ){
       this.uri = "";
-      this.id  = 0;
+      this.nsId  = 0;
     },
 
 
     read : function( reader ){
-      this.id = reader.U8();
+      this.nsId = reader.U8();
       this.uri = AwdString.read( reader );
     },
 
 
 
     write : function( writer ) {
-      writer.U8( this.id );
+      writer.U8( this.nsId );
       AwdString.write( this.uri, writer );
     }
 

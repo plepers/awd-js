@@ -9,67 +9,61 @@
     _setup : function( awd, block ){
       this.awd = awd;
       this.block = block;
+      this.id = block.id;
     },
 
     init : function( ){
       this.model = Consts.MODEL_GENERIC;
     },
 
-    read : function( reader ){
-      // store data to write back
-      this.buf = new ArrayBuffer( this.block.size );
-      reader.readBytes( this.buf, this.block.size );
-
-      this.setDeps();
-    },
-
-    write : function( writer ){
-      writer.writeBytes( this.buf, this.block.size );
-    },
-
-    setDeps : function(){
-      // default blocks initially depends on
-      // all previously parsed blocks
-
-      var blocks = this.awd._blocks,
-          block;
-
-      var deps = [];
-
-      for (var i = 0, l = blocks.length; i < l; i++) {
-        block = blocks[i];
-
-        if( block.oid < this.id ){
-          deps.push( block.data );
-        }
-      }
-
-      this.deps = deps;
-
-    },
-
     getDependencies : function(){
       if( this.deps ) {
         return this.deps;
       }
-
       return null;
     },
 
-    prepareBlock : function( block ){
-      if( this.type > 0 ){
-        block.type = this.type;
+
+
+    prepareAndAdd : function( awd, list ){
+
+      if( list.indexOf( this ) > -1 ){
+        return;
       }
-      if( this.ns > -1 ){
-        block.ns = this.ns;
+
+
+      this.awd = awd;
+
+      var dependencies = this.getDependencies();
+
+      if( dependencies !== null ) {
+        for (var i = 0, l = dependencies.length; i < l; i++) {
+          dependencies[i].prepareAndAdd( awd, list );
+        }
       }
+
+      this.id = list.length + 1;
+
+      var ns = awd.resolveNamespace( this );
+      if( ns > - 1) {
+        this.ns = ns;
+      }
+
+
+
+      this.prepareBlock();
+      list.push( this );
+
     },
 
-    createBlock : function(){
-      var block = new Block();
-      this.prepareBlock( block );
-      block.data = this;
-      return block;
+    prepareBlock : function( ){
+      if( this.block === null ) {
+        this.block = new Block();
+      }
+
+      this.block.type = this.type;
+      this.block.ns = this.ns;
+
     }
 
 
@@ -86,6 +80,8 @@
       this.nsUri = nsUri;
       this.ns = 0;
       this.init();
+      this.block = null;
+      this.id = -1;
     };
 
     Struct.TYPE = type;

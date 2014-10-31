@@ -63,7 +63,8 @@ describe( "interleaved geometries test", function(){
     var ig = new Interleaved();
     ig.fromGeometry( geom );
 
-    geom.block.data = ig;
+    awd.removeBlock( geom );
+    awd.addBlock( ig );
 
     var buf = awd.write();
 
@@ -77,6 +78,7 @@ describe( "interleaved geometries test", function(){
     re.parse( buf );
 
     var geoms = re.getDatasByType( Ext.INTERLEAVED_GEOM, Ext.URI );
+
 
 
     expect( geoms.length ).to.be.equal( 1 );

@@ -1,9 +1,10 @@
-/* jshint -W020 */
+
 var Header        = require( './header' ),
     Writer        = require( './writer' ),
     Consts        = require( './consts' ),
     Block         = require( './block' ),
     BufferReader  = require( './bufferReader' ),
+    DefaultStruct = require( './structs/DefaultStruct' ),
     stdExt        = require( './stdExt' );
 
 
@@ -15,7 +16,7 @@ var AWD = function(){
   this._blocksById = [];
   this._extensions = [];
 
-  // add th edefault extension
+  // add the default extension
   this.addExtension( stdExt() );
 
 };
@@ -28,6 +29,14 @@ AWD.prototype = {
     this._blocks.push( block );
     this._blocksById[ block.id ] = block;
   },
+
+  removeBlock : function( block ){
+    var index = this._blocks.indexOf( block );
+    if( index > -1 ){
+      this._blocks.splice( index, 1 );
+    }
+  },
+
 
   // =======================
   // IO
@@ -50,13 +59,14 @@ AWD.prototype = {
     return Writer.write( this );
   },
 
+
   // =======================
   // Extensions
 
   registerNamespace : function( namespace ){
     var ext = this.getExtension( namespace.uri );
     if( ext ) {
-      ext.nsId = namespace.id;
+      ext.nsId = namespace.nsId;
     }
   },
 
@@ -75,14 +85,14 @@ AWD.prototype = {
         id = extLen + 1;
         // should be added only if used
         // by some blocks
-        this.addBlock( ns.createBlock() );
+        this.addBlock( ns );
       }
       else
       {
         id = 0;
       }
 
-      ns.id = ext.nsId = id;
+      ns.nsId = ext.nsId = id;
 
     }
 
@@ -137,8 +147,8 @@ AWD.prototype = {
 
       for ( i = 0, l = this._blocks.length; i < l; i++) {
 
-        if( this._blocks[i].data.type === type && this._blocks[i].data.nsUri === nsUri ){
-          res.push( this._blocks[i].data );
+        if( this._blocks[i].type === type && this._blocks[i].nsUri === nsUri ){
+          res.push( this._blocks[i] );
         }
       }
 
@@ -156,21 +166,21 @@ AWD.prototype = {
 
     if (assetID > 0) {
 
-      if ( _blocks[assetID] && _blocks[assetID].data ) {
+      if ( _blocks[assetID] ) {
 
         while ( typeCnt < assetTypesToGet.length ) {
 
-          if ( (_blocks[assetID].data.model & assetTypesToGet[typeCnt]) !== 0) {
+          if ( (_blocks[assetID].model & assetTypesToGet[typeCnt]) !== 0) {
 
             returnArray.push( true );
-            returnArray.push( _blocks[assetID].data );
+            returnArray.push( _blocks[assetID] );
             return returnArray;
 
           }
 
-          if ((assetTypesToGet[typeCnt] === Consts.MODEL_GEOMETRY ) && ( (_blocks[assetID].data.model & Consts.MODEL_MESH) !== 0)) {
+          if ((assetTypesToGet[typeCnt] === Consts.MODEL_GEOMETRY ) && ( (_blocks[assetID].model & Consts.MODEL_MESH) !== 0)) {
             returnArray.push( true );
-            returnArray.push( _blocks[assetID].data.geometry );
+            returnArray.push( _blocks[assetID].geometry );
             return returnArray;
           }
           typeCnt++;
@@ -190,11 +200,11 @@ AWD.prototype = {
     var block = new Block();
     block.read( reader );
 
-    block.data = this.structFactory( block );
+    var data = this.structFactory( block );
 
     var p = reader.ptr;
 
-    block.data.read( reader );
+    data.read( reader );
 
     if( reader.ptr - p !== block.size ){
       console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - block.size );
@@ -205,10 +215,10 @@ AWD.prototype = {
     // we register it now to resolve
     // folowing blocks
     if( block.ns === Consts.DEFAULT_NS && block.type === Consts.NAMESPACE ){
-      this.registerNamespace( block.data );
+      this.registerNamespace( data );
     }
 
-    this.addBlock( block );
+    this.addBlock( data );
 
   },
 
@@ -220,8 +230,9 @@ AWD.prototype = {
     var ext = this.getExtensionById( block.ns );
     if( ext ) {
       struct =  ext.create( block.type );
+    } else {
+      struct = new DefaultStruct();
     }
-
 
     struct._setup( this, block );
 
@@ -231,14 +242,14 @@ AWD.prototype = {
 
   resolveNamespace : function( struct ){
     // Generic specific
-    if( struct.nsUri === -1 ){
-      return -1;
+
+    var ext = this.getExtension( struct.nsUri );
+    if( ext ){
+      return ext.nsId;
     } else {
-      var ext = this.getExtension( struct.nsUri );
-      if( ext ){
-        return ext.nsId;
-      }
+      console.log( "Missing extension "+ struct.nsUri );
     }
+
     return 0;
   }
 

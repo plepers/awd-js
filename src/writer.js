@@ -18,19 +18,23 @@
 
       // prepares blocks list
       var blocks = awd._blocks,
-          block;
+          data;
 
       var sorted = [];
 
       for (var i = 0, l = blocks.length; i < l; i++) {
-        block = blocks[i];
-        block.data._setup( awd, block );
-        block.prepareAndAdd( awd, sorted );
+        data = blocks[i];
+        data.prepareAndAdd( awd, sorted );
       }
 
+      var sptr;
 
       for ( i = 0, l = sorted.length; i < l; i++) {
+        sorted[i].block.write( writer );
+
+        sptr = writer.skipBlockSize();
         sorted[i].write( writer );
+        writer.writeBlockSize( sptr );
       }
 
       var end = writer.ptr;
