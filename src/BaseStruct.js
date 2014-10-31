@@ -1,7 +1,7 @@
 (function(){
 
-  var Consts      = require( "../consts" ),
-      Block       = require( "../block" );
+  var Consts      = require( "./consts" ),
+      Block       = require( "./block" );
 
 
   var DefaultStruct = {

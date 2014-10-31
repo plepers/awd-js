@@ -5,7 +5,7 @@
       AwdString   = require( '../types/awdString' ),
       UserAttr    = require( '../types/userAttr' ),
       Properties  = require( '../types/properties' ),
-      BaseStruct  = require( './BaseStruct' );
+      BaseStruct  = require( '../BaseStruct' );
 
 
   var Geometry = BaseStruct.createStruct( Consts.GEOMETRY, null,

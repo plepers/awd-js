@@ -4,7 +4,7 @@
   var AwdString   = require( "../types/awdString" ),
       Container   = require( "./Container" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( './BaseStruct' );
+      BaseStruct  = require( '../BaseStruct' );
 
 
   var Mesh = BaseStruct.createStruct( Consts.MESH, null,

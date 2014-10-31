@@ -4,8 +4,8 @@ var Header        = require( './header' ),
     Consts        = require( './consts' ),
     Block         = require( './block' ),
     BufferReader  = require( './bufferReader' ),
-    DefaultStruct = require( './std/DefaultStruct' ),
-    stdExt        = require( './stdExt' );
+    DefaultStruct = require( './DefaultStruct' ),
+    stdExt        = require( './std/stdExt' );
 
 
 var AWD = function(){

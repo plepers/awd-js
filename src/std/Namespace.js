@@ -3,7 +3,7 @@
   // var Consts = AWD.Consts;
   var AwdString   = require( "../types/awdString" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( './BaseStruct' );
+      BaseStruct  = require( '../BaseStruct' );
 
   var Namespace = BaseStruct.createStruct( Consts.NAMESPACE, null,
 

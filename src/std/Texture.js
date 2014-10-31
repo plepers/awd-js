@@ -4,8 +4,8 @@
   var Properties  = require( "../types/properties" ),
       AwdString   = require( "../types/awdString" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( './BaseStruct' ),
-      UserAttr    = require( "../types/userAttr" );
+      UserAttr    = require( "../types/userAttr" ),
+      BaseStruct  = require( '../BaseStruct' );
 
   var Texture = BaseStruct.createStruct( Consts.Texture, null,
 

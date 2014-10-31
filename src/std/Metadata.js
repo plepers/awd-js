@@ -3,7 +3,7 @@
 
   var Consts      = require( "../consts" ),
       Properties  = require( "../types/properties" ),
-      BaseStruct  = require( './BaseStruct' );
+      BaseStruct  = require( '../BaseStruct' );
 
   var DEFAULT = "unknown";
 

@@ -5,7 +5,7 @@
       Vec3        = require( "../types/vec3" ),
       Matrix4     = require( "../types/matrix" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( './BaseStruct' );
+      BaseStruct  = require( '../BaseStruct' );
 
 
   var Container = BaseStruct.createStruct( Consts.CONTAINER, null,

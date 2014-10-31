@@ -1,5 +1,5 @@
 
-var DefaultStruct = require( './std/DefaultStruct' ),
+var DefaultStruct = require( './DefaultStruct' ),
     Namespace     = require( './std/Namespace' );
 
 

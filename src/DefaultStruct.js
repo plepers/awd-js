@@ -1,4 +1,4 @@
-var Consts      = require( "../consts" ),
+var Consts      = require( "./consts" ),
     BaseStruct  = require( './BaseStruct' );
 
 var DefaultStruct = BaseStruct.createStruct( Consts.GENERIC, -1, {
