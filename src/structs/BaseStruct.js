@@ -9,18 +9,6 @@
     _setup : function( awd, block ){
       this.awd = awd;
       this.block = block;
-
-      // Generic specific
-      if( this.nsUri === -1 ){
-        this.ns = -1;
-      } else {
-        var ext = awd.getExtension( this.nsUri );
-        if( ext ){
-          this.ns = ext.nsId;
-        }else {
-          this.ns = 0;
-        }
-      }
     },
 
     init : function( ){

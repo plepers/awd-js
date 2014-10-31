@@ -3,16 +3,9 @@ var Header        = require( './header' ),
     Writer        = require( './writer' ),
     Consts        = require( './consts' ),
     Block         = require( './block' ),
-    BufferReader  = require( "./bufferReader" );
+    BufferReader  = require( './bufferReader' ),
+    stdExt        = require( './stdExt' );
 
-
-var DefaultStruct = require( './structs/DefaultStruct' ),
-    Metadata      = require( './structs/Metadata' ),
-    Container     = require( './structs/Container' ),
-    Mesh          = require( './structs/Mesh' ),
-    Texture       = require( './structs/Texture' ),
-    Namespace     = require( './structs/Namespace' ),
-    Geometry      = require( './structs/Geometry' );
 
 var AWD = function(){
 
@@ -20,8 +13,10 @@ var AWD = function(){
 
   this._blocks = [];
   this._blocksById = [];
-
   this._extensions = [];
+
+  // add th edefault extension
+  this.addExtension( stdExt() );
 
 };
 
@@ -71,10 +66,24 @@ AWD.prototype = {
     if( this.getExtension( ext.nsUri ) === null ){
       var extLen = this._extensions.push( ext );
       var ns = ext.createNamespace();
-      ns.id = ext.nsId = extLen + 1;
-      // should be added only if used
-      // by some blocks
-      this.addBlock( ns.createBlock() );
+
+      var id;
+
+      // non default namespace
+      if( ext.nsUri !== null )
+      {
+        id = extLen + 1;
+        // should be added only if used
+        // by some blocks
+        this.addBlock( ns.createBlock() );
+      }
+      else
+      {
+        id = 0;
+      }
+
+      ns.id = ext.nsId = id;
+
     }
 
   },
@@ -208,46 +217,29 @@ AWD.prototype = {
 
     var struct;
 
-    if( block.ns !== Consts.DEFAULT_NS ) {
-      var ext = this.getExtensionById( block.ns );
-      if( ext ) {
-        struct =  ext.create( block.type );
-      }
-
-
-    } else {
-
-      var type = block.type;
-
-      switch( type ) {
-        case Metadata.TYPE :
-          struct = new Metadata();
-          break;
-        case Container.TYPE :
-          struct = new Container();
-          break;
-        case Mesh.TYPE :
-          struct = new Mesh();
-          break;
-        case Geometry.TYPE :
-          struct = new Geometry();
-          break;
-        case Texture.TYPE :
-          struct = new Texture();
-          break;
-        case Namespace.TYPE :
-          struct = new Namespace();
-          break;
-        default :
-          struct = new DefaultStruct();
-      }
-
+    var ext = this.getExtensionById( block.ns );
+    if( ext ) {
+      struct =  ext.create( block.type );
     }
+
 
     struct._setup( this, block );
 
     return struct;
 
+  },
+
+  resolveNamespace : function( struct ){
+    // Generic specific
+    if( struct.nsUri === -1 ){
+      return -1;
+    } else {
+      var ext = this.getExtension( struct.nsUri );
+      if( ext ){
+        return ext.nsId;
+      }
+    }
+    return 0;
   }
 
 

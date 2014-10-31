@@ -33,6 +33,7 @@
 
     write : function( writer )
     {
+
       writer.U32( this.id );
       writer.U8(  this.ns );
       writer.U8(  this.type );
@@ -47,27 +48,30 @@
     },
 
 
-    prepareAndAdd : function( list ){
+    prepareAndAdd : function( awd, list ){
 
       if( list.indexOf( this ) > -1 ){
         return;
       }
       this.data.prepareBlock( this );
 
-      var dependencies = this.data.getDependencies();
-      // add namespace here?
 
+      var dependencies = this.data.getDependencies();
 
       if( dependencies !== null ) {
-
         for (var i = 0, l = dependencies.length; i < l; i++) {
-          dependencies[i].block.prepareAndAdd( list );
+          dependencies[i].block.prepareAndAdd( awd, list );
         }
-
       }
 
-      this.id = list.length + 1;
 
+      var ns = awd.resolveNamespace( this.data );
+      if( ns > - 1){
+        this.ns = ns;
+      }
+
+
+      this.id = list.length + 1;
       list.push( this );
 
     }
