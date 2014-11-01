@@ -68,6 +68,7 @@ describe( "interleaved geometries test", function(){
 
     var buf = awd.write();
 
+    fs.mkdirSync( './test/output/' );
     fs.writeFile( './test/output/test_interleaved.awd', butils.fromArrayBuffer( buf ), function (err) {
       if (err) throw err;
     } );
