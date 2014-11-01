@@ -2,9 +2,9 @@
 var Header        = require( './header' ),
     Writer        = require( './writer' ),
     Consts        = require( './consts' ),
-    Block         = require( './block' ),
+    Chunk         = require( './chunk' ),
     BufferReader  = require( './bufferReader' ),
-    DefaultStruct = require( './DefaultStruct' ),
+    DefaultElement = require( './DefaultElement' ),
     stdExt        = require( './std/stdExt' );
 
 
@@ -12,8 +12,8 @@ var AWD = function(){
 
   this.header = new Header();
 
-  this._blocks = [];
-  this._blocksById = [];
+  this._elements = [];
+  this._elementsById = [];
   this._extensions = [];
 
   // add the default extension
@@ -25,15 +25,15 @@ var AWD = function(){
 AWD.prototype = {
 
 
-  addBlock : function( block ){
-    this._blocks.push( block );
-    this._blocksById[ block.id ] = block;
+  addElement : function( element ){
+    this._elements.push( element );
+    this._elementsById[ element.id ] = element;
   },
 
-  removeBlock : function( block ){
-    var index = this._blocks.indexOf( block );
+  removeElement : function( element ){
+    var index = this._elements.indexOf( element );
     if( index > -1 ){
-      this._blocks.splice( index, 1 );
+      this._elements.splice( index, 1 );
     }
   },
 
@@ -45,12 +45,12 @@ AWD.prototype = {
   parse : function( buffer ){
 
     var reader = new BufferReader( buffer ),
-        block;
+        chunk;
 
     this.header.read( reader );
 
     while( reader.bytesAvailable() > 0 ) {
-      block = this.parseBlock( reader );
+      chunk = this.parseChunk( reader );
     }
 
   },
@@ -84,8 +84,8 @@ AWD.prototype = {
       {
         id = extLen + 1;
         // should be added only if used
-        // by some blocks
-        this.addBlock( ns );
+        // by some elements
+        this.addElement( ns );
       }
       else
       {
@@ -145,10 +145,10 @@ AWD.prototype = {
     }
     else {
 
-      for ( i = 0, l = this._blocks.length; i < l; i++) {
+      for ( i = 0, l = this._elements.length; i < l; i++) {
 
-        if( this._blocks[i].type === type && this._blocks[i].nsUri === nsUri ){
-          res.push( this._blocks[i] );
+        if( this._elements[i].type === type && this._elements[i].nsUri === nsUri ){
+          res.push( this._elements[i] );
         }
       }
 
@@ -162,25 +162,25 @@ AWD.prototype = {
 
     var returnArray = [],
         typeCnt = 0,
-        _blocks = this._blocksById;
+        _elements = this._elementsById;
 
     if (assetID > 0) {
 
-      if ( _blocks[assetID] ) {
+      if ( _elements[assetID] ) {
 
         while ( typeCnt < assetTypesToGet.length ) {
 
-          if ( (_blocks[assetID].model & assetTypesToGet[typeCnt]) !== 0) {
+          if ( (_elements[assetID].model & assetTypesToGet[typeCnt]) !== 0) {
 
             returnArray.push( true );
-            returnArray.push( _blocks[assetID] );
+            returnArray.push( _elements[assetID] );
             return returnArray;
 
           }
 
-          if ((assetTypesToGet[typeCnt] === Consts.MODEL_GEOMETRY ) && ( (_blocks[assetID].model & Consts.MODEL_MESH) !== 0)) {
+          if ((assetTypesToGet[typeCnt] === Consts.MODEL_GEOMETRY ) && ( (_elements[assetID].model & Consts.MODEL_MESH) !== 0)) {
             returnArray.push( true );
-            returnArray.push( _blocks[assetID].geometry );
+            returnArray.push( _elements[assetID].geometry );
             return returnArray;
           }
           typeCnt++;
@@ -195,59 +195,59 @@ AWD.prototype = {
   },
 
 
-  parseBlock : function( reader ){
+  parseChunk : function( reader ){
 
-    var block = new Block();
-    block.read( reader );
+    var chunk = new Chunk();
+    chunk.read( reader );
 
-    var data = this.structFactory( block );
+    var data = this.structFactory( chunk );
 
     var p = reader.ptr;
 
     data.read( reader );
 
-    if( reader.ptr - p !== block.size ){
-      console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - block.size );
-      reader.ptr = p+block.size;
+    if( reader.ptr - p !== chunk.size ){
+      console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - chunk.size );
+      reader.ptr = p+chunk.size;
     }
 
-    // if block is a namespace
+    // if chunk is a namespace
     // we register it now to resolve
-    // folowing blocks
-    if( block.ns === Consts.DEFAULT_NS && block.type === Consts.NAMESPACE ){
+    // folowing elements
+    if( chunk.ns === Consts.DEFAULT_NS && chunk.type === Consts.NAMESPACE ){
       this.registerNamespace( data );
     }
 
-    this.addBlock( data );
+    this.addElement( data );
 
   },
 
 
-  structFactory : function( block ){
+  structFactory : function( chunk ){
 
     var struct;
 
-    var ext = this.getExtensionById( block.ns );
+    var ext = this.getExtensionById( chunk.ns );
     if( ext ) {
-      struct =  ext.create( block.type );
+      struct =  ext.create( chunk.type );
     } else {
-      struct = new DefaultStruct();
+      struct = new DefaultElement();
     }
 
-    struct._setup( this, block );
+    struct._setup( this, chunk );
 
     return struct;
 
   },
 
-  resolveNamespace : function( struct ){
+  resolveNamespace : function( elem ){
     // Generic specific
 
-    var ext = this.getExtension( struct.nsUri );
+    var ext = this.getExtension( elem.nsUri );
     if( ext ){
       return ext.nsId;
     } else {
-      console.log( "Missing extension "+ struct.nsUri );
+      console.log( "Missing extension "+ elem.nsUri );
     }
 
     return 0;

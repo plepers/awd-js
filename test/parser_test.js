@@ -87,7 +87,7 @@ describe( "parser test", function(){
           console.log( "parse", file );
           awd.parse( awdBuffer );
           numFiles--;
-          console.log( "read ", file, awd._blocks.length );
+          console.log( "read ", file, awd._elements.length );
           if( numFiles === 0 ) {
             done();
           }

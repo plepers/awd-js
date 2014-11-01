@@ -1,35 +1,35 @@
 var Consts      = require( "./consts" ),
-    BaseStruct  = require( './BaseStruct' );
+    BaseElement  = require( './BaseElement' );
 
-var DefaultStruct = BaseStruct.createStruct( Consts.GENERIC, -1, {
+var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
 
 
 
   read : function( reader ){
     // store data to write back
-    this.buf = new ArrayBuffer( this.block.size );
-    reader.readBytes( this.buf, this.block.size );
+    this.buf = new ArrayBuffer( this.chunk.size );
+    reader.readBytes( this.buf, this.chunk.size );
 
     this.setDeps();
   },
 
   write : function( writer ){
-    writer.writeBytes( this.buf, this.block.size );
+    writer.writeBytes( this.buf, this.chunk.size );
   },
 
   setDeps : function(){
     // default blocks initially depends on
     // all previously parsed blocks
 
-    var blocks = this.awd._blocks,
-        block;
+    var elems = this.awd._elements,
+        elem;
 
     var deps = [];
 
-    for (var i = 0, l = blocks.length; i < l; i++) {
-      block = blocks[i];
+    for (var i = 0, l = elems.length; i < l; i++) {
+      elem = elems[i];
 
-      deps.push( block );
+      deps.push( elem );
 
     }
 
@@ -57,11 +57,11 @@ var DefaultStruct = BaseStruct.createStruct( Consts.GENERIC, -1, {
 
   },
 
-  prepareBlock : function( ){
-    // default can't create block since
+  prepareChunk : function( ){
+    // default can't create chunk since
     // type and namespace are unknown
   }
 
 } );
 
-module.exports = DefaultStruct;
+module.exports = DefaultElement;

@@ -5,10 +5,10 @@
       Vec3        = require( "../types/vec3" ),
       Matrix4     = require( "../types/matrix" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
 
-  var Container = BaseStruct.createStruct( Consts.CONTAINER, null,
+  var Container = BaseElement.createStruct( Consts.CONTAINER, null,
 
   {
 
@@ -58,7 +58,7 @@
       var parent_id = 0;
       var parent = this.parent;
       if( parent ) {
-        parent_id = parent.block.id;
+        parent_id = parent.chunk.id;
       }
 
 

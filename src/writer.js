@@ -17,20 +17,20 @@
 
 
       // prepares blocks list
-      var blocks = awd._blocks,
-          data;
+      var elems = awd._elements,
+          elem;
 
       var sorted = [];
 
-      for (var i = 0, l = blocks.length; i < l; i++) {
-        data = blocks[i];
-        data.prepareAndAdd( awd, sorted );
+      for (var i = 0, l = elems.length; i < l; i++) {
+        elem = elems[i];
+        elem.prepareAndAdd( awd, sorted );
       }
 
       var sptr;
 
       for ( i = 0, l = sorted.length; i < l; i++) {
-        sorted[i].block.write( writer );
+        sorted[i].chunk.write( writer );
 
         sptr = writer.skipBlockSize();
         sorted[i].write( writer );

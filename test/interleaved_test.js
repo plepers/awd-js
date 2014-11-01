@@ -63,8 +63,8 @@ describe( "interleaved geometries test", function(){
     var ig = new Interleaved();
     ig.fromGeometry( geom );
 
-    awd.removeBlock( geom );
-    awd.addBlock( ig );
+    awd.removeElement( geom );
+    awd.addElement( ig );
 
     var buf = awd.write();
 

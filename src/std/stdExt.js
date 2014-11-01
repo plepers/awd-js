@@ -1,6 +1,6 @@
 var Extension     = require( '../extension' );
 
-var DefaultStruct = require( '../DefaultStruct' ),
+var DefaultElement = require( '../DefaultElement' ),
     Metadata      = require( './Metadata' ),
     Container     = require( './Container' ),
     Mesh          = require( './Mesh' ),
@@ -10,7 +10,7 @@ var DefaultStruct = require( '../DefaultStruct' ),
 
 
 var structs = [
-  DefaultStruct,
+  DefaultElement,
   Metadata,
   Container,
   Mesh,

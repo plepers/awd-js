@@ -5,10 +5,10 @@
       AwdString   = require( '../types/awdString' ),
       UserAttr    = require( '../types/userAttr' ),
       Properties  = require( '../types/properties' ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
 
-  var Geometry = BaseStruct.createStruct( Consts.GEOMETRY, null,
+  var Geometry = BaseElement.createStruct( Consts.GEOMETRY, null,
 
   {
 

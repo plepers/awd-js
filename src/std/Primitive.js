@@ -4,9 +4,9 @@
   var Properties  = require( "../types/properties" ),
       AwdString   = require( "../types/awdString" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
-  var Primitive = BaseStruct.createStruct( Consts.PRIMITIVE, null,
+  var Primitive = BaseElement.createStruct( Consts.PRIMITIVE, null,
 
   {
 

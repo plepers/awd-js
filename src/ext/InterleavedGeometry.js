@@ -1,6 +1,6 @@
 var ExtInfos    = require( './extInfos' ),
     BaseGeom    = require( '../std/Geometry' ),
-    BaseStruct  = require( '../BaseStruct' ),
+    BaseElement  = require( '../BaseElement' ),
     BufferReader= require( '../bufferReader' ),
     Consts      = require( '../consts' );
 
@@ -244,7 +244,7 @@ var convertSubGeom = function( geom ) {
 
 
 
-var Geometry = BaseStruct.createStruct(
+var Geometry = BaseElement.createStruct(
   ExtInfos.INTERLEAVED_GEOM,
   ExtInfos.URI,
   BaseGeom.prototype

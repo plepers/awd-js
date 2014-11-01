@@ -5,9 +5,9 @@
       AwdString   = require( "../types/awdString" ),
       Consts      = require( "../consts" ),
       UserAttr    = require( "../types/userAttr" ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
-  var Texture = BaseStruct.createStruct( Consts.Texture, null,
+  var Texture = BaseElement.createStruct( Consts.Texture, null,
 
   {
 

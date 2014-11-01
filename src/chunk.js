@@ -2,7 +2,7 @@
 
 
 
-  var Block = function( ) {
+  var Chunk = function( ) {
 
     this.id     = 0;
     this.ns     = 0;
@@ -14,7 +14,7 @@
 
   };
 
-  Block.prototype = {
+  Chunk.prototype = {
 
     read : function( reader )
     {
@@ -44,6 +44,6 @@
 
 
 
-  module.exports = Block;
+  module.exports = Chunk;
 
 }());

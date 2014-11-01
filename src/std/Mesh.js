@@ -4,10 +4,10 @@
   var AwdString   = require( "../types/awdString" ),
       Container   = require( "./Container" ),
       Consts      = require( "../consts" ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
 
-  var Mesh = BaseStruct.createStruct( Consts.MESH, null,
+  var Mesh = BaseElement.createStruct( Consts.MESH, null,
 
   {
 
@@ -87,13 +87,13 @@
       var parent_id = 0;
       var parent = this.parent;
       if( parent ) {
-        parent_id = parent.block.id;
+        parent_id = parent.chunk.id;
       }
 
       var geom_id = 0;
       var geom = this.geometry;
       if( geom ) {
-        geom_id = geom.block.id;
+        geom_id = geom.chunk.id;
       }
 
 
@@ -110,7 +110,7 @@
       writer.U16( ml );
       for (var i = 0; i < ml; i++) {
         var mat = this.materials[i];
-        writer.U32( mat.block.id );
+        writer.U32( mat.chunk.id );
 
       }
 

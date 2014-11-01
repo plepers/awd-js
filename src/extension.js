@@ -1,5 +1,5 @@
 
-var DefaultStruct = require( './DefaultStruct' ),
+var DefaultElement = require( './DefaultElement' ),
     Namespace     = require( './std/Namespace' );
 
 
@@ -34,7 +34,7 @@ Extention.prototype = {
       }
     }
 
-    return new DefaultStruct();
+    return new DefaultElement();
   },
 
   createNamespace : function() {

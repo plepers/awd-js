@@ -3,11 +3,11 @@
 
   var Consts      = require( "../consts" ),
       Properties  = require( "../types/properties" ),
-      BaseStruct  = require( '../BaseStruct' );
+      BaseElement  = require( '../BaseElement' );
 
   var DEFAULT = "unknown";
 
-  var Metadata = BaseStruct.createStruct( Consts.METADATA, null,
+  var Metadata = BaseElement.createStruct( Consts.METADATA, null,
 
   {
 

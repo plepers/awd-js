@@ -1,15 +1,15 @@
 (function(){
 
   var Consts      = require( "./consts" ),
-      Block       = require( "./block" );
+      Chunk       = require( "./chunk" );
 
 
-  var DefaultStruct = {
+  var DefaultElement = {
 
-    _setup : function( awd, block ){
+    _setup : function( awd, chunk ){
       this.awd = awd;
-      this.block = block;
-      this.id = block.id;
+      this.chunk = chunk;
+      this.id = chunk.id;
     },
 
     init : function( ){
@@ -51,36 +51,36 @@
 
 
 
-      this.prepareBlock();
+      this.prepareChunk();
       list.push( this );
 
     },
 
-    prepareBlock : function( ){
-      if( this.block === null ) {
-        this.block = new Block();
+    prepareChunk : function( ){
+      if( this.chunk === null ) {
+        this.chunk = new Chunk();
       }
 
-      this.block.type = this.type;
-      this.block.ns = this.ns;
+      this.chunk.type = this.type;
+      this.chunk.ns = this.ns;
 
     }
 
 
   };
 
-  var BaseStruct = {};
+  var BaseElement = {};
 
 
 
-  BaseStruct.createStruct = function( type, nsUri, proto ){
+  BaseElement.createStruct = function( type, nsUri, proto ){
 
     var Struct = function(){
       this.type = type;
       this.nsUri = nsUri;
       this.ns = 0;
       this.init();
-      this.block = null;
+      this.chunk = null;
       this.id = -1;
     };
 
@@ -88,8 +88,8 @@
 
     var key;
 
-    for( key in DefaultStruct ){
-      Struct.prototype[key] = DefaultStruct[key];
+    for( key in DefaultElement ){
+      Struct.prototype[key] = DefaultElement[key];
     }
     for( key in proto ){
       Struct.prototype[key] = proto[key];
@@ -100,6 +100,6 @@
   };
 
 
-  module.exports = BaseStruct;
+  module.exports = BaseElement;
 
 }());
