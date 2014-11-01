@@ -54,19 +54,10 @@ describe( "parser test", function(){
   it( "read all", function( done ){
 
     var files = [
-      "3DS_exporter.awd",
       "apple.awd",
-      "bridge.awd",
-      "buddha.awd",
       "fish_c4d.awd",
       "fish_ab.awd",
-      "haikus.awd",
-      "jellyfish.awd",
-      "lantern.awd",
-      "lilypads.awd",
-      "rock_ark.awd",
-      "stone.awd",
-      "tree.awd"
+      "haikus.awd"
     ];
 
     var numFiles = files.length;

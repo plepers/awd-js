@@ -7,8 +7,9 @@ Install the module with: `npm install awd`
 
 ```javascript
 
-var awd = require('awd');
-awd.parse( buffer );
+var Awd = require('awd');
+
+var awdFile = new Awd();
 
 ```
 
@@ -16,7 +17,18 @@ awd.parse( buffer );
 _(Coming soon)_
 
 ## Examples
-_(Coming soon)_
+
+```javascript
+
+var awd = new Awd();
+
+awd.parse( buffer ); // parse ArrayBuffer
+
+// do stuffs
+
+buffer = awd.write();
+
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

@@ -84,18 +84,8 @@ module.exports = function(grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
-    },
-
-
-
-    copy : {
-      dev: {
-        expand: true,
-        flatten : true,
-        src: '../polys-js/*',
-        dest: 'node_modules/polys/',
-      },
     }
+
 
 
   });
@@ -104,6 +94,6 @@ module.exports = function(grunt) {
 
 
   // Default task.
-  grunt.registerTask('default', [ 'copy:dev', 'jshint', 'browserify', 'mochaTest:node']);
+  grunt.registerTask('default', [ 'jshint', 'browserify', 'mochaTest:node']);
 
 };
