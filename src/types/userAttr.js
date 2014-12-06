@@ -124,7 +124,7 @@
         switch (attr_type) {
 
           case Consts.AWDSTRING:
-            attr_len = AwdString.getUTFBytesLength();
+            attr_len = AwdString.getUTFBytesLength( attr_val );
             writer.U32( attr_len );
             writer.writeUTFBytes(attr_val); //todo hum check
             break;
