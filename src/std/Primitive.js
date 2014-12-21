@@ -111,7 +111,7 @@
         703 : Consts.BOOL,
         704 : Consts.BOOL
       });
-    }
+    },
 
     toString : function(){
 

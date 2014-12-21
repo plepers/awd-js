@@ -58,6 +58,7 @@ describe( "parser test", function(){
       "fish_c4d.awd",
       "fish_ab.awd",
       "haikus.awd"
+      // "ile.awd"
     ];
 
     var numFiles = files.length;

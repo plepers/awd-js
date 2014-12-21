@@ -58,6 +58,7 @@
     PRIMITIVE   : 11,
     CONTAINER   : 22,
     MESH        : 23,
+    MATERIAL    : 81,
     TEXTURE     : 82,
     NAMESPACE   : 254,
     METADATA    : 255,

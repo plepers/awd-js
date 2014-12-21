@@ -34,7 +34,6 @@
 
       var num_mats = reader.U16();
 
-
       for (var i = 0; i < num_mats; i++) {
         var mat_id = reader.U32();
         var matRes = this.awd.getAssetByID( mat_id, [ Consts.MODEL_MATERIAL ] );
