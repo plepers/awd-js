@@ -30,6 +30,14 @@
       var sptr;
 
       for ( i = 0, l = sorted.length; i < l; i++) {
+
+        // prevent elements removed from awd to be written
+        // mainly because generic elements set all previous one as dep
+        // TODO : find a clean way to remove those ref when the element is removed
+        if( elems.indexOf(sorted[i]) === -1 ){
+          continue;
+        }
+
         sorted[i].chunk.write( writer );
 
         sptr = writer.skipBlockSize();
