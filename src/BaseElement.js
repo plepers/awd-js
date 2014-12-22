@@ -52,6 +52,7 @@
 
 
       this.prepareChunk();
+      this.chunk.id = this.id;
       list.push( this );
 
     },
