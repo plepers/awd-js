@@ -100,6 +100,8 @@
     TANGENT             : 5,
     JOIN_IDX            : 6,
     JOIN_WGT            : 7,
+    SUVS                : 8,
+    COLOR               : 11,
 
     DEFAULT_NS                  : 0
   };

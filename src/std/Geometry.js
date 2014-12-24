@@ -177,6 +177,7 @@
 
       var nverts = -1;
 
+
       while( reader.ptr < gend ){
 
         buffer = this.bufferFactory();
@@ -311,8 +312,6 @@
           str_ftype !== Consts.AWD_FIELD_FLOAT64 ) {
         console.log( "WARN unexpected stream data type ", str_ftype, str_type, str_len );
       }
-
-
 
       var size = getBufferSize( str_type );
 

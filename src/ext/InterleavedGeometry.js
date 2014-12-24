@@ -207,7 +207,6 @@ var convertSubGeom = function( geom ) {
 
       buf = list[i];
       var reader = new BufferReader( buf.data.buffer );
-
       buffer.attributes.push({
         type : buf.type,
         len : buf.components,
