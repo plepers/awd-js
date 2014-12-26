@@ -1,6 +1,8 @@
 /**
  * User: plepers
  * Date: 27/10/2014 16:00
+ *
+ * Precompute geometries boundingbox, write them as geometries properties
  */
 
 
