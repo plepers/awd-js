@@ -28,10 +28,6 @@
     AWD_FIELD_MTX4x3    : 46,
     AWD_FIELD_MTX4x4    : 47,
 
-    BOOL       : 21,
-    COLOR      : 22,
-    BADDR      : 23,
-
 
 
     INT8    : 1,
