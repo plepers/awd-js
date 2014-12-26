@@ -92,6 +92,8 @@
           throw new Error( 'unknown primitive type '+ this.geom.type );
       }
 
+      props.write( writer );
+
     },
 
 
