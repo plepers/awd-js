@@ -1,12 +1,12 @@
 'use strict';
 
-var Awd = require('../src/awd'),
+var Awd = require('../src/awd' ),
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     butils = require( './utils/buffer_utils'),
-    Interleaved = require( '../src/ext/InterleavedGeometry'),
-    Ext = require( '../src/ext/ext'),
-    Consts = require( '../src/consts');
+    Interleaved = require( '../extensions/pil/InterleavedGeometry'),
+    Ext = require( '../extensions/pil/ext'),
+    Consts = require('../src/consts' );
 
 
 describe( "interleaved geometries test", function(){

@@ -1,10 +1,10 @@
 (function(){
 
   // var Consts = AWD.Consts;
-  var Properties  = require( "../types/properties" ),
-      AwdString   = require( "../types/awdString" ),
-      Consts      = require( "../consts" ),
-      BaseElement  = require( '../BaseElement' );
+  var Properties  = require( "types/properties" ),
+      AwdString   = require( "types/awdString" ),
+      Consts      = require( "consts" ),
+      BaseElement = require( 'BaseElement' );
 
   var Primitive = BaseElement.createStruct( Consts.PRIMITIVE, null,
 

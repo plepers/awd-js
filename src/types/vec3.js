@@ -1,7 +1,7 @@
 (function () {
 
-  var Consts      = require( "../consts" ),
-      Properties  = require( './properties' );
+  var Consts      = require( "consts" ),
+      Properties  = require( 'types/properties' );
 
 
   var Vec3 = function( x, y, z ) {

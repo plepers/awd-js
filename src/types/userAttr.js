@@ -1,9 +1,9 @@
 (function () {
 
-  var Consts    = require( "../consts" ),
-      AwdString = require( "./awdString" ),
-      Writer    = require( "../bufferWriter" ),
-      Reader    = require( "../bufferReader" );
+  var Consts    = require( "consts" ),
+      AwdString = require( "types/awdString" ),
+      Writer    = require( "bufferWriter" ),
+      Reader    = require( "bufferReader" );
 
   var UserAttributes = function(){
     this.attributes = {};

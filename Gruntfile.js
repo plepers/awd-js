@@ -5,6 +5,7 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   require("load-grunt-tasks")(grunt);
+  require( './utils/makeIndex')( grunt );
 
 
   // Project configuration.
@@ -18,10 +19,23 @@ module.exports = function(grunt) {
       files: ['test/**/*_test.js'],
     },
 
+    makeindex : {
+      options : {
+        moduleNs : "awdjs",
+        output : '.tmp/index.js'
+      },
+      files: ['src/**/*.js']
+    },
+
     browserify: {
+      options: {
+        browserifyOptions: {
+          paths:[ './lib', './src', './extensions' ]
+        }
+      },
       lib: {
         files: {
-          'lib/awd.js': ['src/index.js']
+          'lib/libawd.js': ['.tmp/index.js']
         }
       },
       test: {
@@ -84,6 +98,23 @@ module.exports = function(grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    connect: {
+      options: {
+        keepalive : true,
+        port: 9000,
+        hostname: "0.0.0.0",
+        livereload: 35729
+      },
+      test: {
+        options: {
+          base: [
+            "test",
+            "."
+          ]
+        }
+      }
     }
 
 
@@ -94,6 +125,11 @@ module.exports = function(grunt) {
 
 
   // Default task.
-  grunt.registerTask('default', [ 'jshint', 'browserify', 'mochaTest:node']);
+  grunt.registerTask('default', [
+    'jshint',
+    'makeindex',
+    'browserify',
+    'mochaTest:test'
+  ]);
 
 };

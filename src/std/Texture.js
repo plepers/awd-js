@@ -1,11 +1,11 @@
 (function(){
 
   // var Consts = AWD.Consts;
-  var Properties  = require( "../types/properties" ),
-      AwdString   = require( "../types/awdString" ),
-      Consts      = require( "../consts" ),
-      UserAttr    = require( "../types/userAttr" ),
-      BaseElement  = require( '../BaseElement' );
+  var Properties  = require( "types/properties" ),
+      AwdString   = require( "types/awdString" ),
+      Consts      = require( "consts" ),
+      UserAttr    = require( "types/userAttr" ),
+      BaseElement = require( 'BaseElement' );
 
   var Texture = BaseElement.createStruct( Consts.TEXTURE, null,
 

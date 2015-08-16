@@ -1,11 +1,11 @@
 (function(){
 
-  var UserAttr    = require( "../types/userAttr" ),
-      AwdString   = require( "../types/awdString" ),
-      Vec3        = require( "../types/vec3" ),
-      Matrix4     = require( "../types/matrix" ),
-      Consts      = require( "../consts" ),
-      BaseElement  = require( '../BaseElement' );
+  var UserAttr    = require( "types/userAttr" ),
+      AwdString   = require( "types/awdString" ),
+      Vec3        = require( "types/vec3" ),
+      Matrix4     = require( "types/matrix" ),
+      Consts      = require( "consts" ),
+      BaseElement  = require( 'BaseElement' );
 
 
   var Container = BaseElement.createStruct( Consts.CONTAINER, null,
@@ -19,17 +19,12 @@
 
     read : function( reader ){
 
-
       var parent_id = reader.U32();
 
       this.matrix.read( this.awd, reader );
-
       this.name = AwdString.read( reader );
-
       this.pivot.parsePivot( this.awd, reader );
-
       this.extras.read( reader );
-
 
 
       // var match = this.awd.getAssetByID(parent_id, [AWD.Container, AWD.Light, AWD.Mesh, AWD.Entity, AWD.SegmentSet ] );
@@ -41,15 +36,12 @@
         if( match[1].addChild !== undefined ) {
           match[1].addChild( this );
         }
-
         this.parent = match[1];
       }
       else if (parent_id > 0)
       {
         throw new Error("Could not find a parent for this ObjectContainer3D id : "+parent_id);
       }
-
-
     },
 
 
@@ -60,9 +52,6 @@
       if( parent ) {
         parent_id = parent.chunk.id;
       }
-
-
-
 
       writer.U32( parent_id );
       this.matrix.write( this.awd, writer );

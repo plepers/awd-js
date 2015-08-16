@@ -1,11 +1,11 @@
 (function(){
   'use strict';
 
-  var Consts      = require( '../consts' ),
-      AwdString   = require( '../types/awdString' ),
-      UserAttr    = require( '../types/userAttr' ),
-      Properties  = require( '../types/properties' ),
-      BaseElement  = require( '../BaseElement' );
+  var Consts      = require( 'consts' ),
+      AwdString   = require( 'types/awdString' ),
+      UserAttr    = require( 'types/userAttr' ),
+      Properties  = require( 'types/properties' ),
+      BaseElement = require( 'BaseElement' );
 
 
   var Geometry = BaseElement.createStruct( Consts.GEOMETRY, null,
@@ -59,7 +59,7 @@
 
       for (var i = 0; i < num_subs; i++) {
 
-        subGeom =this.subGeomFactory();
+        subGeom = this.subGeomFactory();
         subGeom.read( this.awd, reader );
         subGeoms.push( subGeom );
 

@@ -1,4 +1,3 @@
-
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
       // AMD.
@@ -8,12 +7,16 @@
       module.exports = factory();
   } else {
       // Browser globals (root is window)
-      root.AWD = factory();
+      root.<%= moduleNs %> = factory();
   }
 }(this, function () {
 
-  var AWD = require( './awd' );
+  <%= tpl_imports %>
 
-  return AWD;
+  var module = {
+    <%= tpl_members %>
+  };
+
+  return module;
 
 }));

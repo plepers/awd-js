@@ -1,6 +1,6 @@
 
-var DefaultElement = require( './DefaultElement' ),
-    Namespace     = require( './std/Namespace' );
+var DefaultElement = require( 'DefaultElement' ),
+    Namespace     = require( 'std/Namespace' );
 
 
 var Extention = function( nsUri ){

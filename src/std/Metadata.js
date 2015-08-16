@@ -1,9 +1,9 @@
 (function(){
 
 
-  var Consts      = require( "../consts" ),
-      Properties  = require( "../types/properties" ),
-      BaseElement  = require( '../BaseElement' );
+  var Consts      = require( "consts" ),
+      Properties  = require( "types/properties" ),
+      BaseElement = require( 'BaseElement' );
 
   var DEFAULT = "unknown";
 

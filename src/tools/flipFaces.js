@@ -3,7 +3,7 @@
  * Date: 27/10/2014 14:46
  */
 
-var Consts = require( '../consts' );
+var Consts = require( 'consts' );
 
 module.exports = function( awd ){
 

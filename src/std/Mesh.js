@@ -1,10 +1,10 @@
 (function(){
 
   // var Consts = AWD.Consts;
-  var AwdString   = require( "../types/awdString" ),
-      Container   = require( "./Container" ),
-      Consts      = require( "../consts" ),
-      BaseElement  = require( '../BaseElement' );
+  var AwdString   = require( "types/awdString" ),
+      Container   = require( "std/Container" ),
+      Consts      = require( "consts" ),
+      BaseElement = require( 'BaseElement' );
 
 
   var Mesh = BaseElement.createStruct( Consts.MESH, null,

@@ -1,9 +1,9 @@
 (function(){
 
   // var Consts = AWD.Consts;
-  var AwdString   = require( "../types/awdString" ),
-      Consts      = require( "../consts" ),
-      BaseElement  = require( '../BaseElement' );
+  var AwdString   = require( "types/awdString" ),
+      Consts      = require( "consts" ),
+      BaseElement = require( 'BaseElement' );
 
   var Namespace = BaseElement.createStruct( Consts.NAMESPACE, null,
 

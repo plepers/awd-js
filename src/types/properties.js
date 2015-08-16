@@ -1,9 +1,9 @@
 (function () {
 
-  var Consts    = require( "../consts" ),
-      awdString = require( './awdString' ),
-      Writer    = require( "../bufferWriter" ),
-      Reader    = require( "../bufferReader" );
+  var Consts    = require( "consts" ),
+      awdString = require( 'types/awdString' ),
+      Writer    = require( "bufferWriter" ),
+      Reader    = require( "bufferReader" );
 
   var Properties = function( expected ) {
 

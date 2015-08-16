@@ -1,9 +1,9 @@
 'use strict';
 
-var Awd = require('../src/awd'),
-    fs =  require( 'fs' ),
+var Awd     = require('../src/awd'),
+    fs      =  require( 'fs' ),
     expect  = require('expect.js'),
-    butils = require( './utils/buffer_utils');
+    butils  = require( './utils/buffer_utils');
 
 
 describe( "parser test", function(){

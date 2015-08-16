@@ -1,11 +1,11 @@
 
-var Header        = require( './header' ),
-    Writer        = require( './writer' ),
-    Consts        = require( './consts' ),
-    Chunk         = require( './chunk' ),
-    BufferReader  = require( './bufferReader' ),
-    DefaultElement = require( './DefaultElement' ),
-    stdExt        = require( './std/stdExt' );
+var Header        = require( 'header' ),
+    Writer        = require( 'writer' ),
+    Consts        = require( 'consts' ),
+    Chunk         = require( 'chunk' ),
+    BufferReader  = require( 'bufferReader' ),
+    DefaultElement = require( 'DefaultElement' ),
+    stdExt        = require( 'std/stdExt' );
 
 
 var AWD = function(){

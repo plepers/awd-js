@@ -6,7 +6,7 @@
  */
 
 
-var Consts = require( '../consts' );
+var Consts = require( 'consts' );
 
 module.exports = function( awd ){
 

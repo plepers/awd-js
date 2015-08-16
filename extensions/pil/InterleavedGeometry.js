@@ -1,8 +1,10 @@
-var ExtInfos    = require( './extInfos' ),
-    BaseGeom    = require( '../std/Geometry' ),
-    BaseElement  = require( '../BaseElement' ),
-    BufferReader= require( '../bufferReader' ),
-    Consts      = require( '../consts' );
+var awdjs = require( 'libawd' );
+
+var ExtInfos     = awdjs.ExtInfos,
+    BaseGeom     = awdjs.BaseGeom,
+    BaseElement  = awdjs.BaseElement,
+    BufferReader = awdjs.BufferReader,
+    Consts       = awdjs.Consts;
 
 
 

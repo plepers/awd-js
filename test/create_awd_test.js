@@ -1,8 +1,8 @@
 'use strict';
 
 var Awd         = require('../src/awd'),
-    Container   = require('../src/std/Container'),
-    Consts      = require( '../src/consts'),
+    Container   = require('../src/std/Container' ),
+    Consts      = require('../src/consts' ),
     expect      = require('expect.js');
 
 

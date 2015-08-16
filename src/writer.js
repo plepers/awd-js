@@ -1,6 +1,6 @@
 (function (){
 
-  var BufferWriter  = require( "./bufferWriter" );
+  var BufferWriter  = require( "bufferWriter" );
 
 
   var ALLOC = 1024 * 256;

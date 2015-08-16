@@ -1,12 +1,12 @@
-var Extension     = require( '../extension' );
+var Extension     = require( 'extension' );
 
-var DefaultElement = require( '../DefaultElement' ),
-    Metadata      = require( './Metadata' ),
-    Container     = require( './Container' ),
-    Mesh          = require( './Mesh' ),
-    Texture       = require( './Texture' ),
-    Namespace     = require( './Namespace' ),
-    Geometry      = require( './Geometry' );
+var DefaultElement = require( 'DefaultElement' ),
+    Metadata      = require( 'std/Metadata' ),
+    Container     = require( 'std/Container' ),
+    Mesh          = require( 'std/Mesh' ),
+    Texture       = require( 'std/Texture' ),
+    Namespace     = require( 'std/Namespace' ),
+    Geometry      = require( 'std/Geometry' );
 
 
 var structs = [

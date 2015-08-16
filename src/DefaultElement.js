@@ -1,5 +1,5 @@
-var Consts      = require( "./consts" ),
-    BaseElement  = require( './BaseElement' );
+var Consts      = require( "consts" ),
+    BaseElement  = require( 'BaseElement' );
 
 var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
 
