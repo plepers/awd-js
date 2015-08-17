@@ -1,5 +1,7 @@
 'use strict';
 
+process.env["NODE_PATH"] = 'lib';
+
 module.exports = function(grunt) {
 
 
@@ -8,9 +10,13 @@ module.exports = function(grunt) {
   require( './utils/makeIndex')( grunt );
 
 
+
   // Project configuration.
   grunt.initConfig({
+    env: {
+        NODE_PATH: 'lib'
 
+    },
 
     nodeunit: {
       options:{
@@ -20,30 +26,77 @@ module.exports = function(grunt) {
     },
 
     makeindex : {
-      options : {
-        moduleNs : "awdjs",
-        output : '.tmp/index.js'
-      },
-      files: ['src/**/*.js']
-    },
-
-    browserify: {
-      options: {
-        browserifyOptions: {
-          paths:[ './lib', './src', './extensions' ]
+      libawd : {
+        options : {
+          moduleNs : "awdjs",
+          output : '.tmp/index.js',
+          basedir : './src'
+        },
+        files: {
+          src : ['src/**/*.js']
         }
       },
-      lib: {
+      extpil : {
+        options : {
+          moduleNs : "extpil",
+          output : '.tmp/extpil.js',
+          basedir : './extensions'
+        },
+        files: {
+          src : ['extensions/pil/**/*.js']
+        }
+      }
+    },
+
+
+    browserify: {
+      libawd: {
+        options: {
+          browserifyOptions: {
+            node : true,
+            paths:[ './src' ],
+            standalone : 'libawd',
+          }
+        },
         files: {
           'lib/libawd.js': ['.tmp/index.js']
         }
       },
+      extpil: {
+        options: {
+          external : ['libawd'],
+          browserifyOptions: {
+            node : true,
+            paths:[ './extensions' ],
+            standalone : 'extpil'
+            //bundleExternal : false
+          }
+        },
+        files: {
+          'lib/extpil.js': ['.tmp/extpil.js']
+        }
+      },
       test: {
+        options: {
+          browserifyOptions: {
+            node : true,
+            paths:[ './lib', './src', './extensions' ],
+            standalone : 'libtest'
+          }
+        },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
         }
       }
 
+    },
+
+    copy: {
+      nodelibs: {
+        files: [
+          {expand: true, src: ['lib/*'], dest: 'node_modules/', filter: 'isFile'},
+        ],
+      },
     },
 
     mocha : {
@@ -127,9 +180,16 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', [
     'jshint',
+
     'makeindex',
-    'browserify',
-    'mochaTest:test'
+
+    'browserify:libawd',
+    'browserify:extpil',
+
+    'copy:nodelibs',
+
+    'browserify:test',
+    'mochaTest:node'
   ]);
 
 };

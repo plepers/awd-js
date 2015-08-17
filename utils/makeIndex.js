@@ -24,6 +24,8 @@ module.exports = function(grunt) {
     var tpl_imports = [];
     var tpl_members = [];
 
+    console.log( this )
+
 
     // Iterate over all src-dest file pairs.
     this.files.forEach(function(f) {
@@ -31,10 +33,10 @@ module.exports = function(grunt) {
 
 
         var dir = path.dirname( filepath );
-        dir = path.relative( 'src/', dir );
+        dir = path.relative( options.basedir, dir );
 
         var moduleName = path.basename( filepath, '.js' );
-        var modulePath = path.posix.join( options.basedir, dir, moduleName );
+        var modulePath = path.posix.join( dir, moduleName );
         modulePath = modulePath.replace( /\\/g, '/' );
 
         if( moduleName != "index" ) {

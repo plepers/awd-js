@@ -1,8 +1,9 @@
 'use strict';
+var awdlib = require('../lib/libawd' );
 
-var Awd         = require('../src/awd'),
-    Container   = require('../src/std/Container' ),
-    Consts      = require('../src/consts' ),
+var Awd         = awdlib.awd,
+    Container   = awdlib.Container,
+    Consts      = awdlib.consts,
     expect      = require('expect.js');
 
 

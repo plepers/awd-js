@@ -1,7 +1,12 @@
 'use strict';
 
-var Awd     = require('../src/awd'),
-    Consts  = require('../src/consts' ),
+
+var awdlib = require('../lib/libawd' );
+
+
+
+var Awd = awdlib.awd,
+    Consts  = awdlib.consts,
     fs      = require( 'fs' ),
     expect  = require('expect.js'),
     butils  = require( './utils/buffer_utils');

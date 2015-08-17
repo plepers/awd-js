@@ -1,11 +1,11 @@
-var awdjs = require( 'libawd' );
+var awdjs = require( 'libawd' ),
 
-var ExtInfos     = awdjs.ExtInfos,
-    BaseGeom     = awdjs.BaseGeom,
+    BaseGeom     = awdjs.Geometry,
     BaseElement  = awdjs.BaseElement,
-    BufferReader = awdjs.BufferReader,
-    Consts       = awdjs.Consts;
+    BufferReader = awdjs.bufferReader,
+    Consts       = awdjs.consts;
 
+var ExtInfos     = require( 'pil/extInfos' );
 
 
 

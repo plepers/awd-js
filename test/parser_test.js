@@ -1,6 +1,8 @@
 'use strict';
 
-var Awd     = require('../src/awd'),
+var awdlib = require('../lib/libawd' );
+
+var Awd     = awdlib.awd,
     fs      =  require( 'fs' ),
     expect  = require('expect.js'),
     butils  = require( './utils/buffer_utils');
@@ -38,9 +40,11 @@ describe( "parser test", function(){
 
     var buf = awd.write();
 
-    fs.writeFile( './test/output/test.awd', butils.fromArrayBuffer( buf ), function (err) {
-      if (err) throw err;
-    } );
+    if( fs.writeFile ) {
+      fs.writeFile( './test/output/test.awd', butils.fromArrayBuffer( buf ), function (err) {
+        if (err) throw err;
+      } );
+    }
 
 
     var re = new Awd( );

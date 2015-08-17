@@ -1,8 +1,8 @@
 var awdjs = require( 'libawd' );
 
-var Extension           = awdjs.Extension,
+var Extension           = awdjs.extension,
     InterleavedGeometry = require( 'pil/InterleavedGeometry' ),
-    ExtInfos            = require( 'pil/ExtInfos' );
+    ExtInfos            = require( 'pil/extInfos' );
 
 
 var structs = [

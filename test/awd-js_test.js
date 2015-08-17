@@ -1,6 +1,7 @@
 'use strict';
 
-var Awd     = require('../src/awd'),
+var awdlib = require('../lib/libawd' ),
+    Awd     = awdlib.awd,
     expect  = require('expect.js');
 
 

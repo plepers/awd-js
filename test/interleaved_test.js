@@ -1,12 +1,16 @@
 'use strict';
 
-var Awd = require('../src/awd' ),
+
+var awdlib = require('../lib/libawd' );
+var extpil = require('../lib/extpil' );
+
+var Awd = awdlib.awd,
+    Consts = awdlib.consts,
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     butils = require( './utils/buffer_utils'),
-    Interleaved = require( '../extensions/pil/InterleavedGeometry'),
-    Ext = require( '../extensions/pil/ext'),
-    Consts = require('../src/consts' );
+    Interleaved = extpil.InterleavedGeometry,
+    Ext = extpil.ext;
 
 
 describe( "interleaved geometries test", function(){
@@ -38,7 +42,7 @@ describe( "interleaved geometries test", function(){
 
   it( "convert geom to interleaved", function(){
 
-
+    console.log( Consts )
     var geom = awd.getDatasByType( Consts.GEOMETRY )[0];
 
     var ig = new Interleaved();
@@ -67,12 +71,15 @@ describe( "interleaved geometries test", function(){
     awd.addElement( ig );
 
     var buf = awd.write();
-    if( !fs.existsSync( './test/output/' ) )
-      fs.mkdirSync( './test/output/' );
 
-    fs.writeFile( './test/output/test_interleaved.awd', butils.fromArrayBuffer( buf ), function (err) {
-      if (err) throw err;
-    } );
+    if( fs.writeFile ) {
+      if( !fs.existsSync( './test/output/' ) )
+        fs.mkdirSync( './test/output/' );
+
+      fs.writeFile( './test/output/test_interleaved.awd', butils.fromArrayBuffer( buf ), function (err) {
+        if (err) throw err;
+      } );
+    }
 
 
     var re = new Awd( );
