@@ -92,7 +92,8 @@ vert size
 
   },
 
-  write : function( writer ){
+  write : ( CONFIG_WRITE ) ?
+    function( writer ){
 
     var attribs = this.attributes,
         i, l;
@@ -131,7 +132,7 @@ vert size
     }
 
     writer.writeBlockSize( sptr );
-  },
+  } : undefined,
 
 
 

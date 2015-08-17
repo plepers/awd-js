@@ -91,6 +91,39 @@ module.exports = function(grunt) {
 
     },
 
+    uglify: {
+      libs_readonly: {
+        options: {
+          compress: {
+            global_defs: {
+              "CONFIG_WRITE": false
+            },
+            dead_code: true
+          },
+          beautify: true
+        },
+        files: {
+          'lib/libawd_readonly.min.js': ['lib/libawd.js'],
+          'lib/extpil_readonly.min.js': ['lib/extpil.js'],
+        }
+      },
+      libs: {
+        options: {
+          compress: {
+            global_defs: {
+              "CONFIG_WRITE": true
+            },
+            dead_code: true
+          },
+          beautify: true
+        },
+        files: {
+          'lib/libawd.js': ['lib/libawd.js'],
+          'lib/extpil.js': ['lib/extpil.js'],
+        }
+      },
+    },
+
     copy: {
       nodelibs: {
         files: [
@@ -182,9 +215,8 @@ module.exports = function(grunt) {
     'jshint',
 
     'makeindex',
-
-    'browserify:libawd',
-    'browserify:extpil',
+    'browserify',
+    'uglify',
 
     'copy:nodelibs',
 
