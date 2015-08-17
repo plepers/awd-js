@@ -42,7 +42,6 @@ describe( "interleaved geometries test", function(){
 
   it( "convert geom to interleaved", function(){
 
-    console.log( Consts )
     var geom = awd.getDatasByType( Consts.GEOMETRY )[0];
 
     var ig = new Interleaved();

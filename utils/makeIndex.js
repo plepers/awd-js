@@ -24,7 +24,6 @@ module.exports = function(grunt) {
     var tpl_imports = [];
     var tpl_members = [];
 
-    console.log( this )
 
 
     // Iterate over all src-dest file pairs.
