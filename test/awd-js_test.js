@@ -1,10 +1,10 @@
 'use strict';
 
-var awdlib = require('../lib/libawd' ),
-    Awd     = awdlib.awd,
+var libawd = require( 'libawd' ),
+    Awd     = libawd.awd,
     expect  = require('expect.js');
 
-
+console.log( libawd )
 
 describe( "sample test", function(){
 

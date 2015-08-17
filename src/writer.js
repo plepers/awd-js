@@ -5,7 +5,8 @@
 
   var ALLOC = 1024 * 256;
 
-  var Writer = {
+  var Writer = ( CONFIG_WRITE ) ?
+  {
 
     write : function( awd ){
 
@@ -59,7 +60,7 @@
     }
 
 
-  };
+  } : undefined;
 
 
 

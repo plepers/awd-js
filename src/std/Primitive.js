@@ -56,7 +56,8 @@
 
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
       AwdString.write( this.name, writer );
       if( ! this.geom ){
         throw new Error( "Primitive geom is not defined" );
@@ -94,7 +95,7 @@
 
       props.write( writer );
 
-    },
+    } : undefined,
 
 
     _createProps : function(){

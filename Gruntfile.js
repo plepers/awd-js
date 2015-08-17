@@ -9,6 +9,8 @@ module.exports = function(grunt) {
   require("load-grunt-tasks")(grunt);
   require( './utils/makeIndex')( grunt );
 
+  var genBrowserify = require ( './utils/gen-browserify');
+
 
 
   // Project configuration.
@@ -29,7 +31,7 @@ module.exports = function(grunt) {
       libawd : {
         options : {
           moduleNs : "awdjs",
-          output : '.tmp/index.js',
+          output : '.tmp/libawd.js',
           basedir : './src'
         },
         files: {
@@ -50,39 +52,32 @@ module.exports = function(grunt) {
 
 
     browserify: {
-      libawd: {
-        options: {
-          browserifyOptions: {
-            node : true,
-            paths:[ './src' ],
-            standalone : 'libawd',
-          }
-        },
-        files: {
-          'lib/libawd.js': ['.tmp/index.js']
-        }
-      },
-      extpil: {
-        options: {
-          external : ['libawd'],
-          browserifyOptions: {
-            node : true,
-            paths:[ './extensions' ],
-            standalone : 'extpil'
-            //bundleExternal : false
-          }
-        },
-        files: {
-          'lib/extpil.js': ['.tmp/extpil.js']
-        }
-      },
+
+      libawd: genBrowserify(
+        'libawd',
+        []
+      ),
+
+      extpil: genBrowserify(
+        'extpil',
+        ['libawd']
+      ),
+
+      libawd_test: genBrowserify(
+        'libawd',
+        [],
+        true
+      ),
+
+      extpil_test: genBrowserify(
+        'extpil',
+        ['libawd'],
+        true
+      ),
+
       test: {
         options: {
-          browserifyOptions: {
-            node : true,
-            paths:[ './lib', './src', './extensions' ],
-            standalone : 'libtest'
-          }
+          external : ['libawd', 'extpil'],
         },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
@@ -94,6 +89,9 @@ module.exports = function(grunt) {
     uglify: {
       libs_readonly: {
         options: {
+          mangle: {
+            except: ['require', 'module', 'exports']
+          },
           compress: {
             global_defs: {
               "CONFIG_WRITE": false
@@ -103,12 +101,15 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: {
-          'lib/libawd_readonly.min.js': ['lib/libawd.js'],
-          'lib/extpil_readonly.min.js': ['lib/extpil.js'],
+          'lib/libawd_readonly.min.js': ['tmp/libawd.js'],
+          'lib/extpil_readonly.min.js': ['tmp/extpil.js'],
         }
       },
-      libs: {
+      libs_min: {
         options: {
+          mangle: {
+            except: ['require', 'module', 'exports']
+          },
           compress: {
             global_defs: {
               "CONFIG_WRITE": true
@@ -118,8 +119,26 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: {
-          'lib/libawd.js': ['lib/libawd.js'],
-          'lib/extpil.js': ['lib/extpil.js'],
+          'lib/libawd.min.js': ['tmp/libawd.js'],
+          'lib/extpil.min.js': ['tmp/extpil.js'],
+        }
+      },
+      libs: {
+        options: {
+          mangle: {
+            except: ['require', 'module', 'exports']
+          },
+          compress: {
+            global_defs: {
+              "CONFIG_WRITE": true
+            },
+            dead_code: true
+          },
+          beautify: true
+        },
+        files: {
+          'lib/libawd.js': ['tmp/libawd.js'],
+          'lib/extpil.js': ['tmp/extpil.js'],
         }
       },
     },
@@ -127,7 +146,7 @@ module.exports = function(grunt) {
     copy: {
       nodelibs: {
         files: [
-          {expand: true, src: ['lib/*'], dest: 'node_modules/', filter: 'isFile'},
+          {expand: true, cwd: 'lib/', src: ['*'], dest: 'node_modules/', filter: 'isFile'},
         ],
       },
     },

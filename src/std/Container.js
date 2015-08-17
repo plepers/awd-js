@@ -45,7 +45,8 @@
     },
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
 
       var parent_id = 0;
       var parent = this.parent;
@@ -60,7 +61,7 @@
       this.pivot.writePivot( this.awd, writer );
       this.extras.write( writer );
 
-    },
+    }:undefined,
 
     getDependencies : function(){
       var parent = this.parent;

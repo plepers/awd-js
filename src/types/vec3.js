@@ -34,7 +34,8 @@
     },
 
 
-    writePivot : function( awd, writer ){
+    writePivot : ( CONFIG_WRITE ) ?
+    function( awd, writer ){
 
       var mtxType = awd.header.matrixNrType;
 
@@ -51,7 +52,7 @@
 
       props.write( writer );
 
-    }
+    }:undefined
 
   };
 

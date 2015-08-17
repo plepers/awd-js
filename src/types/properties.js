@@ -56,7 +56,8 @@
 
     },
 
-    write : function( writer )
+    write : ( CONFIG_WRITE ) ?
+    function( writer )
     {
 
       var sptr = writer.skipBlockSize();
@@ -76,9 +77,7 @@
 
       //writer.U32( 0 ); //todo don't know why
 
-
-
-    },
+    } : undefined,
 
     set : function(key, value)
     {
@@ -96,7 +95,8 @@
     },
 
 
-    writeAttrValue : function ( type, value, writer ) {
+    writeAttrValue : ( CONFIG_WRITE ) ?
+    function ( type, value, writer ) {
       var elem_len;
       var write_func;
 
@@ -165,7 +165,7 @@
         writer.U32( elem_len );
         write_func.call( writer, value );
       }
-    },
+    } : undefined,
 
 
     parseAttrValue : function ( type, len, reader ) {

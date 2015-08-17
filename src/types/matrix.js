@@ -14,10 +14,11 @@
     },
 
 
-    write : function( awd, writer )
+    write : ( CONFIG_WRITE ) ?
+    function( awd, writer )
     {
       this.writeMatrix43RawData( awd, writer, this.data );
-    },
+    }:undefined,
 
 
 
@@ -65,7 +66,8 @@
     },
 
 
-    writeMatrix43RawData : function( awd, writer, data )
+    writeMatrix43RawData : ( CONFIG_WRITE ) ?
+    function( awd, writer, data )
     {
 
       var mtx_raw = data;
@@ -84,7 +86,7 @@
       write_func.call( writer, mtx_raw[13] );
       write_func.call( writer, mtx_raw[14] );
 
-    }
+    }:undefined
 
   };
 

@@ -52,7 +52,8 @@
 
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
 
       AwdString.write( this.name, writer );
       writer.U8( this.type );
@@ -60,7 +61,7 @@
 
       this.props.write( writer );
 
-    },
+    }:undefined,
 
     toString : function(){
 

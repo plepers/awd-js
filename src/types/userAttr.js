@@ -104,7 +104,8 @@
 
     },
 
-    write : function( writer )
+    write : ( CONFIG_WRITE ) ?
+    function( writer )
     {
       var sptr = writer.skipBlockSize();
 
@@ -169,7 +170,7 @@
       }
 
       writer.writeBlockSize( sptr );
-    }
+    }:undefined
 
 
   };

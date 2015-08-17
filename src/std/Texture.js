@@ -48,7 +48,8 @@
 
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
 
       AwdString.write( this.name, writer );
       writer.U8( this.type );
@@ -65,7 +66,7 @@
       writer.writeBlockSize( sptr );
 
       this.extras.write( writer );
-    },
+    }:undefined,
 
     toString : function(){
 

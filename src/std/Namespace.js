@@ -22,10 +22,11 @@
 
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
       writer.U8( this.nsId );
       AwdString.write( this.uri, writer );
-    }
+    }:undefined
 
 
 

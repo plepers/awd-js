@@ -41,7 +41,8 @@
     },
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
       var props = new Properties({
         1:Consts.AWD_FIELD_UINT32,
         2:Consts.AWD_FIELD_STRING,
@@ -57,7 +58,7 @@
       props.set( 5, this.generatorVersion );
 
       props.write( writer );
-    },
+    }:undefined,
 
     toString : function(){
 

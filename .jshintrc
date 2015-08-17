@@ -13,5 +13,5 @@
 
   "node": true,
   "browser" : true,
-  "predef": [ "define" ]
+  "predef": [ "define", "CONFIG_WRITE" ]
 }

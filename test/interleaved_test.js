@@ -1,8 +1,8 @@
 'use strict';
 
 
-var awdlib = require('../lib/libawd' );
-var extpil = require('../lib/extpil' );
+var awdlib = require('libawd' );
+var extpil = require('extpil' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,

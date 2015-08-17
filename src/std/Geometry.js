@@ -70,7 +70,8 @@
     },
 
 
-    write : function( writer ) {
+    write : ( CONFIG_WRITE ) ?
+    function( writer ) {
       var subGeoms  = this.subGeoms,
           sgLen     = subGeoms.length;
 
@@ -98,7 +99,7 @@
       }
 
       this.extras.write( writer );
-    },
+    }:undefined,
 
 
     toString : function(){
