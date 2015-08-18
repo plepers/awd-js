@@ -47,6 +47,16 @@ module.exports = function(grunt) {
         files: {
           src : ['extensions/pil/**/*.js']
         }
+      },
+      extoptx : {
+        options : {
+          moduleNs : "extoptx",
+          output : '.tmp/extoptx.js',
+          basedir : './extensions'
+        },
+        files: {
+          src : ['extensions/optx/**/*.js']
+        }
       }
     },
 
@@ -58,15 +68,15 @@ module.exports = function(grunt) {
         []
       ),
 
-      extpil: genBrowserify(
-        'extpil',
-        ['libawd']
-      ),
-
       libawd_test: genBrowserify(
         'libawd',
         [],
         true
+      ),
+
+      extpil: genBrowserify(
+        'extpil',
+        ['libawd']
       ),
 
       extpil_test: genBrowserify(
@@ -75,9 +85,20 @@ module.exports = function(grunt) {
         true
       ),
 
+      extoptx: genBrowserify(
+        'extoptx',
+        ['libawd']
+      ),
+
+      extoptx_test: genBrowserify(
+        'extoptx',
+        ['libawd'],
+        true
+      ),
+
       test: {
         options: {
-          external : ['libawd', 'extpil'],
+          external : ['libawd', 'extpil', 'extoptx' ],
         },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
@@ -103,6 +124,7 @@ module.exports = function(grunt) {
         files: {
           'lib/libawd_readonly.min.js': ['tmp/libawd.js'],
           'lib/extpil_readonly.min.js': ['tmp/extpil.js'],
+          'lib/extoptx_readonly.min.js': ['tmp/extoptx.js'],
         }
       },
       libs_min: {
@@ -121,6 +143,7 @@ module.exports = function(grunt) {
         files: {
           'lib/libawd.min.js': ['tmp/libawd.js'],
           'lib/extpil.min.js': ['tmp/extpil.js'],
+          'lib/extoptx.min.js': ['tmp/extoptx.js'],
         }
       },
       libs: {
@@ -139,6 +162,7 @@ module.exports = function(grunt) {
         files: {
           'lib/libawd.js': ['tmp/libawd.js'],
           'lib/extpil.js': ['tmp/extpil.js'],
+          'lib/extoptx.js': ['tmp/extoptx.js'],
         }
       },
     },
@@ -159,7 +183,7 @@ module.exports = function(grunt) {
         src:['tmp/tests.js']
       },
       node:{
-        src:['test/*_test.js']
+        src:['test/**/*_test.js']
       }
     },
 
@@ -172,7 +196,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['src/**/*.js']
+        src: ['src/**/*.js', 'extensions/**/*.js']
       },
     },
 
