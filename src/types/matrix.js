@@ -2,7 +2,12 @@
 
 
   var Matrix3D = function() {
-    this.data = [];
+    this.data = [
+      1.0, 0.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 0.0, 1.0
+    ];
   };
 
   Matrix3D.prototype = {

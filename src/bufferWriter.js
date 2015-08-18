@@ -137,6 +137,16 @@
       this.ptr += length;
     },
 
+    writeSub : function( intArray ){
+      var length = intArray.byteLength;
+      //console.log( this.buffer.byteLength, this.ptr, length );
+      this._ensureSize( length );
+      //console.log( this.buffer.byteLength, this.ptr, length );
+      var output = new Int8Array( this.buffer, this.ptr, length );
+      output.set( intArray );
+      this.ptr += length;
+    },
+
     writeUTF : function( string ) {
       this._ensureSize( string.length * 4 + 2 );
       this.U16( string.length );

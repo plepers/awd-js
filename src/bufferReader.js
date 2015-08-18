@@ -82,6 +82,12 @@
       this.ptr += length;
     },
 
+    subArray : function( length ){
+      var res =  new Int8Array( this.buffer, this.ptr, length );
+      this.ptr += length;
+      return res;
+    },
+
     readUTFBytes : function ( len ) {
 
       // TODO: Use native implementations if/when available
