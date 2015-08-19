@@ -80,10 +80,10 @@ describe( "parser test", function(){
 
           var awdBuffer = butils.toArrayBuffer( data );
           var awd = new Awd( );
-          console.log( "parse", file );
+          //console.log( "parse", file );
           awd.parse( awdBuffer );
           numFiles--;
-          console.log( "read ", file, awd._elements.length );
+          //console.log( "read ", file, awd._elements.length );
           if( numFiles === 0 ) {
             done();
           }

@@ -98,7 +98,6 @@ describe( "optx Mesh test", function(){
 
     expect( mesh.name ).to.be('meshA')
 
-    console.log( mesh.getCullBackFace() )
     expect( mesh.getCullBackFace() ).to.be( false );
     expect( mesh.getCastShadows() ).to.be( true );
 

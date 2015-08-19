@@ -95,6 +95,14 @@ var CompositeTexture = BaseElement.createStruct( ExtInfos.OPTX_COMPOSITE_TEXTURE
 
   },
 
+  resolveTexture: function( id ){
+    var match = this.awd.getAssetByID( id, [ Consts.MODEL_TEXTURE ] );
+    if ( match[0] ) {
+      return match[1];
+    }
+    throw new Error("Could not find referenced Texture for this CompositeTexture, uid : "+id);
+  },
+
 
   read : function( reader ){
 
@@ -107,7 +115,7 @@ var CompositeTexture = BaseElement.createStruct( ExtInfos.OPTX_COMPOSITE_TEXTURE
       this.components.push({
         out : decodeSwizzle( reader.U8() ),
         comps : decodeSwizzle( reader.U8() ),
-        tex : reader.U32()
+        tex : this.resolveTexture( reader.U32() )
       });
     }
 
@@ -115,6 +123,11 @@ var CompositeTexture = BaseElement.createStruct( ExtInfos.OPTX_COMPOSITE_TEXTURE
 
   },
 
+  assertValid : function(){
+    if( this.components == null ){
+      throw new Error("CompositeTexture.write -  components are not defined");
+    }
+  },
 
 
   write : ( CONFIG_WRITE ) ?
@@ -122,22 +135,16 @@ var CompositeTexture = BaseElement.createStruct( ExtInfos.OPTX_COMPOSITE_TEXTURE
 
     AwdString.write( this.name, writer );
 
-    encodeSwizzle('rgb');
-    var isEmbed = this.embedData !== null;
+    this.assertValid();
 
-    var flags = +(isEmbed);
+    var numComps = this.components.length;
+    writer.U8( numComps );
 
-    writer.U8( flags );
-
-    if( isEmbed ){
-      writer.U32(   this.embedData.length );
-      writer.writeSub( this.embedData );
-    }
-    else if( this.uri !== null ) {
-      AwdString.write( this.uri, writer );
-    }
-    else {
-      throw new Error( 'Texture have no embedData nor uri');
+    for( var i = 0; i < numComps; i++){
+      var comp = this.components[i];
+      writer.U8( encodeSwizzle( comp.out ) );
+      writer.U8( encodeSwizzle( comp.comps ) );
+      writer.U32( comp.tex.chunk.id );
     }
 
     this.extras.write( writer );
@@ -148,12 +155,15 @@ var CompositeTexture = BaseElement.createStruct( ExtInfos.OPTX_COMPOSITE_TEXTURE
 
 
   getDependencies : function(){
-    return null;
+    this.assertValid();
+    return this.components.map( function( comp ){
+      return comp.tex;
+    });
   },
 
 
   toString : function(){
-    return "[Texture " + this.name + "]";
+    return "[CompositeTexture " + this.name + "]";
   }
 
 

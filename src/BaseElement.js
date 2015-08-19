@@ -13,6 +13,7 @@
     },
 
     init : function( ){
+      this.injectDeps = false;
       this.model = Consts.MODEL_GENERIC;
     },
 
@@ -38,8 +39,17 @@
 
       if( dependencies !== null ) {
         for (var i = 0, l = dependencies.length; i < l; i++) {
-          dependencies[i].prepareAndAdd( awd, list );
+          var dep = dependencies[i];
+          dep.prepareAndAdd( awd, list );
+
+          if( this.injectDeps && awd._elements.indexOf( dep ) === -1 ){
+            awd.addElement( dep );
+          }
         }
+      }
+
+      if( this.injectDeps ){
+
       }
 
       this.id = list.length + 1;
@@ -80,6 +90,7 @@
       this.type = type;
       this.nsUri = nsUri;
       this.ns = 0;
+      this.injectDeps = true;
       this.init();
       this.chunk = null;
       this.id = -1;

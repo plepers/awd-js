@@ -6,6 +6,7 @@ var Extension          = awdjs.extension,
     Material           = require( 'optx/Material' ),
     Texture            = require( 'optx/Texture' ),
     CompositeTexture   = require( 'optx/CompositeTexture' ),
+    Light              = require( 'optx/Light' ),
     ExtInfos           = require( 'optx/extInfos' );
 
 
@@ -14,7 +15,8 @@ var structs = [
   Mesh,
   Material,
   Texture,
-  CompositeTexture
+  CompositeTexture,
+  Light
 ];
 
 
