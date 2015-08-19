@@ -1,16 +1,20 @@
 var awdjs = require( 'libawd' );
 
-var Extension     = awdjs.extension,
-    Geometry      = require( 'optx/Geometry' ),
-    Mesh          = require( 'optx/Mesh' ),
-    Material          = require( 'optx/Material' ),
-    ExtInfos      = require( 'optx/extInfos' );
+var Extension          = awdjs.extension,
+    Geometry           = require( 'optx/Geometry' ),
+    Mesh               = require( 'optx/Mesh' ),
+    Material           = require( 'optx/Material' ),
+    Texture            = require( 'optx/Texture' ),
+    CompositeTexture   = require( 'optx/CompositeTexture' ),
+    ExtInfos           = require( 'optx/extInfos' );
 
 
 var structs = [
   Geometry,
   Mesh,
-  Material
+  Material,
+  Texture,
+  CompositeTexture
 ];
 
 

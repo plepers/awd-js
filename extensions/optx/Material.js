@@ -23,8 +23,8 @@ var kP_blend              =  1,
     kP_anisoStrength      = 10,
     kP_anisoIntegral      = 11,
     kP_anisoTangent       = 12,
-    kP_skin               = 13,
-    kP_subdermisColor     = 14,
+    kP_subsurface         = 13,
+    kP_subsurfaceColor    = 14,
     kP_transColor         = 15,
     kP_fresnelColor       = 16,
     kP_fresnelOcc         = 17,
@@ -48,8 +48,8 @@ pStruct[ kP_aniso             ] = Consts.AWD_FIELD_BOOL;
 pStruct[ kP_anisoStrength     ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_anisoIntegral     ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_anisoTangent      ] = Consts.AWD_FIELD_FLOAT32;
-pStruct[ kP_skin              ] = Consts.AWD_FIELD_BOOL;
-pStruct[ kP_subdermisColor    ] = Consts.AWD_FIELD_FLOAT32;
+pStruct[ kP_subsurface        ] = Consts.AWD_FIELD_BOOL;
+pStruct[ kP_subsurfaceColor   ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_transColor        ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_fresnelColor      ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_fresnelOcc        ] = Consts.AWD_FIELD_FLOAT32;
@@ -103,9 +103,9 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     this.anisoTangent       = [1, 0, 0];// ( vec3 )
 
 
-    // skin
-    this.skin               = false;// ( bool )
-    this.subdermisColor     = [1, 1, 1]           ;// ( vec3 )
+    // subsurface
+    this.subsurface         = false;// ( bool )
+    this.subsurfaceColor    = [1, 1, 1]           ;// ( vec3 )
     this.transColor         = [1, 0, 0, 0.5]      ;// ( vec4 )
     this.fresnelColor       = [0.2, 0.2, 0.2, 0.5];// ( vec4 )
     this.fresnelOcc         = 1                   ;// ( float )
@@ -174,11 +174,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
       props.set( kP_anisoStrength   , this.anisoStrength     );
       props.set( kP_anisoIntegral   , this.anisoIntegral     );
       props.set( kP_anisoTangent    , this.anisoTangent      );
-      props.set( kP_skin            , this.skin              );
+      props.set( kP_subsurface            , this.subsurface              );
     }
 
-    if( this.skin ) {
-      props.set( kP_subdermisColor  , this.subdermisColor    );
+    if( this.subsurface ) {
+      props.set( kP_subsurfaceColor , this.subsurfaceColor   );
       props.set( kP_transColor      , this.transColor        );
       props.set( kP_fresnelColor    , this.fresnelColor      );
       props.set( kP_fresnelOcc      , this.fresnelOcc        );
@@ -195,33 +195,33 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
   readProps : function( props ) {
 
 
-    this.blend              = props.get( kP_blend,            this.blend              );
+    this.blend              =   props.get( kP_blend,            this.blend              );
 
-    this.alphaThreshold     =  props.get( kP_alphaThreshold  , this.alphaThreshold    );
-    this.dithering          = (props.get( kP_dithering       , this.dithering         ) & 1) === 1;
-    this.fresnel            =  props.get( kP_fresnel         , this.fresnel           );
-    this.horizonOcclude     =  props.get( kP_horizonOcclude  , this.horizonOcclude    );
+    this.alphaThreshold     =   props.get( kP_alphaThreshold  , this.alphaThreshold    );
+    this.dithering          = !!props.get( kP_dithering       , this.dithering         );
+    this.fresnel            =   props.get( kP_fresnel         , this.fresnel           );
+    this.horizonOcclude     =   props.get( kP_horizonOcclude  , this.horizonOcclude    );
 
-    this.vertexColor        = (props.get( kP_vertexColor     , this.vertexColor       ) & 1) === 1;
-    this.vertexColorAlpha   = (props.get( kP_vertexColorAlpha, this.vertexColorAlpha  ) & 1) === 1;
-    this.vertexColorSRGB    = (props.get( kP_vertexColorSRGB , this.vertexColorSRGB   ) & 1) === 1;
-    this.aniso              = (props.get( kP_aniso           , this.aniso             ) & 1) === 1;
+    this.vertexColor        = !!props.get( kP_vertexColor     , this.vertexColor       );
+    this.vertexColorAlpha   = !!props.get( kP_vertexColorAlpha, this.vertexColorAlpha  );
+    this.vertexColorSRGB    = !!props.get( kP_vertexColorSRGB , this.vertexColorSRGB   );
+    this.aniso              = !!props.get( kP_aniso           , this.aniso             );
 
-    this.anisoStrength      =  props.get( kP_anisoStrength   , this.anisoStrength     );
-    this.anisoIntegral      =  props.get( kP_anisoIntegral   , this.anisoIntegral     );
-    this.anisoTangent       =  props.get( kP_anisoTangent    , this.anisoTangent      );
-    this.skin               = (props.get( kP_skin            , this.skin              ) & 1) === 1;
+    this.anisoStrength      =   props.get( kP_anisoStrength   , this.anisoStrength     );
+    this.anisoIntegral      =   props.get( kP_anisoIntegral   , this.anisoIntegral     );
+    this.anisoTangent       =   props.get( kP_anisoTangent    , this.anisoTangent      );
+    this.subsurface         = !!props.get( kP_subsurface      , this.subsurface        );
 
-    this.subdermisColor     =  props.get( kP_subdermisColor  , this.subdermisColor    );
-    this.transColor         =  props.get( kP_transColor      , this.transColor        );
-    this.fresnelColor       =  props.get( kP_fresnelColor    , this.fresnelColor      );
-    this.fresnelOcc         =  props.get( kP_fresnelOcc      , this.fresnelOcc        );
-    this.fresnelGlossMask   =  props.get( kP_fresnelGlossMask, this.fresnelGlossMask  );
-    this.transSky           =  props.get( kP_transSky        , this.transSky          );
-    this.shadowBlur         =  props.get( kP_shadowBlur      , this.shadowBlur        );
-    this.normalSmooth       =  props.get( kP_normalSmooth    , this.normalSmooth      );
+    this.subsurfaceColor    =   props.get( kP_subsurfaceColor , this.subsurfaceColor   );
+    this.transColor         =   props.get( kP_transColor      , this.transColor        );
+    this.fresnelColor       =   props.get( kP_fresnelColor    , this.fresnelColor      );
+    this.fresnelOcc         =   props.get( kP_fresnelOcc      , this.fresnelOcc        );
+    this.fresnelGlossMask   =   props.get( kP_fresnelGlossMask, this.fresnelGlossMask  );
+    this.transSky           =   props.get( kP_transSky        , this.transSky          );
+    this.shadowBlur         =   props.get( kP_shadowBlur      , this.shadowBlur        );
+    this.normalSmooth       =   props.get( kP_normalSmooth    , this.normalSmooth      );
 
-    this.unlit              = (props.get( kP_unlit           , this.unlit             ) & 1) === 1;
+    this.unlit              = !!props.get( kP_unlit           , this.unlit             );
 
   },
 

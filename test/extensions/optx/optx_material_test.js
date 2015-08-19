@@ -42,8 +42,8 @@ function createOptxMaterialA(){
   mat.anisoIntegral    = .4;
   mat.anisoTangent     = [0, 1, 0];
 
-  mat.skin             = true;
-  mat.subdermisColor   = [.3, .2, .2]        ;
+  mat.subsurface       = true;
+  mat.subsurfaceColor  = [.3, .2, .2]        ;
   mat.transColor       = [1, 0, 0, 0.5]      ;
   mat.fresnelColor     = [0.2, 0.2, 0.2, 0.5];
   mat.fresnelOcc       = .9                   ;
@@ -69,6 +69,8 @@ function compareMats( matA, matB ) {
       expect( Math.abs(a1[i] - a2[i]) < 0.00001 ).to.be.equal( true );
     }
   }
+
+
   numEqals( matA.alphaThreshold   ,         matB.alphaThreshold    );
   numEqals( matA.horizonOcclude   ,         matB.horizonOcclude    );
   numEqals( matA.anisoStrength    ,         matB.anisoStrength     );
@@ -94,7 +96,7 @@ function compareMats( matA, matB ) {
   arrEqals( matA.anisoTangent     ,         matB.anisoTangent      )
   arrEqals( matA.transColor       ,         matB.transColor        )
   arrEqals( matA.fresnelColor     ,         matB.fresnelColor      )
-  arrEqals( matA.subdermisColor   ,         matB.subdermisColor    )
+  arrEqals( matA.subsurfaceColor  ,         matB.subsurfaceColor   )
 
 
 
