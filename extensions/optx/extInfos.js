@@ -7,5 +7,7 @@ module.exports = {
   OPTX_MATERIAL           : 3,
   OPTX_TEXTURE            : 4,
   OPTX_COMPOSITE_TEXTURE  : 5,
-  OPTX_LIGHT              : 6
+  OPTX_LIGHT              : 6,
+  OPTX_ENV                : 7,
+  OPTX_SKY                : 8
 };

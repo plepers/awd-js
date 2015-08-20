@@ -11,10 +11,16 @@ var Awd = awdlib.awd,
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Material = optx.Material,
+    Texture = optx.Texture,
     Ext = optx.ext;
 
 
-
+function makeTexture( name ){
+  var tex = new Texture()
+  tex.name = name;
+  tex.uri = 'http://test.com/tex/compo2.jpg';
+  return tex;
+}
 
 function createOptxMaterialDefault(){
   var mat = new Material()
@@ -52,6 +58,13 @@ function createOptxMaterialA(){
   mat.shadowBlur       = 0.4                 ;
   mat.normalSmooth     = 0.4                 ;
   mat.unlit            = false;
+
+
+  mat.textures.albedo       = makeTexture( 'albedo' );
+  mat.textures.reflectivity = makeTexture( 'reflectivity' );
+  mat.textures.gloss        = makeTexture( 'gloss' );
+
+  mat.colors.subsurface = 0xFF501010;
 
   return mat;
 }
@@ -190,6 +203,16 @@ describe( "optx material test", function(){
     var nmat = materials[0];
 
     compareMats( nmat, mat );
+
+    expect( nmat.textures.albedo ).to.be.ok();
+    expect( nmat.textures.albedo.name ).to.be.equal( 'albedo' );
+    expect( nmat.textures.reflectivity ).to.be.ok();
+    expect( nmat.textures.reflectivity.name ).to.be.equal( 'reflectivity' );
+    expect( nmat.textures.gloss ).to.be.ok();
+    expect( nmat.textures.gloss.name ).to.be.equal( 'gloss' );
+
+    expect( nmat.textures.subsurface ).not.to.be.ok();
+    nmat.colors.subsurface = 0xFF501010;
 
 
 

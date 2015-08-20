@@ -79,7 +79,16 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
       reflectivity : null,
       gloss        : null,
       normal       : null,
-      subdermisTex : null
+      subsurface   : null
+    };
+
+    this.colors = {
+      albedo       : 0xFF000000,
+      alpha        : 0xFF000000,
+      reflectivity : 0xFF000000,
+      gloss        : 0xFF000000,
+      normal       : 0xFF000000,
+      subsurface   : 0xFF000000
     };
 
 
@@ -126,14 +135,27 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
     this.name       = AwdString.read( reader );
 
+    this.textures.albedo       = this.readTexture( reader );
+    this.textures.alpha        = this.readTexture( reader );
+    this.textures.reflectivity = this.readTexture( reader );
+    this.textures.gloss        = this.readTexture( reader );
+    this.textures.normal       = this.readTexture( reader );
+    this.textures.subsurface   = this.readTexture( reader );
+
+    this.colors.albedo         = reader.U32();
+    this.colors.alpha          = reader.U32();
+    this.colors.reflectivity   = reader.U32();
+    this.colors.gloss          = reader.U32();
+    this.colors.normal         = reader.U32();
+    this.colors.subsurface     = reader.U32();
+
+
     var props = new Properties( pStruct );
     props.read( reader );
     this.readProps( props );
 
 
-
     this.extras.read( reader );
-
 
   },
 
@@ -144,6 +166,22 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
     AwdString.write( this.name, writer );
 
+
+    this.writeTexture( this.textures.albedo       , writer );
+    this.writeTexture( this.textures.alpha        , writer );
+    this.writeTexture( this.textures.reflectivity , writer );
+    this.writeTexture( this.textures.gloss        , writer );
+    this.writeTexture( this.textures.normal       , writer );
+    this.writeTexture( this.textures.subsurface   , writer );
+
+
+    writer.U32( this.colors.albedo       );
+    writer.U32( this.colors.alpha        );
+    writer.U32( this.colors.reflectivity );
+    writer.U32( this.colors.gloss        );
+    writer.U32( this.colors.normal       );
+    writer.U32( this.colors.subsurface   );
+
     var props = new Properties( pStruct );
     this.setupProps( props );
     props.write( writer );
@@ -151,6 +189,35 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     this.extras.write( writer );
 
   }:undefined,
+
+
+
+  readTexture : function( reader ){
+
+    var texId = reader.U32();
+    if( texId > 0 ){
+      var match = this.awd.getAssetByID( texId, [ Consts.MODEL_TEXTURE ] );
+      if ( match[0] ) {
+        return match[1];
+      }
+      throw new Error("Could not find Texture for this Material, uid : " + texId);
+    }
+    return null;
+
+  },
+
+  writeTexture : function( tex, writer ){
+    if( tex ) {
+      writer.U32( tex.chunk.id );
+    } else {
+      writer.U32( 0 );
+    }
+  },
+
+
+
+
+
 
 
   setupProps : function( props ) {
@@ -230,27 +297,30 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
 
   getDependencies : function(){
-    return null;
-    // var res = [];
+    var res = [];
+    var texs = this.textures;
 
-    // var sublen = this.submeshes.length;
+    if( texs.albedo       ){
+      res.push( texs.albedo       );
+    }
+    if( texs.alpha        ){
+      res.push( texs.alpha        );
+    }
+    if( texs.reflectivity ){
+      res.push( texs.reflectivity );
+    }
+    if( texs.gloss        ){
+      res.push( texs.gloss        );
+    }
+    if( texs.normal       ){
+      res.push( texs.normal       );
+    }
+    if( texs.subsurface   ){
+      res.push( texs.subsurface   );
+    }
 
-    // for (var i = 0; i < sublen; i++) {
-    //   var mat = this.submeshes[i].material;
-    //   if( mat ) {
-    //     res.push( mat );
-    //   }
-    // }
 
-    // if( this.parent ) {
-    //   res.push( this.parent );
-    // }
-
-    // if( this.geometry ) {
-    //   res.push( this.geometry );
-    // }
-
-    // return res;
+    return res;
   },
 
 
