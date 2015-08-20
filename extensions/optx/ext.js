@@ -9,6 +9,7 @@ var Extension          = awdjs.extension,
     Light              = require( 'optx/Light' ),
     Env                = require( 'optx/Env' ),
     Sky                = require( 'optx/Sky' ),
+    Camera             = require( 'optx/Camera' ),
     ExtInfos           = require( 'optx/extInfos' );
 
 
@@ -20,7 +21,8 @@ var structs = [
   CompositeTexture,
   Light,
   Env,
-  Sky
+  Sky,
+  Camera
 ];
 
 

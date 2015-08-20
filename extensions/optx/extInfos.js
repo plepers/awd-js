@@ -9,5 +9,6 @@ module.exports = {
   OPTX_COMPOSITE_TEXTURE  : 5,
   OPTX_LIGHT              : 6,
   OPTX_ENV                : 7,
-  OPTX_SKY                : 8
+  OPTX_SKY                : 8,
+  OPTX_CAMERA             : 9
 };

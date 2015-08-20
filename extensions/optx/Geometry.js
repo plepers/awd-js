@@ -75,6 +75,7 @@ var Geometry = BaseElement.createStruct( ExtInfos.OPTX_GEOM, ExtInfos.URI,
     var indexBuffers  = this.indexBuffers;
     var i, buffer;
 
+
     for (i = 0; i < num_vbuff; i++) {
 
       buffer = new VertexBuffer();
@@ -115,11 +116,13 @@ var Geometry = BaseElement.createStruct( ExtInfos.OPTX_GEOM, ExtInfos.URI,
       vertexBuffers[i].write( this.awd, writer );
     }
 
+
     for (i = 0; i < indexBuffers.length; i++) {
       indexBuffers[i].write( this.awd, writer );
     }
 
     this.extras.write( writer );
+
 
   }:undefined,
 
@@ -213,7 +216,7 @@ IndexBuffer.prototype = {
   },
 
   write : function( awd, writer ){
-    writer.U32(   this.data.length );
+    writer.U32(   this.data.byteLength );
     writer.U16(   this.glType );
     writer.U8(    this.usage );
     writer.writeSub( this.data );
