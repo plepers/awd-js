@@ -215,9 +215,6 @@ describe( "optx material test", function(){
     nmat.colors.subsurface = 0xFF501010;
 
 
-
-
-
   });
 
 

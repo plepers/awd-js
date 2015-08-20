@@ -206,13 +206,13 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
   },
 
-  writeTexture : function( tex, writer ){
+  writeTexture : ( CONFIG_WRITE ) ? function( tex, writer ){
     if( tex ) {
       writer.U32( tex.chunk.id );
     } else {
       writer.U32( 0 );
     }
-  },
+  }:undefined,
 
 
 
@@ -220,7 +220,7 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
 
 
-  setupProps : function( props ) {
+  setupProps : ( CONFIG_WRITE ) ? function( props ) {
 
 
     props.set( kP_blend, this.blend );
@@ -257,7 +257,7 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
     props.set( kP_unlit             , this.unlit             );
 
-  },
+  } : undefined,
 
   readProps : function( props ) {
 
@@ -296,7 +296,7 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
 
 
-  getDependencies : function(){
+  getDependencies : ( CONFIG_WRITE ) ? function(){
     var res = [];
     var texs = this.textures;
 
@@ -321,7 +321,7 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
 
     return res;
-  },
+  } : undefined,
 
 
   toString : function(){
