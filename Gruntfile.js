@@ -128,33 +128,13 @@ module.exports = function(grunt) {
             },
             dead_code: true
           },
-          beautify: false
+          beautify: true
         },
         files: {
-          'lib/libawd_readonly.min.js': ['tmp/libawd.js'],
-          'lib/libawd_std_readonly.min.js': ['tmp/libawd_std.js'],
-          'lib/libawd_pil_readonly.min.js': ['tmp/libawd_pil.js'],
-          'lib/libawd_optx_readonly.min.js': ['tmp/libawd_optx.js'],
-        }
-      },
-      libs_min: {
-        options: {
-          mangle: {
-            except: ['require', 'module', 'exports']
-          },
-          compress: {
-            global_defs: {
-              "CONFIG_WRITE": true
-            },
-            dead_code: true
-          },
-          beautify: false
-        },
-        files: {
-          'lib/libawd.min.js': ['tmp/libawd.js'],
-          'lib/libawd_std.min.js': ['tmp/libawd_std.js'],
-          'lib/libawd_pil.min.js': ['tmp/libawd_pil.js'],
-          'lib/libawd_optx.min.js': ['tmp/libawd_optx.js'],
+          'lib/libawd_readonly.js': ['tmp/libawd.js'],
+          'lib/libawd_std_readonly.js': ['tmp/libawd_std.js'],
+          'lib/libawd_pil_readonly.js': ['tmp/libawd_pil.js'],
+          'lib/libawd_optx_readonly.js': ['tmp/libawd_optx.js'],
         }
       },
       libs: {
