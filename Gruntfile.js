@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     return {
       options : {
         moduleNs : ext,
-        output : '.tmp/libawd_'+ext+'.js',
+        output : '.tmp/awdlib_'+ext+'.js',
         basedir : './extensions'
       },
       files: {
@@ -43,10 +43,10 @@ module.exports = function(grunt) {
     },
 
     makeindex : {
-      libawd : {
+      awdlib : {
         options : {
           moduleNs : "awdjs",
-          output : '.tmp/libawd.js',
+          output : '.tmp/awdlib.js',
           basedir : './src'
         },
         files: {
@@ -61,53 +61,53 @@ module.exports = function(grunt) {
 
     browserify: {
 
-      libawd: genBrowserify(
-        'libawd',
+      awdlib: genBrowserify(
+        'awdlib',
         []
       ),
 
-      libawd_test: genBrowserify(
-        'libawd',
+      awdlib_test: genBrowserify(
+        'awdlib',
         [],
         true
       ),
 
       extstd: genBrowserify(
-        'libawd_std',
-        ['libawd']
+        'awdlib_std',
+        ['awdlib']
       ),
 
       extstd_test: genBrowserify(
-        'libawd_std',
-        ['libawd'],
+        'awdlib_std',
+        ['awdlib'],
         true
       ),
 
       extpil: genBrowserify(
-        'libawd_pil',
-        ['libawd']
+        'awdlib_pil',
+        ['awdlib']
       ),
 
       extpil_test: genBrowserify(
-        'libawd_pil',
-        ['libawd'],
+        'awdlib_pil',
+        ['awdlib'],
         true
       ),
 
       extoptx: genBrowserify(
-        'libawd_optx',
-        ['libawd']
+        'awdlib_optx',
+        ['awdlib']
       ),
 
       extoptx_test: genBrowserify(
-        'libawd_optx',
-        ['libawd'],
+        'awdlib_optx',
+        ['awdlib'],
         true
       ),
 
       test: {
         options: {
-          external : ['libawd', 'libawd_std', 'libawd_pil', 'libawd_optx' ],
+          external : ['awdlib', 'awdlib_std', 'awdlib_pil', 'awdlib_optx' ],
         },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
@@ -131,10 +131,10 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: {
-          'lib/libawd_readonly.js': ['tmp/libawd.js'],
-          'lib/libawd_std_readonly.js': ['tmp/libawd_std.js'],
-          'lib/libawd_pil_readonly.js': ['tmp/libawd_pil.js'],
-          'lib/libawd_optx_readonly.js': ['tmp/libawd_optx.js'],
+          'lib/awdlib_readonly.js': ['tmp/awdlib.js'],
+          'lib/awdlib_std_readonly.js': ['tmp/awdlib_std.js'],
+          'lib/awdlib_pil_readonly.js': ['tmp/awdlib_pil.js'],
+          'lib/awdlib_optx_readonly.js': ['tmp/awdlib_optx.js'],
         }
       },
       libs: {
@@ -151,10 +151,10 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: {
-          'lib/libawd.js': ['tmp/libawd.js'],
-          'lib/libawd_std.js': ['tmp/libawd_std.js'],
-          'lib/libawd_pil.js': ['tmp/libawd_pil.js'],
-          'lib/libawd_optx.js': ['tmp/libawd_optx.js'],
+          'lib/awdlib.js': ['tmp/awdlib.js'],
+          'lib/awdlib_std.js': ['tmp/awdlib_std.js'],
+          'lib/awdlib_pil.js': ['tmp/awdlib_pil.js'],
+          'lib/awdlib_optx.js': ['tmp/awdlib_optx.js'],
         }
       },
     },

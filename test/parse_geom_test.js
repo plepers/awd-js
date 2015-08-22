@@ -1,8 +1,8 @@
 'use strict';
 
 
-var awdlib = require('libawd' );
-var stdext = require('libawd_std' );
+var awdlib = require('awdlib' );
+var stdext = require('awdlib_std' );
 
 
 

@@ -20,7 +20,7 @@
       "url": "https://github.com/plepers/awd-js/blob/master/LICENSE-WTFPL"
     }
   ],
-  "main": "lib/libawd.js",
+  "main": "lib/awdlib.js",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -50,7 +50,7 @@
     "karma-sauce-launcher": "^0.2.14",
     "load-grunt-tasks": "^0.6.0"
   },
-  "keywords": [ "awd","optx", "3d"],
+  "keywords": [ "awd", "optx", "3d"],
   "browser": {
     "fs": "./test/utils/fs-browser.js"
   },

@@ -1,6 +1,6 @@
 'use strict';
 
-var awdlib = require('libawd' );
+var awdlib = require('awdlib' );
 
 var Awd     = awdlib.awd,
     fs      =  require( 'fs' ),

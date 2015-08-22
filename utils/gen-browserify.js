@@ -1,39 +1,4 @@
-//       libawd: {
-//         options: {
-//           alias: {
-//             'libawd': '.tmp/libawd.js'
-//           },
-//           browserifyOptions: {
-//             node : true,
-//             paths:[ './src' ],
-//             standalone : 'libawd'
-//           }
-//         },
-//         files: {
-//           'lib/libawd.js': []
-//         }
-//       },
-//       extpil: {
-//         options: {
-//           external : ['libawd'],
-//           alias: {
-//             'extpil': '.tmp/extpil.js'
-//           },
-//           browserifyOptions: {
-//             node : true,
-//             paths:[ './extensions' ],
-//             standalone : 'extpil',
-//             //bundleExternal : false
-//           }
-//         },
-//         files: {
-//           'lib/extpil.js': []
-//         }
-//       },
-// {
-//   id : extpil,
-//   external : ['libawd']
-// }
+
 module.exports = function( id, externals, expose ){
 
   var res = {

@@ -14,10 +14,10 @@ module.exports = function(config) {
       {pattern: 'test/samples/*.awd.gz', included: false, served: true },
       {pattern: 'node_modules/expect.js/**/*.js', included: false},
       'test/defines.js',
-      'tmp/libawd_require.js',
-      'tmp/libawd_pil_require.js',
-      'tmp/libawd_std_require.js',
-      'tmp/libawd_optx_require.js',
+      'tmp/awdlib_require.js',
+      'tmp/awdlib_pil_require.js',
+      'tmp/awdlib_std_require.js',
+      'tmp/awdlib_optx_require.js',
       'tmp/tests.js'
     ],
 

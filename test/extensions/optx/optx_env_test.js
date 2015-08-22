@@ -1,8 +1,8 @@
 'use strict';
 
 
-var awdlib = require('libawd' );
-var optx = require('libawd_optx' );
+var awdlib = require('awdlib' );
+var optx = require('awdlib_optx' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,
