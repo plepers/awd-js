@@ -3,6 +3,7 @@
 
 var awdlib = require('libawd' );
 var optx = require('extoptx' );
+var utils = require('./optx_utils' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,
@@ -32,6 +33,9 @@ function createPers(){
   camera.pivot.z = 20;
 
   camera.makePerspective( 91, .3, 20000 );
+
+  var parent = utils.createMesh();
+  parent.addChild( camera );
 
   return camera;
 
@@ -108,6 +112,9 @@ describe( "optx Camera test", function(){
     numEqals( cam.fov  , 91 );
 
 
+    expect( cam.parent ).to.be.ok();
+    expect( cam.parent.name ).to.be.equal('mesh');
+
   });
 
 
@@ -152,6 +159,8 @@ describe( "optx Camera test", function(){
     numEqals( cam.minY  , -1  );
     numEqals( cam.maxY  , 1.5 );
 
+
+    expect( cam.parent ).not.to.be.ok();
 
   });
 

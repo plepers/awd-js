@@ -1,15 +1,14 @@
 
 var awdjs = require( 'libawd' ),
 
-    AwdString    = awdjs.awdString,
+    //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,
     BaseElement  = awdjs.BaseElement,
-    Container    = awdjs.Container,
-    // Properties   = awdjs.properties,
     UserAttr     = awdjs.userAttr;
 
 
-var ExtInfos     = require( 'optx/extInfos' );
+var ExtInfos     = require( 'optx/extInfos' ),
+    Container    = require( 'optx/Container' );
 
 
 
@@ -49,10 +48,8 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
   read : function( reader ){
 
 
-    var parent_id   = reader.U32();
-    this.matrix.read( this.awd, reader );
+    this.readNodeCommon( reader );
 
-    this.name       = AwdString.read( reader );
     var env_id      = reader.U32();
     this.skyType       = reader.U8();
     this.brightness = reader.F32();
@@ -64,22 +61,7 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
       resolves dependancies
       ----------------------
     */
-
-    var match = this.awd.getAssetByID(parent_id, [ Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
-    if ( match[0] ) {
-      // weak dependency w/ other types
-      if( match[1].addChild !== undefined ) {
-        match[1].addChild( this );
-      }
-
-      this.parent = match[1];
-
-    } else if (parent_id > 0) {
-      throw new Error("Could not find a parent for this Env "+parent_id);
-    }
-
-
-    match = this.awd.getAssetByID( env_id, [ Consts.MODEL_CONTAINER ] );
+    var match = this.awd.getAssetByID( env_id, [ Consts.MODEL_CONTAINER ] );
 
     if ((!match[0]) && (match > 0)) {
       throw new Error("Could not find env (ID = " + env_id + " ) for this Sky");
@@ -101,11 +83,6 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
       ----------------------
     */
 
-    var parent_id = 0;
-    var parent = this.parent;
-    if( parent ) {
-      parent_id = parent.chunk.id;
-    }
 
     if( ! this.env ){
       throw new Error( 'Sky have no env');
@@ -118,9 +95,7 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
       ----------------------
     */
 
-    writer.U32( parent_id );
-    this.matrix.write( this.awd, writer );
-    AwdString.write( this.name, writer );
+    this.writeNodeCommon( writer );
 
     writer.U32( env_id );
     writer.U8(  this.skyType );
@@ -134,11 +109,7 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
 
 
   getDependencies : function(){
-    var res = [];
-
-    if( this.parent ) {
-      res.push( this.parent );
-    }
+    var res = this.getGraphDependencies();
 
     if( this.env ) {
       res.push( this.env );

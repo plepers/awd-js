@@ -3,6 +3,7 @@
 
 var awdlib = require('libawd' );
 var extpil = require('extpil' );
+var stdext = require( 'extstd' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,
@@ -29,6 +30,8 @@ describe( "interleaved geometries test", function(){
 
       awdBuf = butils.toArrayBuffer( data );
       awd = new Awd( );
+
+      awd.addExtension( stdext.ext.getExtension() );
       awd.addExtension( Ext.getExtension() );
 
       awd.parse( awdBuf );
@@ -82,6 +85,7 @@ describe( "interleaved geometries test", function(){
 
 
     var re = new Awd( );
+    re.addExtension( stdext.ext.getExtension() );
     re.addExtension( Ext.getExtension() );
     re.parse( buf );
 

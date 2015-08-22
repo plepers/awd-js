@@ -8,6 +8,7 @@ var Awd = awdlib.awd,
     Consts = awdlib.consts,
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
+    utils  = require('./optx_utils'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Env = optx.Env,
@@ -44,6 +45,9 @@ function createOptxEnvA(){
   env.shCoefs[4] = .6;
   env.shCoefs[5] = .9;
   env.shCoefs[26] = .1;
+
+  var mesh = utils.createMesh();
+  mesh.addChild( env );
 
 
   return env;
@@ -105,6 +109,12 @@ describe( "optx Env test", function(){
 
     expect(   nenv.shCoefs   ).to.be.ok();
     compArray( nenv.shCoefs, env.shCoefs );
+
+
+
+
+    expect( nenv.parent ).to.be.ok();
+    expect( nenv.parent.name ).to.be.equal('mesh');
 
 
   });

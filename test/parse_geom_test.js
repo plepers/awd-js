@@ -2,6 +2,7 @@
 
 
 var awdlib = require('libawd' );
+var stdext = require('extstd' );
 
 
 
@@ -28,6 +29,7 @@ describe( "Parse geometry", function(){
 
       awdBuf = butils.toArrayBuffer( data );
       awd = new Awd( );
+      awd.addExtension( stdext.ext.getExtension() );
       awd.parse( awdBuf );
 
       done();

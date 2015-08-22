@@ -1,15 +1,15 @@
 
 var awdjs = require( 'libawd' ),
 
-    AwdString    = awdjs.awdString,
+    //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,
     BaseElement  = awdjs.BaseElement,
-    Container    = awdjs.Container,
     UserAttr     = awdjs.userAttr,
     Properties   = awdjs.properties;
 
 
-var ExtInfos     = require( 'optx/extInfos' );
+var ExtInfos     = require( 'optx/extInfos' ),
+    Container    = require( 'optx/Container' );
 
 
 var kP_color              =  1,
@@ -60,37 +60,13 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
 
   read : function( reader ){
 
-
-    var parent_id   = reader.U32();
-    this.matrix.read( this.awd, reader );
-    this.pivot.parsePivot( this.awd, reader );
-
-    this.name       = AwdString.read( reader );
+    this.readNodeCommon( reader );
 
     var props = new Properties( pStruct );
     props.read( reader );
     this.readProps( props );
 
     this.extras.read( reader );
-
-
-    /*
-      resolves dependancies
-      ----------------------
-    */
-
-    var match = this.awd.getAssetByID(parent_id, [ Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
-    if ( match[0] ) {
-      // weak dependency w/ other types
-      if( match[1].addChild !== undefined ) {
-        match[1].addChild( this );
-      }
-
-      this.parent = match[1];
-
-    } else if (parent_id > 0) {
-      throw new Error("Could not find a parent for this Light "+parent_id);
-    }
 
   },
 
@@ -99,26 +75,8 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
   write : ( CONFIG_WRITE ) ?
   function( writer ) {
 
-    /*
-      resolves dependancies
-      ----------------------
-    */
 
-    var parent_id = 0;
-    var parent = this.parent;
-    if( parent ) {
-      parent_id = parent.chunk.id;
-    }
-
-    /*
-      write
-      ----------------------
-    */
-
-    writer.U32( parent_id );
-    this.matrix.write( this.awd, writer );
-    this.pivot.writePivot( this.awd, writer );
-    AwdString.write( this.name, writer );
+    this.writeNodeCommon( writer );
 
     var props = new Properties( pStruct );
     this.setupProps( props );
@@ -158,8 +116,7 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
 
 
   getDependencies : function(){
-    return null;
-
+    return this.getGraphDependencies();
   },
 
 

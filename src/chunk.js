@@ -29,7 +29,8 @@
 
     },
 
-    write : function( writer )
+    write : ( CONFIG_WRITE ) ?
+    function( writer )
     {
 
       writer.U32( this.id );
@@ -37,7 +38,7 @@
       writer.U8(  this.type );
       writer.U8(  this.flags );
 
-    }
+    }:undefined
 
   };
 

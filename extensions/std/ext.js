@@ -5,7 +5,7 @@ var DefaultElement = require( 'DefaultElement' ),
     Container     = require( 'std/Container' ),
     Mesh          = require( 'std/Mesh' ),
     Texture       = require( 'std/Texture' ),
-    Namespace     = require( 'std/Namespace' ),
+    //Namespace     = require( 'std/Namespace' ),
     Geometry      = require( 'std/Geometry' );
 
 
@@ -15,13 +15,18 @@ var structs = [
   Container,
   Mesh,
   Texture,
-  Namespace,
+  //Namespace,
   Geometry
 ];
 
+var Ext = {};
 
-module.exports = function(){
+
+Ext.getExtension = function(){
   var extension = new Extension( null );
   extension.addStructs( structs );
   return extension;
 };
+
+
+module.exports = Ext;

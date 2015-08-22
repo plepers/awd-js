@@ -37,7 +37,8 @@ var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
 
   },
 
-  prepareAndAdd : function( awd, list ){
+  prepareAndAdd : ( CONFIG_WRITE ) ?
+  function( awd, list ){
 
     if( list.indexOf( this ) > -1 ){
       return;
@@ -55,7 +56,7 @@ var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
 
     list.push( this );
 
-  },
+  }:undefined,
 
   prepareChunk : function( ){
     // default can't create chunk since

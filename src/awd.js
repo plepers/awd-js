@@ -4,8 +4,7 @@ var Header        = require( 'header' ),
     Consts        = require( 'consts' ),
     Chunk         = require( 'chunk' ),
     BufferReader  = require( 'bufferReader' ),
-    DefaultElement = require( 'DefaultElement' ),
-    stdExt        = require( 'std/stdExt' );
+    DefaultElement = require( 'DefaultElement' );
 
 
 var AWD = function(){
@@ -17,7 +16,7 @@ var AWD = function(){
   this._extensions = [];
 
   // add the default extension
-  this.addExtension( stdExt() );
+  //this.addExtension( stdExt() );
 
 };
 
@@ -241,7 +240,10 @@ AWD.prototype = {
   },
 
   resolveNamespace : function( elem ){
-    // Generic specific
+
+    if( elem.nsUri == null ) {
+      return 0;
+    }
 
     var ext = this.getExtension( elem.nsUri );
     if( ext ){

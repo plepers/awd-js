@@ -8,6 +8,7 @@ var Awd = awdlib.awd,
     Consts = awdlib.consts,
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
+    utils  = require('./optx_utils'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Mesh = optx.Mesh,
@@ -38,6 +39,10 @@ function createLightA(){
   light.spotAngle     = 30
   light.spotShapness  = .2
   light.shadow        = true
+
+
+  var mesh = utils.createMesh();
+  mesh.addChild( light );
 
 
   return light;
@@ -103,6 +108,11 @@ describe( "optx Light test", function(){
     numEqals( light.spotShapness  , .2 );
 
     expect(   light.shadow        ).to.be( true );
+
+
+
+    expect( light.parent ).to.be.ok();
+    expect( light.parent.name ).to.be.equal('mesh');
 
 
 

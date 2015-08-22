@@ -2,10 +2,11 @@
 var awdlib = require('libawd' );
 
 var Awd         = awdlib.awd,
-    Container   = awdlib.Container,
     Consts      = awdlib.consts,
     expect      = require('expect.js');
 
+var stdext = require( 'extstd' ),
+    Container   = stdext.Container;
 
 
 describe( "create brand new awd", function(){
@@ -35,6 +36,8 @@ describe( "create brand new awd", function(){
 
     var awd = new Awd();
 
+    awd.addExtension( stdext.ext.getExtension() );
+
     var container = new Container();
     container.name = "abc123";
     awd.addElement( container );
@@ -43,6 +46,7 @@ describe( "create brand new awd", function(){
 
 
     awd = new Awd();
+    awd.addExtension( stdext.ext.getExtension() );
     awd.parse( buf );
 
     var conts = awd.getDatasByType( Consts.CONTAINER );

@@ -1,8 +1,19 @@
-(function () {
+if ( CONFIG_WRITE ) {
 
   require('string.prototype.codepointat');
 
   var REALLOC = 1024 * 64;
+
+
+  var _utfHead = (function() {
+    var a = [];
+    for( var i = 0; i < 5; i++ ) {
+      a[i] = parseInt('1111'.slice(0, i), 2);
+    }
+    return a;
+  })();
+
+
 
   var BufferWriter = function( size ){
 
@@ -190,17 +201,13 @@
 
 
 
-  var _utfHead = (function() {
-    var a = [];
-    for( var i = 0; i < 5; i++ ) {
-      a[i] = parseInt('1111'.slice(0, i), 2);
-    }
-    return a;
-  })();
 
 
 
   module.exports = BufferWriter;
+}
+else {
+  module.exports = {};
+}
 
-}());
 

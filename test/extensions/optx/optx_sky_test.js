@@ -8,6 +8,7 @@ var Awd = awdlib.awd,
     Consts = awdlib.consts,
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
+    utils  = require('./optx_utils'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Texture = optx.Texture,
@@ -51,6 +52,11 @@ function createSky() {
 
   sky.brightness = .96;
   sky.useEnvmapMode()
+
+
+  var mesh = utils.createMesh();
+  mesh.addChild( sky );
+
   return sky;
 }
 
@@ -109,6 +115,9 @@ describe( "optx Sky test", function(){
     expect(   nsky.skyType   ).to.be.equal( 1 );
 
 
+
+    expect( nsky.parent ).to.be.ok();
+    expect( nsky.parent.name ).to.be.equal('mesh');
   });
 
 

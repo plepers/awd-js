@@ -38,6 +38,16 @@ module.exports = function(grunt) {
           src : ['src/**/*.js']
         }
       },
+      extstd : {
+        options : {
+          moduleNs : "extstd",
+          output : '.tmp/extstd.js',
+          basedir : './extensions'
+        },
+        files: {
+          src : ['extensions/std/**/*.js']
+        }
+      },
       extpil : {
         options : {
           moduleNs : "extpil",
@@ -74,6 +84,17 @@ module.exports = function(grunt) {
         true
       ),
 
+      extstd: genBrowserify(
+        'extstd',
+        ['libawd']
+      ),
+
+      extstd_test: genBrowserify(
+        'extstd',
+        ['libawd'],
+        true
+      ),
+
       extpil: genBrowserify(
         'extpil',
         ['libawd']
@@ -98,7 +119,7 @@ module.exports = function(grunt) {
 
       test: {
         options: {
-          external : ['libawd', 'extpil', 'extoptx' ],
+          external : ['libawd', 'extstd', 'extpil', 'extoptx' ],
         },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
@@ -119,10 +140,11 @@ module.exports = function(grunt) {
             },
             dead_code: true
           },
-          beautify: true
+          beautify: false
         },
         files: {
           'lib/libawd_readonly.min.js': ['tmp/libawd.js'],
+          'lib/extstd_readonly.min.js': ['tmp/extstd.js'],
           'lib/extpil_readonly.min.js': ['tmp/extpil.js'],
           'lib/extoptx_readonly.min.js': ['tmp/extoptx.js'],
         }
@@ -138,10 +160,11 @@ module.exports = function(grunt) {
             },
             dead_code: true
           },
-          beautify: true
+          beautify: false
         },
         files: {
           'lib/libawd.min.js': ['tmp/libawd.js'],
+          'lib/extstd.min.js': ['tmp/extstd.js'],
           'lib/extpil.min.js': ['tmp/extpil.js'],
           'lib/extoptx.min.js': ['tmp/extoptx.js'],
         }
@@ -161,6 +184,7 @@ module.exports = function(grunt) {
         },
         files: {
           'lib/libawd.js': ['tmp/libawd.js'],
+          'lib/extstd.js': ['tmp/extstd.js'],
           'lib/extpil.js': ['tmp/extpil.js'],
           'lib/extoptx.js': ['tmp/extoptx.js'],
         }

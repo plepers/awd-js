@@ -26,7 +26,8 @@
 
 
 
-    prepareAndAdd : function( awd, list ){
+    prepareAndAdd : ( CONFIG_WRITE ) ?
+    function( awd, list ){
 
       if( list.indexOf( this ) > -1 ){
         return;
@@ -65,7 +66,7 @@
       this.chunk.id = this.id;
       list.push( this );
 
-    },
+    } : undefined,
 
     prepareChunk : function( ){
       if( this.chunk === null ) {

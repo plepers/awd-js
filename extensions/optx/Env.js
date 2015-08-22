@@ -1,15 +1,14 @@
 
 var awdjs = require( 'libawd' ),
 
-    AwdString    = awdjs.awdString,
+    //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,
     BaseElement  = awdjs.BaseElement,
-    Container    = awdjs.Container,
-    // Properties   = awdjs.properties,
     UserAttr     = awdjs.userAttr;
 
 
-var ExtInfos     = require( 'optx/extInfos' );
+var ExtInfos     = require( 'optx/extInfos' ),
+    Container    = require( 'optx/Container' );
 
 
 var kP_color              =  1,
@@ -66,10 +65,8 @@ var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
   read : function( reader ){
 
 
-    var parent_id   = reader.U32();
-    this.matrix.read( this.awd, reader );
 
-    this.name       = AwdString.read( reader );
+    this.readNodeCommon( reader );
 
     var envMap_id   = reader.U32();
 
@@ -94,21 +91,7 @@ var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
       ----------------------
     */
 
-    var match = this.awd.getAssetByID(parent_id, [ Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
-    if ( match[0] ) {
-      // weak dependency w/ other types
-      if( match[1].addChild !== undefined ) {
-        match[1].addChild( this );
-      }
-
-      this.parent = match[1];
-
-    } else if (parent_id > 0) {
-      throw new Error("Could not find a parent for this Env "+parent_id);
-    }
-
-
-    match = this.awd.getAssetByID( envMap_id, [ Consts.MODEL_TEXTURE ] );
+    var match = this.awd.getAssetByID( envMap_id, [ Consts.MODEL_TEXTURE ] );
 
     if ((!match[0]) && (match > 0)) {
       throw new Error("Could not find EnvMap (ID = " + envMap_id + " ) for this Env");
@@ -130,11 +113,6 @@ var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
       ----------------------
     */
 
-    var parent_id = 0;
-    var parent = this.parent;
-    if( parent ) {
-      parent_id = parent.chunk.id;
-    }
 
     if( ! this.envMap ){
       throw new Error( 'Env have no envMap');
@@ -147,9 +125,8 @@ var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
       ----------------------
     */
 
-    writer.U32( parent_id );
-    this.matrix.write( this.awd, writer );
-    AwdString.write( this.name, writer );
+
+    this.writeNodeCommon( writer );
 
     writer.U32( envMap_id );
 
@@ -174,11 +151,7 @@ var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
 
 
   getDependencies : function(){
-    var res = [];
-
-    if( this.parent ) {
-      res.push( this.parent );
-    }
+    var res = this.getGraphDependencies();
 
     if( this.envMap ) {
       res.push( this.envMap );

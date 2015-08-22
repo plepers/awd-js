@@ -8,6 +8,7 @@ var Awd = awdlib.awd,
     Consts = awdlib.consts,
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
+    utils  = require('./optx_utils'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Mesh = optx.Mesh,
@@ -51,6 +52,8 @@ function createOptxMeshA(){
 
   mesh.submeshes.push( sub );
 
+  var p = utils.createMesh()
+  p.addChild( mesh )
 
   return mesh;
 
@@ -93,8 +96,8 @@ describe( "optx Mesh test", function(){
 
     var meshes = nawd.getDatasByType( Ext.OPTX_MESH, Ext.URI );
 
-    expect( meshes.length ).to.be.equal( 1 );
-    var mesh = meshes[0];
+    expect( meshes.length ).to.be.equal( 2 );
+    var mesh = meshes[1];
 
     expect( mesh.name ).to.be('meshA')
 
@@ -120,6 +123,10 @@ describe( "optx Mesh test", function(){
     expect( sub.indexCount     ).to.be.equal( 20  );
     expect( sub.firstWireIndex ).to.be.equal( 150 );
     expect( sub.wireIndexCount ).to.be.equal( 30  );
+
+
+    expect( mesh.parent ).to.be.ok();
+    expect( mesh.parent.name ).to.be.equal('mesh');
 
 
   });

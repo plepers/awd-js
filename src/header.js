@@ -68,7 +68,8 @@
 
     },
 
-    write : function( writer )
+    write : ( CONFIG_WRITE ) ?
+    function( writer )
     {
       // Magic
       writer.U8( 0x41 );
@@ -88,7 +89,7 @@
 
       writer.U8( this.compression );
       writer.U32( this.bodylen );
-    },
+    }:undefined,
 
 
   };

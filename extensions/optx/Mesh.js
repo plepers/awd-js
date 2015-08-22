@@ -1,14 +1,14 @@
 var awdjs = require( 'libawd' ),
 
-    AwdString    = awdjs.awdString,
-    Container   = awdjs.Container,
+    //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,
     BaseElement  = awdjs.BaseElement,
     UserAttr     = awdjs.userAttr,
     Properties   = awdjs.properties;
 
 
-var ExtInfos     = require( 'optx/extInfos' );
+var ExtInfos     = require( 'optx/extInfos' ),
+    Container    = require( 'optx/Container' );
 
 
 /**
@@ -66,11 +66,8 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
 
   read : function( reader ){
 
-    var parent_id   = reader.U32();
-    this.matrix.read( this.awd, reader );
-    this.pivot.parsePivot( this.awd, reader );
 
-    this.name       = AwdString.read( reader );
+    this.readNodeCommon( reader );
 
     var geom_id     = reader.U32();
     this.props.read( reader );
@@ -98,19 +95,6 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
       //throw new Error("Could not find a geometry for this Mesh");
     }
 
-    match = this.awd.getAssetByID(parent_id, [ Consts.MODEL_CONTAINER, Consts.MODEL_MESH, Consts.MODEL_LIGHT, Consts.MODEL_ENTITY, Consts.MODEL_SEGMENT_SET ] );
-    if ( match[0] ) {
-      // weak dependency w/ other types
-      if( match[1].addChild !== undefined ) {
-        match[1].addChild( this );
-      }
-
-      this.parent = match[1];
-
-    } else if (parent_id > 0) {
-      throw new Error("Could not find a parent for this Mesh "+parent_id);
-    }
-
   },
 
 
@@ -124,11 +108,6 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
       ----------------------
     */
 
-    var parent_id = 0;
-    var parent = this.parent;
-    if( parent ) {
-      parent_id = parent.chunk.id;
-    }
 
     var geom_id = 0;
     var geom = this.geometry;
@@ -144,10 +123,7 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
     */
 
 
-    writer.U32( parent_id );
-    this.matrix.write( this.awd, writer );
-    this.pivot.writePivot( this.awd, writer );
-    AwdString.write( this.name, writer );
+    this.writeNodeCommon( writer );
     writer.U32( geom_id );
 
     this.props.write( writer );
@@ -183,7 +159,7 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
 
 
   getDependencies : function(){
-    var res = [];
+    var res = this.getGraphDependencies();
 
     var sublen = this.submeshes.length;
 
@@ -192,10 +168,6 @@ var Mesh = BaseElement.createStruct( ExtInfos.OPTX_MESH, ExtInfos.URI,
       if( mat ) {
         res.push( mat );
       }
-    }
-
-    if( this.parent ) {
-      res.push( this.parent );
     }
 
     if( this.geometry ) {
