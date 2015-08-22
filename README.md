@@ -1,4 +1,4 @@
-# awd-js [![Build Status](https://secure.travis-ci.org/plepers/AWD_js.png?branch=master)](http://travis-ci.org/plepers/AWD_js)
+# awd-js [![Build Status](https://travis-ci.org/plepers/awd-js.svg?branch=master)](https://travis-ci.org/plepers/awd-js)
 
 AWD tools for javascript
 
