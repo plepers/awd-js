@@ -1,4 +1,4 @@
-var awdjs = require( 'libawd' ),
+var awdjs = require( 'awdlib' ),
 
     //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,

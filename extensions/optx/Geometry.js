@@ -1,4 +1,4 @@
-var awdjs = require( 'libawd' ),
+var awdjs = require( 'awdlib' ),
 
     //BaseGeom     = awdjs.Geometry,
     //BufferReader = awdjs.bufferReader,

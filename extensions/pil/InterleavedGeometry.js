@@ -1,4 +1,4 @@
-var awdjs = require( 'libawd' ),
+var awdjs = require( 'awdlib' ),
     BaseElement  = awdjs.BaseElement,
     BufferReader = awdjs.bufferReader,
     Consts       = awdjs.consts;
