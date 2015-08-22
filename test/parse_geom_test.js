@@ -2,7 +2,7 @@
 
 
 var awdlib = require('libawd' );
-var stdext = require('extstd' );
+var stdext = require('libawd_std' );
 
 
 

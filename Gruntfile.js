@@ -13,8 +13,23 @@ module.exports = function(grunt) {
 
 
 
+  function makeExtIndex( ext ) {
+    return {
+      options : {
+        moduleNs : ext,
+        output : '.tmp/libawd_'+ext+'.js',
+        basedir : './extensions'
+      },
+      files: {
+        src : ['extensions/'+ext+'/**/*.js']
+      }
+    };
+  }
+
+
+
   // Project configuration.
-  grunt.initConfig({
+  var GConfig = {
     env: {
         NODE_PATH: 'lib'
 
@@ -38,36 +53,9 @@ module.exports = function(grunt) {
           src : ['src/**/*.js']
         }
       },
-      extstd : {
-        options : {
-          moduleNs : "extstd",
-          output : '.tmp/extstd.js',
-          basedir : './extensions'
-        },
-        files: {
-          src : ['extensions/std/**/*.js']
-        }
-      },
-      extpil : {
-        options : {
-          moduleNs : "extpil",
-          output : '.tmp/extpil.js',
-          basedir : './extensions'
-        },
-        files: {
-          src : ['extensions/pil/**/*.js']
-        }
-      },
-      extoptx : {
-        options : {
-          moduleNs : "extoptx",
-          output : '.tmp/extoptx.js',
-          basedir : './extensions'
-        },
-        files: {
-          src : ['extensions/optx/**/*.js']
-        }
-      }
+      extstd :  makeExtIndex( 'std' ),
+      extpil :  makeExtIndex( 'pil' ),
+      extoptx : makeExtIndex( 'optx' ),
     },
 
 
@@ -85,41 +73,41 @@ module.exports = function(grunt) {
       ),
 
       extstd: genBrowserify(
-        'extstd',
+        'libawd_std',
         ['libawd']
       ),
 
       extstd_test: genBrowserify(
-        'extstd',
+        'libawd_std',
         ['libawd'],
         true
       ),
 
       extpil: genBrowserify(
-        'extpil',
+        'libawd_pil',
         ['libawd']
       ),
 
       extpil_test: genBrowserify(
-        'extpil',
+        'libawd_pil',
         ['libawd'],
         true
       ),
 
       extoptx: genBrowserify(
-        'extoptx',
+        'libawd_optx',
         ['libawd']
       ),
 
       extoptx_test: genBrowserify(
-        'extoptx',
+        'libawd_optx',
         ['libawd'],
         true
       ),
 
       test: {
         options: {
-          external : ['libawd', 'extstd', 'extpil', 'extoptx' ],
+          external : ['libawd', 'libawd_std', 'libawd_pil', 'libawd_optx' ],
         },
         files: {
           'tmp/tests.js': ['test/**/*.js'],
@@ -144,9 +132,9 @@ module.exports = function(grunt) {
         },
         files: {
           'lib/libawd_readonly.min.js': ['tmp/libawd.js'],
-          'lib/extstd_readonly.min.js': ['tmp/extstd.js'],
-          'lib/extpil_readonly.min.js': ['tmp/extpil.js'],
-          'lib/extoptx_readonly.min.js': ['tmp/extoptx.js'],
+          'lib/libawd_std_readonly.min.js': ['tmp/libawd_std.js'],
+          'lib/libawd_pil_readonly.min.js': ['tmp/libawd_pil.js'],
+          'lib/libawd_optx_readonly.min.js': ['tmp/libawd_optx.js'],
         }
       },
       libs_min: {
@@ -164,9 +152,9 @@ module.exports = function(grunt) {
         },
         files: {
           'lib/libawd.min.js': ['tmp/libawd.js'],
-          'lib/extstd.min.js': ['tmp/extstd.js'],
-          'lib/extpil.min.js': ['tmp/extpil.js'],
-          'lib/extoptx.min.js': ['tmp/extoptx.js'],
+          'lib/libawd_std.min.js': ['tmp/libawd_std.js'],
+          'lib/libawd_pil.min.js': ['tmp/libawd_pil.js'],
+          'lib/libawd_optx.min.js': ['tmp/libawd_optx.js'],
         }
       },
       libs: {
@@ -184,9 +172,9 @@ module.exports = function(grunt) {
         },
         files: {
           'lib/libawd.js': ['tmp/libawd.js'],
-          'lib/extstd.js': ['tmp/extstd.js'],
-          'lib/extpil.js': ['tmp/extpil.js'],
-          'lib/extoptx.js': ['tmp/extoptx.js'],
+          'lib/libawd_std.js': ['tmp/libawd_std.js'],
+          'lib/libawd_pil.js': ['tmp/libawd_pil.js'],
+          'lib/libawd_optx.js': ['tmp/libawd_optx.js'],
         }
       },
     },
@@ -270,9 +258,9 @@ module.exports = function(grunt) {
       }
     }
 
+  };
 
-
-  });
+  grunt.initConfig( GConfig );
 
 
 

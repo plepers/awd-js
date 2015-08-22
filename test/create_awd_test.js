@@ -5,7 +5,7 @@ var Awd         = awdlib.awd,
     Consts      = awdlib.consts,
     expect      = require('expect.js');
 
-var stdext = require( 'extstd' ),
+var stdext = require( 'libawd_std' ),
     Container   = stdext.Container;
 
 

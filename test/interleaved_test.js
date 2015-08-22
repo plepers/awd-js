@@ -2,8 +2,8 @@
 
 
 var awdlib = require('libawd' );
-var extpil = require('extpil' );
-var stdext = require( 'extstd' );
+var extpil = require('libawd_pil' );
+var stdext = require('libawd_std' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,

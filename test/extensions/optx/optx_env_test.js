@@ -2,7 +2,7 @@
 
 
 var awdlib = require('libawd' );
-var optx = require('extoptx' );
+var optx = require('libawd_optx' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,
