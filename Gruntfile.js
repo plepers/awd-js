@@ -287,6 +287,12 @@ module.exports = function(grunt) {
     'karma:dev:start',
     'watch:karma'
   ]);
+      // Default task.
+  grunt.registerTask('travis', [
+    'build',
+    'karma:travis'
+  ]);
+
     // Default task.
   grunt.registerTask('default', [
     'build',

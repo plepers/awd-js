@@ -25,7 +25,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt travis"
   },
   "devDependencies": {
     "browserify": "^11.0.1",
