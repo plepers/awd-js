@@ -75,12 +75,12 @@ module.exports = function(config) {
         version: '26',
         platform: 'OS X 10.9'
       },
-      // 'SL_Safari': {
-      //   base: 'SauceLabs',
-      //   browserName: 'safari',
-      //   platform: 'OS X 10.9',
-      //   version: '7'
-      // },
+      'SL_Safari': {
+        base: 'SauceLabs',
+        browserName: 'safari',
+        platform: 'OS X 10.9',
+        version: '7'
+      },
 
       //Win 8.1
       'SL_Chrome_WIN81': {
@@ -110,13 +110,13 @@ module.exports = function(config) {
       //   version: '27',
       //   platform: 'Linux'
       // }
-      // ,
-      // 'SL_IE_11': {
-      //   base: 'SauceLabs',
-      //   browserName: 'internet explorer',
-      //   platform: 'Windows 8.1',
-      //   version: '11'
-      // },
+      ,
+      'SL_IE_11': {
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11'
+      },
     },
 
 
