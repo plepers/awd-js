@@ -226,6 +226,10 @@ module.exports = function(grunt) {
         files: '<%= jshint.test.src %>',
         tasks: ['jshint:test', 'nodeunit']
       },
+      karma: {
+        files: ['src/**/*.js', 'test/**/*.js'],
+        tasks: [ 'karma:dev:run']
+      }
     },
 
 
@@ -233,7 +237,7 @@ module.exports = function(grunt) {
       dev: {
         configFile: 'karma.conf.js',
         background: true,
-        browsers: ['Chrome']
+        browsers: ['Firefox']
       },
       travis: {
         configFile: 'karma.conf.js',
@@ -265,18 +269,29 @@ module.exports = function(grunt) {
 
 
 
-  // Default task.
-  grunt.registerTask('default', [
+  grunt.registerTask('build', [
     'jshint',
-
     'makeindex',
     'browserify',
     'uglify',
+  ]);
 
+  grunt.registerTask('test', [
     'copy:nodelibs',
-
     'browserify:test',
     'mochaTest:node'
   ]);
+
+
+  grunt.registerTask('kdev', [
+    'karma:dev:start',
+    'watch:karma'
+  ]);
+    // Default task.
+  grunt.registerTask('default', [
+    'build',
+    'test'
+  ]);
+
 
 };

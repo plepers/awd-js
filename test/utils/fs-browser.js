@@ -13,15 +13,13 @@ exports = module.exports = {
 
         cbk( null, request.response );
 
-    }, false
-    );
+    }, false );
 
     request.addEventListener( 'error', function ( event ) {
 
         cbk( event, null );
 
-    }, false
-    );
+    }, false );
 
 
     request.send( null );

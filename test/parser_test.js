@@ -15,7 +15,7 @@ describe( "parser test", function(){
 
   beforeEach(function( done ){
 
-    fs.readFile('./test/samples/apple.awd', function (err, data) {
+    fs.readFile('./test/samples/apple.awd.gz', function (err, data) {
       if (err) {
         done( err );
       }
@@ -58,10 +58,10 @@ describe( "parser test", function(){
   it( "read all", function( done ){
 
     var files = [
-      "apple.awd",
-      "fish_c4d.awd",
-      "fish_ab.awd",
-      "haikus.awd"
+      "apple.awd.gz",
+      "fish_c4d.awd.gz",
+      "fish_ab.awd.gz",
+      "haikus.awd.gz"
       // "ile.awd"
     ];
 

@@ -7,6 +7,9 @@
 
     this.littleEndien = true;
 
+    byteOffset = byteOffset || 0;
+    byteLength = byteLength || buffer.byteLength;
+
     this.view = new DataView( buffer, byteOffset, byteLength );
 
     this.length = this.view.byteLength;

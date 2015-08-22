@@ -39,8 +39,17 @@
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-karma": "^0.12.0",
     "grunt-mocha-test": "^0.12.7",
-    "load-grunt-tasks": "^0.6.0"
+    "karma": "^0.13.9",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-sauce-launcher": "^0.2.14",
+    "load-grunt-tasks": "^0.6.0",
+    "phantomjs": "^1.9.18"
   },
   "keywords": [],
   "browser": {
