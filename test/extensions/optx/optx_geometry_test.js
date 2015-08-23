@@ -68,6 +68,44 @@ function createOptxGeomA(){
 
 
 
+function createOptxGeomB(){
+  var geom = new OptxGeometry()
+  geom.name = 'geomB'
+
+  var vbuffer = new OptxGeometry.VertexBuffer()
+  var stride = 0;
+
+  var aPos = new OptxGeometry.VertexAttibute()
+  aPos.name     = 'aPosition';
+  aPos.numElems = 3;
+  aPos.glType   = OptxGeometry.types.FLOAT;
+  stride += aPos.getBytesSize()
+
+
+  vbuffer.attributes.push( aPos )
+
+  vbuffer.data = new Int8Array( stride * 40000 ); //4 vertices
+
+  geom.vertexBuffers.push( vbuffer )
+
+
+  var iBuffer = new OptxGeometry.IndexBuffer()
+  iBuffer.glType = OptxGeometry.types.UNSIGNED_SHORT;
+  iBuffer.usage = 1;
+
+  iBuffer.data = new Uint16Array( [
+    0, 1, 2,
+    0, 2, 3
+  ] )
+
+  geom.indexBuffers.push( iBuffer )
+
+  return geom;
+
+}
+
+
+
 describe( "optx geometries test", function(){
 
 
@@ -92,7 +130,8 @@ describe( "optx geometries test", function(){
 
   it( "write and read back new geom A", function(){
 
-    var geom = createOptxGeomA()
+    var geom;
+    geom = createOptxGeomA()
     awd.addElement( geom );
     var buf = awd.write();
 
@@ -133,6 +172,46 @@ describe( "optx geometries test", function(){
       10, 10, 0, 1, 1,
       0,  10, 0, 0, 1
     ] ) )
+
+  });
+
+
+  it( "write and read back heavy geom", function(){
+
+    var geom;
+    geom = createOptxGeomB()
+    awd.addElement( geom );
+    geom = createOptxGeomB()
+    awd.addElement( geom );
+    var buf = awd.write();
+
+
+    var nawd = new Awd( );
+    nawd.addExtension( Ext.getExtension() );
+    nawd.parse( buf )
+
+
+    var geoms = nawd.getDatasByType( Ext.OPTX_GEOM, Ext.URI );
+
+    expect( geoms.length ).to.be.equal( 2 );
+    var geom = geoms[0];
+
+    expect( geom.name ).to.be('geomB')
+
+    expect( geom.vertexBuffers.length ).to.be.equal( 1 );
+    expect( geom.indexBuffers.length ).to.be.equal( 1 );
+
+    var vbuff = geom.vertexBuffers[0]
+
+    expect( vbuff.attributes.length ).to.be.equal( 1 );
+
+    expect( vbuff.attributes[0].name     ).to.be( 'aPosition' );
+    expect( vbuff.attributes[0].numElems ).to.be.equal( 3 );
+    expect( vbuff.attributes[0].glType   ).to.be.equal( OptxGeometry.types.FLOAT );
+    expect( vbuff.attributes[0].flags    ).to.be.equal( 0 );
+
+
+    expect( vbuff.data.length ).to.be( 40000 * 12 );
 
   });
 

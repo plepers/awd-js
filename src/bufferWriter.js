@@ -34,11 +34,12 @@ if ( CONFIG_WRITE ) {
 
     _ensureSize : function( size ) {
       if( this.ptr + size > this.buffer.byteLength ) {
-        this._realloc( size );
+        this._realloc( this.ptr + size );
       }
     },
 
     _realloc : function( min ){
+      console.log( min );
       var clen = this.buffer.byteLength;
       var reallocSize = REALLOC;
       while( clen + reallocSize < min ) {
