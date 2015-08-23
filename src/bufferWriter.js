@@ -39,7 +39,6 @@ if ( CONFIG_WRITE ) {
     },
 
     _realloc : function( min ){
-      console.log( min );
       var clen = this.buffer.byteLength;
       var reallocSize = REALLOC;
       while( clen + reallocSize < min ) {

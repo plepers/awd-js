@@ -10,5 +10,6 @@ module.exports = {
   OPTX_LIGHT              : 6,
   OPTX_ENV                : 7,
   OPTX_SKY                : 8,
-  OPTX_CAMERA             : 9
+  OPTX_CAMERA             : 9,
+  OPTX_POST               : 10
 };
