@@ -82,8 +82,9 @@ var POST_SHARPEN     = 1,
     POST_VIGNETTE    = 3,
     POST_SATURATION  = 4,
     POST_CONTRAST    = 5,
-    POST_REINHARD    = 6,
-    POST_HEJL        = 7;
+    POST_GRAIN       = 6,
+    POST_REINHARD    = 7,
+    POST_HEJL        = 8;
 
 
 
@@ -132,6 +133,23 @@ Sharpen.prototype = {
   setAmount : function(v){        this.props[0] = v; },
   getLimit  : function( ){ return this.props[1]; },
   setLimit  : function(v){        this.props[1] = v; }
+};
+
+
+//               Grain
+// ---------------------
+
+function Grain( amount, sharpness ){
+  this._l = 2;
+  this._id = POST_GRAIN;
+  this.props = [ amount, sharpness ];
+}
+
+Sharpen.prototype = {
+  getAmount    : function( ){ return this.props[0]; },
+  setAmount    : function(v){        this.props[0] = v; },
+  getsharpness : function( ){ return this.props[1]; },
+  setsharpness : function(v){        this.props[1] = v; }
 };
 
 //                    Bloom
@@ -274,6 +292,7 @@ Post.Bloom      = Bloom;
 Post.Vignette   = Vignette;
 Post.Saturation = Saturation;
 Post.Contrast   = Contrast;
+Post.Grain      = Grain;
 Post.Reinhard   = Reinhard;
 Post.Hejl       = Hejl;
 
