@@ -75,20 +75,18 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
     this.textures = {
       albedo       : null,
-      alpha        : null,
       reflectivity : null,
-      gloss        : null,
       normal       : null,
-      subsurface   : null
+      subsurface   : null,
+      agt          : null
     };
 
     this.colors = {
       albedo       : 0xFF000000,
-      alpha        : 0xFF000000,
       reflectivity : 0xFF000000,
-      gloss        : 0xFF000000,
       normal       : 0xFF000000,
-      subsurface   : 0xFF000000
+      subsurface   : 0xFF000000,
+      agt          : 0xFF000000
     };
 
 
@@ -136,18 +134,16 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     this.name       = AwdString.read( reader );
 
     this.textures.albedo       = this.readTexture( reader );
-    this.textures.alpha        = this.readTexture( reader );
     this.textures.reflectivity = this.readTexture( reader );
-    this.textures.gloss        = this.readTexture( reader );
     this.textures.normal       = this.readTexture( reader );
     this.textures.subsurface   = this.readTexture( reader );
+    this.textures.agt          = this.readTexture( reader );
 
     this.colors.albedo         = reader.U32();
-    this.colors.alpha          = reader.U32();
     this.colors.reflectivity   = reader.U32();
-    this.colors.gloss          = reader.U32();
     this.colors.normal         = reader.U32();
     this.colors.subsurface     = reader.U32();
+    this.colors.agt            = reader.U32();
 
 
     var props = new Properties( pStruct );
@@ -168,19 +164,17 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
 
     this.writeTexture( this.textures.albedo       , writer );
-    this.writeTexture( this.textures.alpha        , writer );
     this.writeTexture( this.textures.reflectivity , writer );
-    this.writeTexture( this.textures.gloss        , writer );
     this.writeTexture( this.textures.normal       , writer );
     this.writeTexture( this.textures.subsurface   , writer );
+    this.writeTexture( this.textures.agt          , writer );
 
 
     writer.U32( this.colors.albedo       );
-    writer.U32( this.colors.alpha        );
     writer.U32( this.colors.reflectivity );
-    writer.U32( this.colors.gloss        );
     writer.U32( this.colors.normal       );
     writer.U32( this.colors.subsurface   );
+    writer.U32( this.colors.agt          );
 
     var props = new Properties( pStruct );
     this.setupProps( props );
@@ -300,24 +294,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     var res = [];
     var texs = this.textures;
 
-    if( texs.albedo       ){
-      res.push( texs.albedo       );
-    }
-    if( texs.alpha        ){
-      res.push( texs.alpha        );
-    }
-    if( texs.reflectivity ){
-      res.push( texs.reflectivity );
-    }
-    if( texs.gloss        ){
-      res.push( texs.gloss        );
-    }
-    if( texs.normal       ){
-      res.push( texs.normal       );
-    }
-    if( texs.subsurface   ){
-      res.push( texs.subsurface   );
-    }
+    if( texs.albedo       ){ res.push( texs.albedo       );}
+    if( texs.reflectivity ){ res.push( texs.reflectivity );}
+    if( texs.agt          ){ res.push( texs.agt          );}
+    if( texs.normal       ){ res.push( texs.normal       );}
+    if( texs.subsurface   ){ res.push( texs.subsurface   );}
 
 
     return res;

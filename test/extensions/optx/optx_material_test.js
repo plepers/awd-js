@@ -62,7 +62,7 @@ function createOptxMaterialA(){
 
   mat.textures.albedo       = makeTexture( 'albedo' );
   mat.textures.reflectivity = makeTexture( 'reflectivity' );
-  mat.textures.gloss        = makeTexture( 'gloss' );
+  mat.textures.agt          = makeTexture( 'agt' );
 
   mat.colors.subsurface = 0xFF501010;
 
@@ -208,8 +208,8 @@ describe( "optx material test", function(){
     expect( nmat.textures.albedo.name ).to.be.equal( 'albedo' );
     expect( nmat.textures.reflectivity ).to.be.ok();
     expect( nmat.textures.reflectivity.name ).to.be.equal( 'reflectivity' );
-    expect( nmat.textures.gloss ).to.be.ok();
-    expect( nmat.textures.gloss.name ).to.be.equal( 'gloss' );
+    expect( nmat.textures.agt ).to.be.ok();
+    expect( nmat.textures.agt.name ).to.be.equal( 'agt' );
 
     expect( nmat.textures.subsurface ).not.to.be.ok();
     nmat.colors.subsurface = 0xFF501010;
