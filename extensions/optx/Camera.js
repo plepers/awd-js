@@ -40,6 +40,8 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
     this.minY            = -20;
     this.maxY            = 20;
 
+    this.post            = null;
+
   },
 
 
@@ -68,6 +70,8 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
 
     this.readNodeCommon( reader );
 
+    var postId    = reader.U32();
+
     this.lensType = reader.U8();
     this.near     = reader.F32();
     this.far      = reader.F32();
@@ -87,6 +91,18 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
 
     this.extras.read( reader );
 
+    // --------------- resolve dep
+    //
+
+    if( postId > 0 ){
+      var match = this.awd.getAssetByID( postId, [ Consts.MODEL_GENERIC ] );
+      if ( match[0] ) {
+        return match[1];
+      }
+      throw new Error("Could not find Post for this Camera, uid : " + postId);
+    }
+    return null;
+
   },
 
 
@@ -96,6 +112,12 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
 
     this.writeNodeCommon( writer );
 
+    var postId = 0;
+    if( this.post ) {
+      postId = this.post.chunk.id;
+    }
+
+    writer.U32( postId );
 
     writer.U8( this.lensType );
     writer.F32( this.near );
@@ -122,7 +144,11 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
 
 
   getDependencies : function(){
-    return this.getGraphDependencies();
+    var dep = this.getGraphDependencies();
+    if( this.post ){
+      dep.push( this.post );
+    }
+    return dep;
   },
 
 

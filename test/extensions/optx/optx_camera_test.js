@@ -12,6 +12,7 @@ var Awd = awdlib.awd,
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Camera = optx.Camera,
+    Post = optx.Post,
     Ext = optx.ext;
 
 
@@ -34,8 +35,11 @@ function createPers(){
 
   camera.makePerspective( 91, .3, 20000 );
 
+  camera.post = new Post();
+
   var parent = utils.createMesh();
   parent.addChild( camera );
+
 
   return camera;
 
@@ -55,6 +59,8 @@ function createOrtho(){
   camera.pivot.z = 20;
 
   camera.makeOrtho( -2, 2.5, -1, 1.5, 3, 6 );
+
+
 
   return camera;
 
@@ -114,6 +120,8 @@ describe( "optx Camera test", function(){
 
     expect( cam.parent ).to.be.ok();
     expect( cam.parent.name ).to.be.equal('mesh');
+
+    expect( cam.post ).to.be.ok();
 
   });
 
