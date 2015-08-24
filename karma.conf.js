@@ -36,6 +36,13 @@ module.exports = function(config) {
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['dots'],
 
+    client: {
+      mocha: {
+        reporter: 'dots', // change Karma's debug.html to the mocha web reporter
+        timeout: 8000
+      }
+    },
+
 
     // web server port
     port: 9876,
