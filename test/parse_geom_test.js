@@ -2,7 +2,7 @@
 
 
 var awdlib = require('awdlib' );
-var stdext = require('awdlib_std' );
+var stdext = require('awdlib_std' )(awdlib);
 
 
 

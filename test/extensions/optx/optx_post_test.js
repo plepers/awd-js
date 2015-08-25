@@ -2,7 +2,7 @@
 
 
 var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' );
+var optx = require('awdlib_optx' )(awdlib);
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,
@@ -33,7 +33,6 @@ function createContrast(){
   post.effects.push( new Post.Contrast( [.1, .2, .3], [.4, .5, .6], [.7, .8, .9] ) );
   return post;
 }
-
 
 
 describe( "optx Post test", function(){

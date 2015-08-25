@@ -1,5 +1,5 @@
 
-var awdjs = require( 'awdlib' ),
+var awdjs = require( 'optx/_awdlib' ).get(),
 
     //AwdString    = awdjs.awdString,
     Consts       = awdjs.consts,

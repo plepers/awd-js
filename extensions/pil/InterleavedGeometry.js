@@ -1,4 +1,4 @@
-var awdjs = require( 'awdlib' ),
+var awdjs = require( 'pil/_awdlib' ).get(),
     BaseElement  = awdjs.BaseElement,
     BufferReader = awdjs.bufferReader,
     Consts       = awdjs.consts;

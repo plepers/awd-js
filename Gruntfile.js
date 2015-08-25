@@ -61,46 +61,46 @@ module.exports = function(grunt) {
 
     browserify: {
 
-      awdlib: genBrowserify(
+      awdlib: genBrowserify.main(
         'awdlib',
         []
       ),
 
-      awdlib_test: genBrowserify(
+      awdlib_test: genBrowserify.main(
         'awdlib',
         [],
         true
       ),
 
-      extstd: genBrowserify(
-        'awdlib_std',
+      extstd: genBrowserify.ext(
+        'std',
         ['awdlib']
       ),
 
-      extstd_test: genBrowserify(
-        'awdlib_std',
+      extstd_test: genBrowserify.ext(
+        'std',
         ['awdlib'],
         true
       ),
 
-      extpil: genBrowserify(
-        'awdlib_pil',
+      extpil: genBrowserify.ext(
+        'pil',
         ['awdlib']
       ),
 
-      extpil_test: genBrowserify(
-        'awdlib_pil',
+      extpil_test: genBrowserify.ext(
+        'pil',
         ['awdlib'],
         true
       ),
 
-      extoptx: genBrowserify(
-        'awdlib_optx',
+      extoptx: genBrowserify.ext(
+        'optx',
         ['awdlib']
       ),
 
-      extoptx_test: genBrowserify(
-        'awdlib_optx',
+      extoptx_test: genBrowserify.ext(
+        'optx',
         ['awdlib'],
         true
       ),
@@ -217,7 +217,7 @@ module.exports = function(grunt) {
       dev: {
         configFile: 'karma.conf.js',
         background: true,
-        browsers: ['Firefox']
+        browsers: ['Chrome']
       },
       travis: {
         configFile: 'karma.conf.js',
@@ -263,7 +263,7 @@ module.exports = function(grunt) {
   ]);
 
 
-  grunt.registerTask('kdev', [
+  grunt.registerTask('dev', [
     'karma:dev:start',
     'watch:karma'
   ]);

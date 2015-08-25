@@ -1,4 +1,4 @@
-var awdjs = require( 'awdlib' );
+var awdjs = require( 'pil/_awdlib' ).get();
 
 var Extension           = awdjs.extension,
     InterleavedGeometry = require( 'pil/InterleavedGeometry' ),

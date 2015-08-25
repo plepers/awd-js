@@ -1,4 +1,4 @@
-var awdjs = require( 'awdlib' );
+var awdjs = require( 'optx/_awdlib' ).get();
 
 var Extension          = awdjs.extension,
     Geometry           = require( 'optx/Geometry' ),

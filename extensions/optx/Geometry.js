@@ -1,4 +1,4 @@
-var awdjs = require( 'awdlib' ),
+var awdjs = require( 'optx/_awdlib' ).get(),
 
     //BaseGeom     = awdjs.Geometry,
     //BufferReader = awdjs.bufferReader,

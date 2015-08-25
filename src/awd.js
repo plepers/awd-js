@@ -15,9 +15,6 @@ var AWD = function(){
   this._elementsById = [];
   this._extensions = [];
 
-  // add the default extension
-  //this.addExtension( stdExt() );
-
 };
 
 

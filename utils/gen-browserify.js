@@ -4,7 +4,8 @@ var dereqFunc = function(b){
   derequirePlugin( b, '_dereq_', 'require');
 }
 
-module.exports = function( id, externals, expose ){
+
+function makeConfig( id, externals, expose ){
 
   var res = {
     options: {
@@ -22,7 +23,6 @@ module.exports = function( id, externals, expose ){
     files: {}
   }
 
-  res.options.alias[id] = '.tmp/'+id+'.js'
 
   if( expose === true ){
     id += '_require'
@@ -33,4 +33,18 @@ module.exports = function( id, externals, expose ){
   res.files['tmp/'+id+'.js'] = []
 
   return res;
+}
+
+module.exports = {
+  main : function( id, externals, expose ){
+    var res = makeConfig( id, externals, expose );
+    res.options.alias[id] = '.tmp/'+id+'.js';
+    return res;
+  },
+
+  ext : function( id, externals, expose ){
+    var res = makeConfig( 'awdlib_'+id, externals, expose );
+    res.options.alias['awdlib_'+id] = './extensions/'+id+'/index.js';
+    return res;
+  }
 }
