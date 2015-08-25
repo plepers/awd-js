@@ -1,7 +1,7 @@
 {
   "name": "awdlib",
   "description": "AWD tools for javascript",
-  "version": "0.8.9",
+  "version": "0.8.10",
   "homepage": "https://github.com/plepers/awd-js",
   "author": {
     "name": "Pierre Lepers",
@@ -30,6 +30,7 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "browserify-fs": "^1.0.0",
+    "derequire": "^2.0.2",
     "expect.js": "^0.3.1",
     "grunt": "~0.4.5",
     "grunt-browserify": "^4.0.0",
@@ -50,7 +51,11 @@
     "karma-sauce-launcher": "^0.2.14",
     "load-grunt-tasks": "^0.6.0"
   },
-  "keywords": [ "awd", "optx", "3d"],
+  "keywords": [
+    "awd",
+    "optx",
+    "3d"
+  ],
   "browser": {
     "fs": "./test/utils/fs-browser.js"
   },

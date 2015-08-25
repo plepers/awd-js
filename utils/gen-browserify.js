@@ -1,3 +1,8 @@
+var derequirePlugin = require( 'derequire/plugin' )
+
+var dereqFunc = function(b){
+  derequirePlugin( b, '_dereq_', 'require');
+}
 
 module.exports = function( id, externals, expose ){
 
@@ -7,8 +12,11 @@ module.exports = function( id, externals, expose ){
       alias: { },
       browserifyOptions: {
         node : true,
-        paths:[ './extensions', './src' ]
+        paths:[ './extensions', './src' ],
         //bundleExternal : false
+        plugin: [
+          dereqFunc,
+        ]
       }
     },
     files: {}
