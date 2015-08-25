@@ -73,27 +73,27 @@ module.exports = function(config) {
       'SL_Chrome_OSX9': {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: '31',
-        platform: 'OS X 10.9'
+        version: '40',
+        platform: 'OS X 10.10'
       },
       'SL_Firefox_OSX9': {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: '26',
-        platform: 'OS X 10.9'
+        version: '38',
+        platform: 'OS X 10.10'
       },
       'SL_Safari': {
         base: 'SauceLabs',
         browserName: 'safari',
-        platform: 'OS X 10.9',
-        version: '7'
+        platform: 'OS X 10.10',
+        version: '8'
       },
 
       //Win 8.1
       'SL_Chrome_WIN81': {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: '32',
+        version: '40',
         platform: 'Windows 8.1'
       }
       // ,
