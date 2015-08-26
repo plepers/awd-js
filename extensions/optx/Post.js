@@ -98,6 +98,7 @@ function readEffect( reader ){
     case POST_VIGNETTE  : fx = new Vignette  (); break;
     case POST_SATURATION: fx = new Saturation(); break;
     case POST_CONTRAST  : fx = new Contrast  (); break;
+    case POST_GRAIN     : fx = new Grain     (); break;
     case POST_REINHARD  : fx = new Reinhard  (); break;
     case POST_HEJL      : fx = new Hejl      (); break;
     default:

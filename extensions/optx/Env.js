@@ -38,7 +38,13 @@ function getSHLenghtForType( type ){
 }
 
 function getSHTypeForLength( length ){
-  return (length === 28 ) ? SH_TYPE_TRANSPOSED : SH_TYPE_REGULAR;
+  if (length === 28 ) {
+    return SH_TYPE_TRANSPOSED;
+  }
+  if( length ===27 ) {
+    return SH_TYPE_REGULAR;
+  }
+  throw new Error( 'optx::Env : invalid shCoefs size : ', length );
 }
 
 var Env = BaseElement.createStruct( ExtInfos.OPTX_ENV, ExtInfos.URI,
