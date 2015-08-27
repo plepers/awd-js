@@ -172,7 +172,7 @@ VertexBuffer.prototype = {
 
   },
 
-  write : function( awd, writer ){
+  write : ( CONFIG_WRITE ) ?function( awd, writer ){
     writer.U32( this.data.length );
     writer.U16( this.attributes.length );
 
@@ -185,7 +185,7 @@ VertexBuffer.prototype = {
 
     writer.writeSub( this.data );
 
-  }
+  }:undefined
 
 };
 

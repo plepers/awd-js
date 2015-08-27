@@ -11,6 +11,7 @@ var Awd = awdlib.awd,
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
     Texture = optx.Texture,
+    FileData = optx.FileData,
     Ext = optx.ext;
 
 
@@ -23,7 +24,13 @@ function createOptxEmbedTexture(){
   for (var i = 0; i < 128; i++) {
     data[i] = i*2
   }
-  tex.embedData = new Uint8Array( data.buffer );
+
+  var fd = new FileData( );
+  fd.mime = 'mime/custom'
+  fd.uri = "fdUriA"
+  fd.data = new Uint8Array( data.buffer );
+  tex.fileData = fd;
+
   return tex;
 }
 
@@ -79,11 +86,14 @@ describe( "optx material test", function(){
 
     expect( tex.name ).to.be('embedTexture');
 
-    expect( tex.embedData.length ).to.be( 128*4 );
-    var u32 = new Uint32Array( tex.embedData.buffer.slice(tex.embedData.byteOffset, tex.embedData.byteOffset + tex.embedData.byteLength ) )
+    var fdData = tex.fileData.data;
+    expect( fdData.length ).to.be( 128*4 );
+    var u32 = new Uint32Array( fdData.buffer.slice(fdData.byteOffset, fdData.byteOffset + fdData.byteLength ) )
     expect( u32[2] ).to.be( 4 );
     expect( u32[127] ).to.be( 127*2 );
 
+    expect( tex.fileData.mime ).to.be('mime/custom');
+    expect( tex.fileData.uri  ).to.be('fdUriA');
     expect( tex.uri ).to.be(null);
 
 
@@ -119,7 +129,7 @@ describe( "optx material test", function(){
     expect( tex.name ).to.be('externalTexture');
     expect( tex.uri ).to.be('http://test.com/tex/texture.jpg');
 
-    expect( tex.embedData ).to.be( null );
+    expect( tex.fileData ).to.be( null );
 
 
 

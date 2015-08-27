@@ -9,6 +9,7 @@ var awdjs = require( 'optx/_awdlib' ).get(),
 
 
 var ExtInfos     = require( 'optx/extInfos' );
+var FileData     = require( 'optx/FileData' );
 
 
 
@@ -24,7 +25,7 @@ var Texture = BaseElement.createStruct( ExtInfos.OPTX_TEXTURE, ExtInfos.URI,
     this.name       =  '';
     this.extras = new UserAttr();
 
-    this.embedData  = null;
+    this.fileData  = null;
     this.uri        = null;
 
   },
@@ -39,8 +40,8 @@ var Texture = BaseElement.createStruct( ExtInfos.OPTX_TEXTURE, ExtInfos.URI,
     var embed = !!(flags & 1);
 
     if( embed ) {
-      var data_len = reader.U32();
-      this.embedData    = reader.subArray( data_len );
+      this.fileData = new FileData();
+      this.fileData.read( reader );
     } else {
       this.uri = AwdString.read( reader );
     }
@@ -57,15 +58,14 @@ var Texture = BaseElement.createStruct( ExtInfos.OPTX_TEXTURE, ExtInfos.URI,
     AwdString.write( this.name, writer );
 
 
-    var isEmbed = this.embedData !== null;
+    var isEmbed = this.fileData !== null;
 
     var flags = +(isEmbed);
 
     writer.U8( flags );
 
     if( isEmbed ){
-      writer.U32(   this.embedData.length );
-      writer.writeSub( this.embedData );
+      this.fileData.write( writer );
     }
     else if( this.uri !== null ) {
       AwdString.write( this.uri, writer );

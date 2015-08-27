@@ -17,6 +17,7 @@ module.exports = function( awdlib ) {
     Post :              require( 'optx/Post' ),
     Sky :               require( 'optx/Sky' ),
     Texture :           require( 'optx/Texture' ),
+    FileData :          require( 'optx/FileData' ),
     ext :               require( 'optx/ext' ),
     extInfos :          require( 'optx/extInfos' )
   };
