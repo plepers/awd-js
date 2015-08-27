@@ -224,6 +224,9 @@ IndexBuffer.prototype = {
 
 };
 
+IndexBuffer.TRIANGLE_USAGE  = 1;
+IndexBuffer.WIREFRAME_USAGE = 2;
+
 /**
       name       ->    AwdString
       numElemes  ->    U8

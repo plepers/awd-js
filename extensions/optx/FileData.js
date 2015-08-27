@@ -4,7 +4,7 @@ var awdjs = require( 'optx/_awdlib' ).get(),
 
 function FileData(){
   this.data = null;
-  this.mime = 'application/binary';
+  this.mime = 'application/octet-stream';
   this.uri  = '';
 }
 
