@@ -160,6 +160,8 @@ var Camera = BaseElement.createStruct( ExtInfos.OPTX_CAMERA, ExtInfos.URI,
 
 } );
 
+Camera.LENS_PERSPECTIVE  =  LENS_PERSPECTIVE ;
+Camera.LENS_ORTHOGRAPHIC =  LENS_ORTHOGRAPHIC;
 
 Container.extend( Camera.prototype );
 

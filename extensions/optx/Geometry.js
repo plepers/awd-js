@@ -172,7 +172,7 @@ VertexBuffer.prototype = {
 
   },
 
-  write : function( awd, writer ){
+  write : ( CONFIG_WRITE ) ?function( awd, writer ){
     writer.U32( this.data.length );
     writer.U16( this.attributes.length );
 
@@ -185,7 +185,7 @@ VertexBuffer.prototype = {
 
     writer.writeSub( this.data );
 
-  }
+  }:undefined
 
 };
 
@@ -223,6 +223,9 @@ IndexBuffer.prototype = {
   }
 
 };
+
+IndexBuffer.TRIANGLE_USAGE  = 1;
+IndexBuffer.WIREFRAME_USAGE = 2;
 
 /**
       name       ->    AwdString

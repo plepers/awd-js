@@ -235,7 +235,7 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
       props.set( kP_anisoStrength   , this.anisoStrength     );
       props.set( kP_anisoIntegral   , this.anisoIntegral     );
       props.set( kP_anisoTangent    , this.anisoTangent      );
-      props.set( kP_subsurface            , this.subsurface              );
+      props.set( kP_subsurface      , this.subsurface              );
     }
 
     if( this.subsurface ) {

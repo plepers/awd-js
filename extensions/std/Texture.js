@@ -13,7 +13,7 @@
 
     init : function( ){
       this.name = "";
-      this.type = 0;
+      this.texType = 0;
 
       this.url = null;
       this.data = null;
@@ -26,11 +26,11 @@
 
     read : function( reader ){
       this.name = AwdString.read( reader );
-      this.type = reader.U8();
+      this.texType = reader.U8();
 
       var str_len = reader.U32();
       //External texture
-      if( this.type === 0 ){
+      if( this.texType === 0 ){
         this.url = reader.readUTFBytes( str_len );
         console.log( this.url );
       }
@@ -52,7 +52,7 @@
     function( writer ) {
 
       AwdString.write( this.name, writer );
-      writer.U8( this.type );
+      writer.U8( this.texType );
 
       var sptr = writer.skipBlockSize();
 
