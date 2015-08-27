@@ -127,6 +127,8 @@ var Sky = BaseElement.createStruct( ExtInfos.OPTX_SKY, ExtInfos.URI,
 
 } );
 
+Sky.SKY_TYPE_SH  = SKY_TYPE_SH ;
+Sky.SKY_TYPE_ENV = SKY_TYPE_ENV;
 
 Container.extend( Sky.prototype );
 
