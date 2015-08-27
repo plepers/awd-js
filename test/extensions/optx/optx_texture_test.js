@@ -31,6 +31,13 @@ function createOptxEmbedTexture(){
   fd.data = new Uint8Array( data.buffer );
   tex.fileData = fd;
 
+  tex.infos = {
+    width : 128,
+    height : 256,
+    glinternalFormat : 20,
+    glformat  : 10
+  }
+
   return tex;
 }
 
@@ -95,6 +102,14 @@ describe( "optx material test", function(){
     expect( tex.fileData.mime ).to.be('mime/custom');
     expect( tex.fileData.uri  ).to.be('fdUriA');
     expect( tex.uri ).to.be(null);
+
+    var infos = tex.infos;
+
+    expect( infos.width            ).to.be.equal( 128 );
+    expect( infos.height           ).to.be.equal( 256 );
+    expect( infos.glinternalFormat ).to.be.equal( 20 );
+    expect( infos.glformat         ).to.be.equal( 10 );
+
 
 
 
