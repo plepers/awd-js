@@ -145,7 +145,7 @@ function Grain( amount, sharpness ){
   this.props = [ amount, sharpness ];
 }
 
-Sharpen.prototype = {
+Grain.prototype = {
   getAmount    : function( ){ return this.props[0]; },
   setAmount    : function(v){        this.props[0] = v; },
   getsharpness : function( ){ return this.props[1]; },
