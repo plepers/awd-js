@@ -37,7 +37,7 @@ function createLightA(){
   light.radius        = 50
   light.falloffCurve  = 1.5
   light.spotAngle     = 30
-  light.spotShapness  = .2
+  light.spotSharpness = .2
   light.shadow        = true
 
 
@@ -105,7 +105,7 @@ describe( "optx Light test", function(){
     numEqals( light.radius        , 50 );
     numEqals( light.falloffCurve  , 1.5 );
     numEqals( light.spotAngle     , 30 );
-    numEqals( light.spotShapness  , .2 );
+    numEqals( light.spotSharpness  , .2 );
 
     expect(   light.shadow        ).to.be( true );
 

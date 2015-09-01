@@ -16,7 +16,7 @@ var kP_color              =  1,
     kP_radius             =  2,
     kP_falloffCurve       =  3,
     kP_spotAngle          =  4,
-    kP_spotShapness       =  5,
+    kP_spotSharpness      =  5,
     kP_shadow             =  6;
 
 
@@ -26,7 +26,7 @@ pStruct[ kP_color          ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_radius         ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_falloffCurve   ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_spotAngle      ] = Consts.AWD_FIELD_FLOAT32;
-pStruct[ kP_spotShapness   ] = Consts.AWD_FIELD_FLOAT32;
+pStruct[ kP_spotSharpness  ] = Consts.AWD_FIELD_FLOAT32;
 pStruct[ kP_shadow         ] = Consts.AWD_FIELD_BOOL;
 
 
@@ -53,7 +53,7 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
     this.falloffCurve      = 2;
 
     this.spotAngle         = 70; //deg
-    this.spotShapness      = 0.0;
+    this.spotSharpness     = 0.0;
 
   },
 
@@ -93,7 +93,7 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
     props.set( kP_radius         , this.radius       );
     props.set( kP_falloffCurve   , this.falloffCurve );
     props.set( kP_spotAngle      , this.spotAngle    );
-    props.set( kP_spotShapness   , this.spotShapness );
+    props.set( kP_spotSharpness  , this.spotSharpness );
     props.set( kP_shadow         , this.shadow       );
 
 
@@ -106,7 +106,7 @@ var Light = BaseElement.createStruct( ExtInfos.OPTX_LIGHT, ExtInfos.URI,
     this.radius        =   props.get( kP_radius       , this.radius        );
     this.falloffCurve  =   props.get( kP_falloffCurve , this.falloffCurve  );
     this.spotAngle     =   props.get( kP_spotAngle    , this.spotAngle     );
-    this.spotShapness  =   props.get( kP_spotShapness , this.spotShapness  );
+    this.spotSharpness =   props.get( kP_spotSharpness, this.spotSharpness  );
     this.shadow        = !!props.get( kP_shadow       , this.shadow        );
 
   },
