@@ -15,6 +15,11 @@ var Awd = awdlib.awd,
     Ext = optx.ext;
 
 
+
+function numEqals( n1, n2 ){
+  expect( Math.abs(n1 - n2) < 0.00001 ).to.be.equal( true );
+}
+
 function makeTexture( name ){
   var tex = new Texture()
   tex.name = name;
@@ -27,7 +32,6 @@ function createOptxMaterialDefault(){
   mat.name = 'materialDefault'
   return mat;
 }
-
 
 function createOptxMaterialA(){
   var mat = new Material()
@@ -64,7 +68,7 @@ function createOptxMaterialA(){
   mat.textures.reflectivity = makeTexture( 'reflectivity' );
   mat.textures.agt          = makeTexture( 'agt' );
 
-  mat.colors.subsurface = 0xFF501010;
+  mat.colors.subsurface = [1.1, 2.0, 3.3];
 
   return mat;
 }
@@ -72,9 +76,7 @@ function createOptxMaterialA(){
 
 function compareMats( matA, matB ) {
 
-  function numEqals( n1, n2 ){
-    expect( Math.abs(n1 - n2) < 0.00001 ).to.be.equal( true );
-  }
+
 
   function arrEqals( a1, a2 ){
     expect( a1.length ).to.be.equal( a2.length );
@@ -212,7 +214,10 @@ describe( "optx material test", function(){
     expect( nmat.textures.agt.name ).to.be.equal( 'agt' );
 
     expect( nmat.textures.subsurface ).not.to.be.ok();
-    nmat.colors.subsurface = 0xFF501010;
+
+    numEqals( nmat.colors.subsurface[0], 1.1);
+    numEqals( nmat.colors.subsurface[1], 2.0);
+    numEqals( nmat.colors.subsurface[2], 3.3);
 
 
   });

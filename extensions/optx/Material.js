@@ -82,11 +82,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     };
 
     this.colors = {
-      albedo       : 0xFF000000,
-      reflectivity : 0xFF000000,
-      normal       : 0xFF000000,
-      subsurface   : 0xFF000000,
-      agt          : 0xFF000000
+      albedo       : [0, 0, 0],
+      reflectivity : [0, 0, 0],
+      normal       : [0, 0, 0],
+      subsurface   : [0, 0, 0],
+      agt          : [0, 0, 0]
     };
 
 
@@ -139,11 +139,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     this.textures.subsurface   = this.readTexture( reader );
     this.textures.agt          = this.readTexture( reader );
 
-    this.colors.albedo         = reader.U32();
-    this.colors.reflectivity   = reader.U32();
-    this.colors.normal         = reader.U32();
-    this.colors.subsurface     = reader.U32();
-    this.colors.agt            = reader.U32();
+    this.colors.albedo         = [reader.F32(), reader.F32(), reader.F32()];
+    this.colors.reflectivity   = [reader.F32(), reader.F32(), reader.F32()];
+    this.colors.normal         = [reader.F32(), reader.F32(), reader.F32()];
+    this.colors.subsurface     = [reader.F32(), reader.F32(), reader.F32()];
+    this.colors.agt            = [reader.F32(), reader.F32(), reader.F32()];
 
 
     var props = new Properties( pStruct );
@@ -155,7 +155,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
 
   },
 
-
+  writeColor : function( c, writer ){
+    writer.F32( c[0] );
+    writer.F32( c[1] );
+    writer.F32( c[2] );
+  },
 
   write : ( CONFIG_WRITE ) ?
   function( writer ) {
@@ -170,11 +174,11 @@ var Material = BaseElement.createStruct( ExtInfos.OPTX_MATERIAL, ExtInfos.URI,
     this.writeTexture( this.textures.agt          , writer );
 
 
-    writer.U32( this.colors.albedo       );
-    writer.U32( this.colors.reflectivity );
-    writer.U32( this.colors.normal       );
-    writer.U32( this.colors.subsurface   );
-    writer.U32( this.colors.agt          );
+    this.writeColor( this.colors.albedo       , writer );
+    this.writeColor( this.colors.reflectivity , writer );
+    this.writeColor( this.colors.normal       , writer );
+    this.writeColor( this.colors.subsurface   , writer );
+    this.writeColor( this.colors.agt          , writer );
 
     var props = new Properties( pStruct );
     this.setupProps( props );
