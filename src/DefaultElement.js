@@ -52,7 +52,8 @@ var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
     }
 
     this.id = list.length + 1;
-
+    this.prepareChunk();
+    this.chunk.id = this.id;
     list.push( this );
 
   },
