@@ -431,6 +431,7 @@
       case Consts.INDEX      :
       case Consts.NORMAL     :
       case Consts.TANGENT    :
+      case Consts.BINORMAL   :
         return 3;
 
       case Consts.UVS      :

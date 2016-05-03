@@ -97,7 +97,9 @@
     JOIN_IDX            : 6,
     JOIN_WGT            : 7,
     SUVS                : 8,
+    // experimental
     COLOR               : 11,
+    BINORMAL            : 12,
 
     DEFAULT_NS                  : 0
   };
