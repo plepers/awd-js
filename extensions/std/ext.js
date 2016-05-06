@@ -5,6 +5,7 @@ var DefaultElement = require( 'DefaultElement' ),
     Container     = require( 'std/Container' ),
     Mesh          = require( 'std/Mesh' ),
     Texture       = require( 'std/Texture' ),
+    Material      = require( 'std/Material' ),
     //Namespace     = require( 'std/Namespace' ),
     Geometry      = require( 'std/Geometry' );
 
@@ -15,6 +16,7 @@ var structs = [
   Container,
   Mesh,
   Texture,
+  Material,
   //Namespace,
   Geometry
 ];
