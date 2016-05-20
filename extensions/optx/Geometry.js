@@ -1,12 +1,9 @@
-var awdjs = require( 'optx/_awdlib' ).get(),
 
-    //BaseGeom     = awdjs.Geometry,
-    //BufferReader = awdjs.bufferReader,
-    BaseElement  = awdjs.BaseElement,
-    Consts       = awdjs.consts,
-    AwdString    = awdjs.awdString,
-    UserAttr     = awdjs.userAttr,
-    Properties   = awdjs.properties;
+var BaseElement  = require( '../../src/BaseElement' ),
+    UserAttr     = require( '../../src/types/userAttr' ),
+    AwdString    = require( '../../src/types/awdString' ),
+    Properties   = require( '../../src/types/properties' ),
+    Consts       = require( '../../src/consts' );
 
 
 var ExtInfos     = require( 'optx/extInfos' );

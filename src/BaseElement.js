@@ -1,7 +1,7 @@
 (function(){
 
-  var Consts      = require( "consts" ),
-      Chunk       = require( "chunk" );
+  var Consts      = require( "./consts" ),
+      Chunk       = require( "./chunk" );
 
 
   var DefaultElement = {

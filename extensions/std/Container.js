@@ -1,11 +1,11 @@
 (function(){
 
-  var UserAttr    = require( "types/userAttr" ),
-      AwdString   = require( "types/awdString" ),
-      Vec3        = require( "types/vec3" ),
-      Matrix4     = require( "types/matrix" ),
-      Consts      = require( "consts" ),
-      BaseElement  = require( 'BaseElement' );
+  var UserAttr    = require( "../../src/types/userAttr" ),
+      AwdString   = require( "../../src/types/awdString" ),
+      Vec3        = require( "../../src/types/vec3" ),
+      Matrix4     = require( "../../src/types/matrix" ),
+      Consts      = require( "../../src/consts" ),
+      BaseElement  = require( '../../src/BaseElement' );
 
 
   var Container = BaseElement.createStruct( Consts.CONTAINER, null,

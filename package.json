@@ -1,7 +1,7 @@
 {
   "name": "awdlib",
   "description": "AWD tools for javascript",
-  "version": "0.9.1",
+  "version": "0.10.1",
   "homepage": "https://github.com/plepers/awd-js",
   "author": {
     "name": "Pierre Lepers",
@@ -43,13 +43,15 @@
     "grunt-karma": "^0.12.0",
     "grunt-mocha-test": "^0.12.7",
     "karma": "^0.13.9",
+    "karma-browserify": "^4.4.2",
     "karma-chrome-launcher": "^0.2.0",
     "karma-firefox-launcher": "^0.1.6",
     "karma-ie-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.2.14",
-    "load-grunt-tasks": "^0.6.0"
+    "load-grunt-tasks": "^0.6.0",
+    "mocha": "^2.4.5"
   },
   "keywords": [
     "awd",

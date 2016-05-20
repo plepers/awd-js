@@ -1,6 +1,6 @@
 (function () {
 
-  var Consts = require( "consts" );
+  var Consts = require( "./consts" );
 
   var Header = function() {
 

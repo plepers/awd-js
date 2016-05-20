@@ -1,11 +1,10 @@
-var awdjs = require( 'pil/_awdlib' ).get(),
-    BaseElement  = awdjs.BaseElement,
-    BufferReader = awdjs.bufferReader,
-    Consts       = awdjs.consts;
+var BaseElement  = require( '../../src/BaseElement' ),
+    BufferReader = require( '../../src/bufferReader' ),
+    Consts       = require( '../../src/consts' );
 
-var BaseGeom = require( 'std/Geometry' );
+var BaseGeom     = require( '../std/Geometry' );
 
-var ExtInfos     = require( 'pil/extInfos' );
+var ExtInfos     = require( './extInfos' );
 
 
 

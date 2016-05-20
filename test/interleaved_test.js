@@ -2,8 +2,9 @@
 
 
 var awdlib = require('awdlib' );
-var extpil = require('awdlib_pil' )(awdlib);
-var stdext = require('awdlib_std' )(awdlib);
+var extpil = require('awdlib_pil' );
+var stdext = require('awdlib_std' );
+
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,

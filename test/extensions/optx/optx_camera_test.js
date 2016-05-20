@@ -2,7 +2,7 @@
 
 
 var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' )(awdlib);
+var optx = require('awdlib_optx' );
 var utils = require('./optx_utils' );
 
 var Awd = awdlib.awd,
@@ -14,7 +14,6 @@ var Awd = awdlib.awd,
     Camera = optx.Camera,
     Post = optx.Post,
     Ext = optx.ext;
-
 
 function numEqals( n1, n2 ){
   expect( Math.abs(n1 - n2) < 0.00001 ).to.be.equal( true );

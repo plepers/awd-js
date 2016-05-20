@@ -1,7 +1,8 @@
-var awdjs = require( 'optx/_awdlib' ).get();
 
-var Extension          = awdjs.extension,
-    Geometry           = require( 'optx/Geometry' ),
+
+var Extension          = require( '../../src/extension' );
+
+var Geometry           = require( 'optx/Geometry' ),
     Mesh               = require( 'optx/Mesh' ),
     Material           = require( 'optx/Material' ),
     Texture            = require( 'optx/Texture' ),
