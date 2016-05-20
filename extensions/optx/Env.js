@@ -1,10 +1,8 @@
 
-var awdjs = require( 'optx/_awdlib' ).get(),
 
-    //AwdString    = awdjs.awdString,
-    Consts       = awdjs.consts,
-    BaseElement  = awdjs.BaseElement,
-    UserAttr     = awdjs.userAttr;
+var BaseElement  = require( '../../src/BaseElement' ),
+    UserAttr     = require( '../../src/types/userAttr' ),
+    Consts       = require( '../../src/consts' );
 
 
 var ExtInfos     = require( 'optx/extInfos' ),

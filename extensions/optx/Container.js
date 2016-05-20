@@ -1,15 +1,10 @@
 
+var BaseElement  = require( '../../src/BaseElement' ),
+    AwdString    = require( '../../src/types/awdString' ),
+    Vec3         = require( '../../src/types/vec3' ),
+    Matrix4      = require( '../../src/types/matrix' ),
+    Consts       = require( '../../src/consts' );
 
-var awdjs = require( 'optx/_awdlib' ).get(),
-
-    AwdString    = awdjs.awdString,
-    Consts       = awdjs.consts,
-    BaseElement  = awdjs.BaseElement,
-    Vec3         = awdjs.vec3,
-    Matrix4      = awdjs.matrix;
-
-
-// var ExtInfos     = require( 'optx/extInfos' );
 
 // asbtract type for now
 //

@@ -1,6 +1,5 @@
 
-var awdjs = require( 'optx/_awdlib' ).get(),
-    AwdString    = awdjs.awdString;
+var AwdString    = require( '../../src/types/awdString' );
 
 function FileData(){
   this.data = null;

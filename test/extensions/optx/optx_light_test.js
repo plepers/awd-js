@@ -2,7 +2,7 @@
 
 
 var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' )(awdlib);
+var optx = require('awdlib_optx' );
 
 var Awd = awdlib.awd,
     Consts = awdlib.consts,

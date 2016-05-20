@@ -43,6 +43,7 @@
     "grunt-karma": "^0.12.0",
     "grunt-mocha-test": "^0.12.7",
     "karma": "^0.13.9",
+    "karma-browserify": "^4.4.2",
     "karma-chrome-launcher": "^0.2.0",
     "karma-firefox-launcher": "^0.1.6",
     "karma-ie-launcher": "^0.2.0",

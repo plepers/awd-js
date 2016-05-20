@@ -2,11 +2,11 @@
 
 
 var awdlib = require('awdlib' );
-var stdext = require('awdlib_std' )(awdlib);
+var stdext = require('awdlib_std');
 
 
 
-var Awd = awdlib.awd,
+var Awd     = awdlib.awd,
     Consts  = awdlib.consts,
     fs      = require( 'fs' ),
     expect  = require('expect.js'),
