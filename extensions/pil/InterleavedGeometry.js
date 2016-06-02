@@ -78,15 +78,21 @@ vert size
 
     this.numVertices = numVals / vSize;
 
-    this.allocate( numVals, str_ftype );
+    // this.allocate( numVals, str_ftype );
 
-    var read = BaseGeom.getReadFunc( str_ftype, reader );
-    var data = this.data;
-    var c = 0;
+    // var read = BaseGeom.getReadFunc( str_ftype, reader );
+    // var data = this.data;
+    // var c = 0;
 
-    while( reader.ptr < str_end ){
-      data[c++] = read.call( reader );
-    }
+
+    var Class = BaseGeom.getArray( str_ftype );
+    this.data = new Class( reader.buffer, reader.ptr, numVals );
+    reader.ptr = str_end;
+    // while( reader.ptr < str_end ){
+    //   data[c++] = read.call( reader );
+    // }
+
+
 
 
   },
