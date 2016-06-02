@@ -1,10 +1,10 @@
 
-var Header        = require( 'header' ),
-    Writer        = require( 'writer' ),
-    Consts        = require( 'consts' ),
-    Chunk         = require( 'chunk' ),
-    BufferReader  = require( 'bufferReader' ),
-    DefaultElement = require( 'DefaultElement' );
+var Header        = require( './header' ),
+    Writer        = require( './writer' ),
+    Consts        = require( './consts' ),
+    Chunk         = require( './chunk' ),
+    BufferReader  = require( './bufferReader' ),
+    DefaultElement = require( './DefaultElement' );
 
 
 var AWD = function(){

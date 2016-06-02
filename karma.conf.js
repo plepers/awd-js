@@ -2,23 +2,19 @@ module.exports = function(config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
-    basePath: './',
+    basePath: '',
 
 
     // frameworks to use
-    frameworks: ['mocha'],
+    frameworks: ['browserify', 'mocha'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'test/samples/*.awd.gz', included: false, served: true },
-      {pattern: 'node_modules/expect.js/**/*.js', included: false},
       'test/defines.js',
-      'tmp/awdlib_require.js',
-      'tmp/awdlib_pil_require.js',
-      'tmp/awdlib_std_require.js',
-      'tmp/awdlib_optx_require.js',
-      'tmp/tests.js'
+      'test/*.js',
+      'test/extensions/**/*.js',
+      {pattern: 'test/samples/*.awd.gz', included: false, served: true }
     ],
 
     proxies: {
@@ -28,20 +24,21 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      'src/index.js'
     ],
 
+
+    preprocessors: {
+      'test/*.js':               [ 'browserify' ],
+      'test/extensions/**/*.js': [ 'browserify' ]
+    },
+
+    browserify: {
+      debug: true
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     reporters: ['dots'],
-
-    client: {
-      mocha: {
-        reporter: 'dots', // change Karma's debug.html to the mocha web reporter
-        timeout: 8000
-      }
-    },
 
 
     // web server port
@@ -58,7 +55,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
     sauceLabs: {
       startConnect: true,
@@ -136,7 +133,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: [ 'Chrome', 'Firefox', 'Safari'],
+    browsers: [ 'Chrome'],
 
 
     // If browser does not capture in given timeout [ms], kill it
@@ -153,10 +150,13 @@ module.exports = function(config) {
   if( process.env.TRAVIS ) {
 
     var browsers = [];
-    for( browser in config.customLaunchers ){
+    for( var browser in config.customLaunchers ){
       browsers.push( browser );
     }
     config.browsers = browsers;
+
+    config.autoWatch = false;
+    config.singleRun = true;
 
   }
 };

@@ -5,7 +5,7 @@
  * Apply matrix transformation on geometries buffers
  */
 
-var Consts = require( 'consts' );
+var Consts = require( '../consts' );
 
 function xform1C( bdata, mtx ){
   var o, r;
