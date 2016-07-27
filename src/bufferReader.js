@@ -100,6 +100,10 @@
 
       while ( this.ptr < end ) {
         c1 = this.U8();
+        // fix null char
+        if( c1 === 0 ){
+          continue;
+        }
         if (c1 < 128) {
           out[c++] = String.fromCharCode(c1);
         } else if (c1 > 191 && c1 < 224) {
