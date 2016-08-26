@@ -49,15 +49,20 @@
 
     // TYPES
 
-    GENERIC     : 0,
-    GEOMETRY    : 1,
-    PRIMITIVE   : 11,
-    CONTAINER   : 22,
-    MESH        : 23,
-    MATERIAL    : 81,
-    TEXTURE     : 82,
-    NAMESPACE   : 254,
-    METADATA    : 255,
+    GENERIC            : 0,
+    GEOMETRY           : 1,
+    PRIMITIVE          : 11,
+    CONTAINER          : 22,
+    MESH               : 23,
+    MATERIAL           : 81,
+    TEXTURE            : 82,
+    SKELETON           : 101,
+    SKELETON_POSE      : 102,
+    SKELETON_ANIMATION : 103,
+    ANIMATION_SET      : 113,
+    ANIMATOR           : 122,
+    NAMESPACE          : 254,
+    METADATA           : 255,
 
 
     // MODELS

@@ -3,8 +3,9 @@ exports = module.exports = {
 
 
   toArrayBuffer : function(buffer) {
-    if( buffer.byteLength !== undefined )
+    if( buffer instanceof ArrayBuffer )
       return buffer; // in browser
+
     var ab = new ArrayBuffer(buffer.length);
     var view = new Uint8Array(ab);
     for (var i = 0; i < buffer.length; ++i) {
@@ -12,6 +13,7 @@ exports = module.exports = {
     }
     return ab;
   },
+
 
   fromArrayBuffer : function(ab) {
     var buffer = new Buffer(ab.byteLength);
@@ -21,5 +23,6 @@ exports = module.exports = {
     }
     return buffer;
   }
+
 
 };

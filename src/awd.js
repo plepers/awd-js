@@ -203,7 +203,7 @@ AWD.prototype = {
     data.read( reader );
 
     if( reader.ptr - p !== chunk.size ){
-      console.log( "Warn bad block parsing , byte delta : ", reader.ptr - p - chunk.size );
+      console.log( "Warn bad block parsing , byte delta : ", chunk.type, chunk.ns, reader.ptr - p - chunk.size );
       reader.ptr = p+chunk.size;
     }
 
