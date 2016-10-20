@@ -55,11 +55,15 @@ describe( "interleaved geometries test", function(){
     expect( ig.subGeoms.length ).to.be.equal( 1 );
     expect( ig.subGeoms[0].buffers.length ).to.be.equal( 2 );
     expect( ig.subGeoms[0].buffers.length ).to.be.equal( 2 );
+    // console.log( ig.subGeoms[0].buffers[0] )
+    // console.log( ig.subGeoms[0].buffers[1] )
+    // console.log( ig.subGeoms[0].buffers[2] )
 
     // index
     expect( ig.subGeoms[0].buffers[0].ftype ).to.be.equal( Consts.AWD_FIELD_UINT16);
     // ...
-    expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_FLOAT32);
+    expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_UINT8); // C4D bug
+    // expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_FLOAT32);
 
   });
 
