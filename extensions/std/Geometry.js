@@ -261,9 +261,9 @@
     if( val === 2 ){
       return Consts.AWD_FIELD_UINT16;
     }
-    else if( val === 4 ){
-      return Consts.AWD_FIELD_FLOAT32;
-    }
+    // else if( val === 4 ){
+    //   return Consts.AWD_FIELD_FLOAT32;
+    // }
     return val;
   };
 
@@ -308,7 +308,8 @@
           str_end   = reader.ptr + str_len;
 
       str_ftype = fixC4D_Type( str_ftype );
-      if( str_ftype !== Consts.AWD_FIELD_UINT16 &&
+      if( str_ftype !== Consts.AWD_FIELD_UINT8 &&
+          str_ftype !== Consts.AWD_FIELD_UINT16 &&
           str_ftype !== Consts.AWD_FIELD_FLOAT32 &&
           str_ftype !== Consts.AWD_FIELD_FLOAT64 ) {
         console.log( "WARN unexpected stream data type ", str_ftype, str_type, str_len );
@@ -367,7 +368,8 @@
 
   var getTypeSize = function( type ){
     switch( type ){
-
+      case Consts.AWD_FIELD_UINT8 :
+        return 1;
       case Consts.AWD_FIELD_UINT16 :
         return 2;
       case Consts.AWD_FIELD_FLOAT32 :
@@ -381,6 +383,8 @@
   var getReadFunc = function( type, reader ){
     switch( type ){
 
+      case Consts.AWD_FIELD_UINT8 :
+        return reader.U8;
       case Consts.AWD_FIELD_UINT16 :
         return reader.U16;
       case Consts.AWD_FIELD_FLOAT32 :
@@ -395,6 +399,8 @@
   var getWriteFunc = function( type, writer ){
     switch( type ){
 
+      case Consts.AWD_FIELD_UINT8 :
+        return writer.U8;
       case Consts.AWD_FIELD_UINT16 :
         return writer.U16;
       case Consts.AWD_FIELD_FLOAT32 :
@@ -411,6 +417,8 @@
 
     switch( type ){
 
+      case Consts.AWD_FIELD_UINT8 :
+        return Uint8Array;
       case Consts.AWD_FIELD_UINT16 :
         return Uint16Array;
       case Consts.AWD_FIELD_FLOAT32 :

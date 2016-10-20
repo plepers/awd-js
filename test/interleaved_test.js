@@ -35,7 +35,7 @@ describe( "interleaved geometries test", function(){
 
       awd.addExtension( stdext.ext.getExtension() );
       awd.addExtension( Ext.getExtension() );
-
+      console.log( awdBuf )
       awd.parse( awdBuf );
 
       done();

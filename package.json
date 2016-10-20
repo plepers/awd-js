@@ -1,7 +1,7 @@
 {
   "name": "awdlib",
   "description": "AWD tools for javascript",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "homepage": "https://github.com/plepers/awd-js",
   "author": {
     "name": "Pierre Lepers",
