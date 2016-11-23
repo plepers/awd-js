@@ -1,11 +1,13 @@
 
-var Extension           = require( '../../src/extension' ),
-    InterleavedGeometry = require( './InterleavedGeometry' ),
-    ExtInfos            = require( './extInfos' );
+var Extension                = require( '../../src/extension' ),
+    InterleavedGeometry      = require( './InterleavedGeometry' ),
+    CompactSkeletonAnimation = require( './CompactSkeletonAnimation' ),
+    ExtInfos                 = require( './extInfos' );
 
 
 var structs = [
-  InterleavedGeometry
+  InterleavedGeometry,
+  CompactSkeletonAnimation
 ];
 
 
