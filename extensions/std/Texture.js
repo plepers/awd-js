@@ -33,7 +33,6 @@
       //External texture
       if( this.textype === 0 ){
         this.url = reader.readUTFBytes( str_len );
-        console.log( this.url );
       }
       //Embed texture
       else {
