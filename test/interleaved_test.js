@@ -1,18 +1,16 @@
 'use strict';
 
 
-var awdlib = require('awdlib' );
-var extpil = require('awdlib_pil' );
-var stdext = require('awdlib_std' );
-
-
-var Awd = awdlib.awd,
-    Consts = awdlib.consts,
+var Awd = require('../lib/awd'),
+    Consts = require('../lib/consts'),
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     butils = require( './utils/buffer_utils'),
-    Interleaved = extpil.InterleavedGeometry,
-    Ext = extpil.ext;
+    Interleaved   = require('../lib/pil/InterleavedGeometry'),
+    toInterleaved = require('../lib/tools/toInterleaved');
+
+var Ext = require('../lib/pil/ext');
+var StdExt = require('../lib/std/ext');
 
 
 describe( "interleaved geometries test", function(){
@@ -33,7 +31,7 @@ describe( "interleaved geometries test", function(){
       awdBuf = butils.toArrayBuffer( data );
       awd = new Awd( );
 
-      awd.addExtension( stdext.ext.getExtension() );
+      awd.addExtension( StdExt.getExtension() );
       awd.addExtension( Ext.getExtension() );
       console.log( awdBuf )
       awd.parse( awdBuf );
@@ -49,8 +47,9 @@ describe( "interleaved geometries test", function(){
 
     var geom = awd.getDatasByType( Consts.GEOMETRY )[0];
 
-    var ig = new Interleaved();
-    ig.fromGeometry( geom );
+    // var ig = new Interleaved();
+    // ig.fromGeometry( geom );
+    var ig = toInterleaved( geom );
 
     expect( ig.subGeoms.length ).to.be.equal( 1 );
     expect( ig.subGeoms[0].buffers.length ).to.be.equal( 2 );
@@ -74,9 +73,11 @@ describe( "interleaved geometries test", function(){
 
     var geom = awd.getDatasByType( Consts.GEOMETRY )[0];
 
-    var ig = new Interleaved();
-    ig.fromGeometry( geom );
+    // var ig = new Interleaved();
+    // ig.fromGeometry( geom );
 
+    var ig = toInterleaved( geom );
+    
     awd.removeElement( geom );
     awd.addElement( ig );
 
@@ -93,7 +94,7 @@ describe( "interleaved geometries test", function(){
 
 
     var re = new Awd( );
-    re.addExtension( stdext.ext.getExtension() );
+    re.addExtension( StdExt.getExtension() );
     re.addExtension( Ext.getExtension() );
     re.parse( buf );
 

@@ -1,17 +1,16 @@
 'use strict';
 
 
-var awdlib = require('awdlib' );
-var stdext = require('awdlib_std');
 
 
 
-var Awd     = awdlib.awd,
-    Consts  = awdlib.consts,
+var Awd     = require('../lib/awd'),
+    Consts  = require('../lib/consts'),
     fs      = require( 'fs' ),
     expect  = require('expect.js'),
     butils  = require( './utils/buffer_utils');
 
+var StdExt = require('../lib/std/ext');
 
 describe( "Parse geometry", function(){
 
@@ -29,7 +28,7 @@ describe( "Parse geometry", function(){
 
       awdBuf = butils.toArrayBuffer( data );
       awd = new Awd( );
-      awd.addExtension( stdext.ext.getExtension() );
+      awd.addExtension( StdExt.getExtension() );
       awd.parse( awdBuf );
 
       done();

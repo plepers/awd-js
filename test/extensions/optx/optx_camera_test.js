@@ -1,19 +1,17 @@
 'use strict';
 
 
-var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' );
 var utils = require('./optx_utils' );
 
-var Awd = awdlib.awd,
-    Consts = awdlib.consts,
+var Awd     = require('../../../lib/awd'),
+    Consts = require('../../../lib/consts'),
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
-    Camera = optx.Camera,
-    Post = optx.Post,
-    Ext = optx.ext;
+    Camera = require('../../../lib/optx/Camera'),
+    Post   = require('../../../lib/optx/Post'),
+    Ext    = require('../../../lib/optx/ext');
 
 function numEqals( n1, n2 ){
   expect( Math.abs(n1 - n2) < 0.00001 ).to.be.equal( true );

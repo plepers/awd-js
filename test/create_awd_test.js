@@ -1,12 +1,12 @@
 'use strict';
-var awdlib = require('awdlib' );
 
-var Awd         = awdlib.awd,
-    Consts      = awdlib.consts,
+
+var Awd         = require('../lib/awd'),
+    Consts      = require('../lib/consts'),
     expect      = require('expect.js');
 
-var stdext = require( 'awdlib_std' ),
-    Container   = stdext.Container;
+var Container   = require('../lib/std/Container');
+var StdExt      = require('../lib/std/ext');
 
 
 describe( "create brand new awd", function(){
@@ -36,7 +36,7 @@ describe( "create brand new awd", function(){
 
     var awd = new Awd();
 
-    awd.addExtension( stdext.ext.getExtension() );
+    awd.addExtension( StdExt.getExtension() );
 
     var container = new Container();
     container.name = "abc123";
@@ -46,7 +46,7 @@ describe( "create brand new awd", function(){
 
 
     awd = new Awd();
-    awd.addExtension( stdext.ext.getExtension() );
+    awd.addExtension( StdExt.getExtension() );
     awd.parse( buf );
 
     var conts = awd.getDatasByType( Consts.CONTAINER );

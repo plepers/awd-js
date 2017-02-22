@@ -1,19 +1,17 @@
 'use strict';
 
 
-var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' );
 
-var Awd = awdlib.awd,
-    Consts = awdlib.consts,
+var Awd     = require('../../../lib/awd'),
+    Consts = require('../../../lib/consts'),
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     utils  = require('./optx_utils'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
-    Env = optx.Env,
-    Texture = optx.Texture,
-    Ext = optx.ext;
+    Env = require('../../../lib/optx/Env'),
+    Texture = require('../../../lib/optx/Texture'),
+    Ext = require('../../../lib/optx/ext');
 
 
 function numEqals( n1, n2 ){

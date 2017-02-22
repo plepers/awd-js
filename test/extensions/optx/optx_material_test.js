@@ -1,18 +1,16 @@
 'use strict';
 
 
-var awdlib = require('awdlib' );
-var optx = require('awdlib_optx' );
 
-var Awd = awdlib.awd,
-    Consts = awdlib.consts,
+var Awd     = require('../../../lib/awd'),
+    Consts = require('../../../lib/consts'),
     fs =  require( 'fs' ),
     expect  = require('expect.js'),
     butils = require( '../../utils/buffer_utils'),
     compArray = require( '../../utils/compareArrays'),
-    Material = optx.Material,
-    Texture = optx.Texture,
-    Ext = optx.ext;
+    Material = require('../../../lib/optx/Material'),
+    Texture  = require('../../../lib/optx/Texture'),
+    Ext      = require('../../../lib/optx/ext');
 
 
 

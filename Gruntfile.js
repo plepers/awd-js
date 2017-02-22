@@ -9,22 +9,7 @@ module.exports = function(grunt) {
   require("load-grunt-tasks")(grunt);
   require( './utils/makeIndex')( grunt );
 
-  var genBrowserify = require ( './utils/gen-browserify');
 
-
-
-  function makeExtIndex( ext ) {
-    return {
-      options : {
-        moduleNs : ext,
-        output : '.tmp/awdlib_'+ext+'.js',
-        basedir : './extensions'
-      },
-      files: {
-        src : ['extensions/'+ext+'/**/*.js']
-      }
-    };
-  }
 
 
 
@@ -42,86 +27,12 @@ module.exports = function(grunt) {
       files: ['test/**/*_test.js'],
     },
 
-    makeindex : {
-      awdlib : {
-        options : {
-          moduleNs : "awdjs",
-          output : '.tmp/awdlib.js',
-          basedir : './src'
-        },
-        files: {
-          src : ['src/**/*.js']
-        }
-      },
-      extstd :  makeExtIndex( 'std' ),
-      extpil :  makeExtIndex( 'pil' ),
-      extoptx : makeExtIndex( 'optx' ),
-    },
 
-
-    browserify: {
-
-      awdlib: genBrowserify.main(
-        'awdlib',
-        []
-      ),
-
-      awdlib_test: genBrowserify.main(
-        'awdlib',
-        [],
-        true
-      ),
-
-      extstd: genBrowserify.ext(
-        'std',
-        ['awdlib']
-      ),
-
-      extstd_test: genBrowserify.ext(
-        'std',
-        ['awdlib'],
-        true
-      ),
-
-      extpil: genBrowserify.ext(
-        'pil',
-        ['awdlib']
-      ),
-
-      extpil_test: genBrowserify.ext(
-        'pil',
-        ['awdlib'],
-        true
-      ),
-
-      extoptx: genBrowserify.ext(
-        'optx',
-        ['awdlib']
-      ),
-
-      extoptx_test: genBrowserify.ext(
-        'optx',
-        ['awdlib'],
-        true
-      ),
-
-      test: {
-        options: {
-          external : ['awdlib', 'awdlib_std', 'awdlib_pil', 'awdlib_optx' ],
-        },
-        files: {
-          'tmp/tests.js': ['test/**/*.js'],
-        }
-      }
-
-    },
 
     uglify: {
       libs_readonly: {
         options: {
-          mangle: {
-            except: ['require', 'module', 'exports']
-          },
+          mangle: false,
           compress: {
             global_defs: {
               "CONFIG_WRITE": false
@@ -130,18 +41,20 @@ module.exports = function(grunt) {
           },
           beautify: true
         },
-        files: {
-          'lib/awdlib_readonly.js': ['tmp/awdlib.js'],
-          'lib/awdlib_std_readonly.js': ['tmp/awdlib_std.js'],
-          'lib/awdlib_pil_readonly.js': ['tmp/awdlib_pil.js'],
-          'lib/awdlib_optx_readonly.js': ['tmp/awdlib_optx.js'],
-        }
+        files: [{
+          expand: true,
+          src: 'src/**/*.js',
+          dest: 'readonly/',
+          cwd: '.',
+          rename: function (dst, src) {
+            return dst+ '/' + src.replace('src/', '');
+          }
+        }]
       },
+
       libs: {
         options: {
-          mangle: {
-            except: ['require', 'module', 'exports']
-          },
+          mangle: false,
           compress: {
             global_defs: {
               "CONFIG_WRITE": true
@@ -150,12 +63,15 @@ module.exports = function(grunt) {
           },
           beautify: true
         },
-        files: {
-          'lib/awdlib.js': ['tmp/awdlib.js'],
-          'lib/awdlib_std.js': ['tmp/awdlib_std.js'],
-          'lib/awdlib_pil.js': ['tmp/awdlib_pil.js'],
-          'lib/awdlib_optx.js': ['tmp/awdlib_optx.js'],
-        }
+        files: [{
+          expand: true,
+          src: 'src/**/*.js',
+          dest: 'lib/',
+          cwd: '.',
+          rename: function (dst, src) {
+            return dst+ '/' + src.replace('src/', '');
+          }
+        }]
       },
     },
 
@@ -251,14 +167,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    'makeindex',
-    'browserify',
     'uglify',
   ]);
 
   grunt.registerTask('test', [
-    'copy:nodelibs',
-    'browserify:test',
+    'build',
     'mochaTest:node'
   ]);
 
