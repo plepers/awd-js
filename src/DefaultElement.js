@@ -13,9 +13,10 @@ var DefaultElement = BaseElement.createStruct( Consts.GENERIC, -1, {
     this.setDeps();
   },
 
-  write : function( writer ){
+  write : ( CONFIG_WRITE ) ?
+  function( writer ){
     writer.writeBytes( this.buf, this.chunk.size );
-  },
+  }:undefined,
 
   setDeps : function(){
     // default blocks initially depends on
