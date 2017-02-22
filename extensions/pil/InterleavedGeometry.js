@@ -1,5 +1,5 @@
 var BaseElement  = require( '../../src/BaseElement' ),
-    BufferReader = require( '../../src/bufferReader' ),
+    AwdString    = require( '../../src/types/awdString' ),
     Consts       = require( '../../src/consts' );
 
 var BaseGeom     = require( '../std/Geometry' );
@@ -7,62 +7,110 @@ var BaseGeom     = require( '../std/Geometry' );
 var ExtInfos     = require( './extInfos' );
 
 
+var GL_ARRAY_BUFFER           = 34962,
+    GL_ELEMENT_ARRAY_BUFFER   = 34963,
+    GL_FLOAT                  = 5126,
+    GL_UNSIGNED_SHORT         = 5123,
+    GL_UNSIGNED_BYTE          = 5121,
+    GL_UNSIGNED_INT           = 5125;
 
-var VertexBuffer = function(){
-  this.data = null;
-  this.attributes = [];
-  this.ftype = Consts.AWD_FIELD_FLOAT32;
+
+
+
+// ===============================
+//                  Attribute
+// ===============================
+/*
+AWDStr  name
+U8      bytesize
+U16     gltype
+U8      b4 normalize + b3-0 num comps
+*/
+
+function Attribute(){
+  this.name      = '';
+  this.bytesize  = 0;
+  this.gltype    = 0;
+  this.numcomps  = 0;
+  this.normalize = false;
+}
+
+
+Attribute.prototype = {
+
+  read : function( reader ){
+
+    this.name = AwdString.read( reader );
+    this.bytesize = reader.U8();
+    this.gltype   = reader.U16();
+
+    var buf = reader.U8();
+    this.numcomps  = buf & 7;
+    this.normalize = !!((buf >>> 3) & 1);
+
+  },
+
+
+  write : ( CONFIG_WRITE ) ?
+    function( writer ){
+
+    AwdString.write( this.name, writer );
+
+    writer.U8( this.bytesize );
+    writer.U16( this.gltype );
+
+    var buf = (this.numcomps & 7);
+    if( this.normalize ){
+      buf = buf | 8;
+    }
+
+    writer.U8( buf );
+
+  } : undefined,
+
 };
 
-VertexBuffer.HEAD_SIZE = 6; // type, ftype, len
+
+
+// ===============================
+//                  BUFFER
+// ===============================
+/*
+U8      num attributes
+U16     gl buffertype 
+attr*   attributes
+U8      padding
+...     pad
+U32     data len
+byte[]  data
+*/
+
+var VertexBuffer = function(){
+  this.data       = null;
+  this.buffertype = GL_ARRAY_BUFFER;
+  this.attributes = [];
+};
+
+
+VertexBuffer.Attribute = Attribute;
+
 
 VertexBuffer.prototype = {
 
-  allocate : function( len, ftype ){
-    var Class = BaseGeom.getArray( ftype );
-    this.data = new Class( len );
-  },
-
-/*
-num attr
-vert size
-  type : pos
-  len : 3
-  type : uvs
-  len : 2
-  type : nrm
-  len : 3
-*/
 
   read : function( reader ){
 
     var num_attr  = reader.U8(),
-        str_ftype = reader.U8(),
+        btype     = reader.U16(),
         attribs   = this.attributes;
 
-    this.ftype = str_ftype;
+    this.buffertype = btype;
 
-    var vSize = 0;
-    this.isIndex = false;
 
     for (var i = 0; i < num_attr; i++) {
-      var type = reader.U8(),
-          len  = reader.U8();
-
-      // index buff
-      if( type === Consts.INDEX ){
-        if( num_attr > 1 ){
-          console.warn( "interleaved index buffer is not alone" );
-        }
-        this.isIndex = true;
-      }
-
-      vSize += len;
-
-      attribs.push( {
-        type : type,
-        len : len
-      } );
+      var attrib = new Attribute();
+      attrib.read( reader );
+      attribs.push( attrib );
     }
 
     var padding   = reader.U8();
@@ -72,30 +120,11 @@ vert size
     var str_len   = reader.U32(),
         str_end   = reader.ptr + str_len;
 
-
-    var typeSize = BaseGeom.getTypeSize( str_ftype );
-    var numVals = str_len / typeSize;
-
-    this.numVertices = numVals / vSize;
-
-    // this.allocate( numVals, str_ftype );
-
-    // var read = BaseGeom.getReadFunc( str_ftype, reader );
-    // var data = this.data;
-    // var c = 0;
-
-
-    var Class = BaseGeom.getArray( str_ftype );
-    this.data = new Class( reader.buffer, reader.ptr, numVals );
+    this.data = new Uint8Array( reader.buffer, reader.ptr, str_len );
     reader.ptr = str_end;
-    // while( reader.ptr < str_end ){
-    //   data[c++] = read.call( reader );
-    // }
-
-
-
 
   },
+
 
   write : ( CONFIG_WRITE ) ?
     function( writer ){
@@ -103,19 +132,18 @@ vert size
     var attribs = this.attributes,
         i, l;
 
-    writer.U8( attribs.length );
-    writer.U8( this.ftype );
+    writer.U8(  attribs.length );
+    writer.U16( this.buffertype );
 
 
     for ( i = 0, l = attribs.length; i < l; i++) {
       var attr = attribs[i];
-       writer.U8( attr.type );
-       writer.U8( attr.len );
+      attr.write( writer );
     }
 
-    // align to 4 or 8 bytes
+    // always align to 4 bytes
     // take in account u32 str_len
-    var tsize = BaseGeom.getTypeSize( this.ftype );
+    var tsize = 4;
     var pad = tsize - ((writer.ptr+5) % tsize);
     writer.U8( pad );
     for( i = 0; i< pad; i++){
@@ -124,25 +152,70 @@ vert size
 
 
 
-    var sptr = writer.skipBlockSize();
 
-    var writeFn = BaseGeom.getWriteFunc( this.ftype, writer );
-    var data = this.data;
+    writer.U32( this.data.byteLength );
+    writer.writeSub( this.data );
 
-    // console.log( "write i buffer , data len : ", writer.ptr%4 );
-
-
-    for ( i = 0, l = data.length; i < l; i++) {
-      writeFn.call( writer, data[i] );
-    }
-
-    writer.writeBlockSize( sptr );
   } : undefined,
 
 
 
 };
 
+
+
+
+var streamName = function( type ){
+  switch( type ) {
+    case Consts.POSITION :
+      return 'aPosition';
+    case Consts.UVS :
+      return 'aTexCoord';
+    case Consts.NORMAL :
+      return 'aNormal';
+    case Consts.TANGENT :
+      return 'aTangent';
+    case Consts.JOIN_IDX :
+      return 'join_index';
+    case Consts.JOIN_WGT :
+      return 'join_weight';
+    case Consts.SUVS :
+      return 'aTexCoord1';
+    case Consts.COLOR :
+      return 'aColor';
+    case Consts.BINORMAL :
+      return 'aBitangent';
+  }
+  return null;
+};
+
+
+
+function ensureUint8( array ){
+  return new Uint8Array( array.buffer, array.offset, array.byteLength );
+}
+
+function compactShort( array ){
+  if( array.BYTES_PER_ELEMENT === 2 ){
+    var i;
+
+    for ( i = 0; i < array.length; i++) {
+      if( array[i] > 0xFF ){
+        return array;
+      } 
+    }
+
+    var res = new Uint8Array( array.length );
+    for ( i = 0; i < array.length; i++) {
+      res[i] = array[i];
+    }
+
+
+  }
+  
+  return array;
+  
+}
 
 //
 // her we convert classic buffer to fewer interleaved ones
@@ -156,98 +229,125 @@ var convertSubGeom = function( geom ) {
   //
   var buffers = geom.buffers;
 
-  var byTypes = {};
-  var ftype, buf;
+  var attrib, buf, i, l;
   var buffer;
 
-  for (var i = 0, l = buffers.length; i < l; i++) {
+  var attribs = [];
+  var datas   = [];
+
+  var stride = 0;
+
+  /*
+  collect all attributes from base geom
+  store index one in separate buffers
+  */
+
+  for ( i = 0, l = buffers.length; i < l; i++) {
+
     buf = buffers[i];
 
-    // skip index buffer
+    // index buffer
+    // ===========
+
     if( buf.type === 2 ) {
+      var idata = compactShort(buf.data);
 
       buffer = new VertexBuffer();
-      buffer.attributes.push({
-        type: 2,
-        len:3
-      });
+      buffer.data = ensureUint8( idata );
+      buffer.buffertype = GL_ELEMENT_ARRAY_BUFFER;
 
-      // todo copy
-      buffer.data = buf.data;
-      buffer.ftype = Consts.AWD_FIELD_UINT16;
-      buffer.isIndex = true;
+      var itype;
+      switch( idata.BYTES_PER_ELEMENT ){
+        case 1 : itype = GL_UNSIGNED_BYTE;  break;  
+        case 2 : itype = GL_UNSIGNED_SHORT; break;  
+        case 4 : itype = GL_UNSIGNED_INT;   break;  
+      }
+      
+      attrib = new Attribute();
+      attrib.name      = 'triangles';
+      attrib.gltype    = itype;
+      attrib.numcomps  = 3;
+      attrib.bytesize  = 3 * 2;
+
+      buffer.attributes = [attrib];
+
       res.buffers.push( buffer );
+    } 
+    
+    // array buffer
+    // ===========
 
-      continue;
+    else {
+      // assume only GL_FLOAT data here
+
+      attrib = new Attribute();
+
+
+      var name = streamName( buf.type );
+      if( name == null ){
+        console.log( 'warn : unknown vertex stream type', buf.type );
+        continue;
+      }
+
+      attrib.name      = name;
+      attrib.gltype    = GL_FLOAT;
+      attrib.numcomps  = buf.components;
+      attrib.bytesize  = buf.components * 4;
+      attrib.normalize = false;
+
+      attribs.push( attrib   );
+      datas  .push( ensureUint8( buf.data ) );
+
+      stride += attrib.bytesize;
+
     }
-
-    ftype = buf.ftype;
-
-    if( ! byTypes[ftype] ) {
-      byTypes[ftype] = {
-        list : [],
-        ftype : ftype
-      };
-    }
-
-    byTypes[ftype].list.push( buf );
 
   }
 
+  /*
+  * do interleaving
+  * per attribs -> per verts -> per bytes
+  */
 
-  for( var key in byTypes ) {
+  var numVerts = datas[0].byteLength / attribs[0].bytesize;
+  var ibuffer = new ArrayBuffer( stride * numVerts );
+  var iarray  = new Uint8Array( ibuffer );
 
-    var list = byTypes[key].list;
-    var nVerts = list[0].numVertices;
+  var offset = 0;
 
-    ftype = byTypes[key].ftype;
+  for ( i = 0; i < attribs.length; i++) {
 
-    buffer = new VertexBuffer();
-    res.buffers.push( buffer );
+    attrib = attribs[i];
+    var aData  = datas[i];
 
-    buffer.ftype = ftype;
+    var numBytes = attrib.bytesize;
 
-    var readers = [];
-    var j;
-
-    for ( i = 0, l = list.length; i < l; i++) {
-
-
-      buf = list[i];
-      var reader = new BufferReader( buf.data.buffer );
-      buffer.attributes.push({
-        type : buf.type,
-        len : buf.components,
-      });
-
-      for( j = 0; j < buf.components; j++) {
-        readers.push( reader );
+    for (var j = 0; j < numVerts; j++) {
+      
+      for (var k = 0; k < numBytes; k++) {
+        iarray[ offset + j*stride + k ] = aData[ j*numBytes + k ];
       }
 
     }
 
-
-    var Class = BaseGeom.getArray( ftype );
-    var data = new Class( readers.length * nVerts );
-    var read_func = BaseGeom.getReadFunc( ftype, readers[0] );
-
-    var c = 0;
-
-    for ( i = 0; i < nVerts; i++) {
-
-      for ( j = 0, l = readers.length; j < l; j++) {
-        data[c++] = read_func.call( readers[j] );
-      }
-
-    }
-
-    buffer.data =  data;
+    offset += attrib.bytesize;
 
   }
+
+
+  buffer = new VertexBuffer();
+  buffer.data       = iarray;
+  buffer.buffertype = GL_ARRAY_BUFFER;
+  buffer.attributes = attribs;
+  
+  res.buffers.push( buffer );
 
   return res;
 
 };
+
+
+
 
 
 

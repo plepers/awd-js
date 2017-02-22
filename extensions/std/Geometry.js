@@ -316,7 +316,7 @@
       }
 
       var size = getBufferSize( str_type );
-
+      
       this.isIndex    = str_type === Consts.INDEX;
       this.type       = str_type;
       this.components = size;

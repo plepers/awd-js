@@ -60,10 +60,12 @@ describe( "interleaved geometries test", function(){
     // console.log( ig.subGeoms[0].buffers[2] )
 
     // index
-    expect( ig.subGeoms[0].buffers[0].ftype ).to.be.equal( Consts.AWD_FIELD_UINT16);
-    // ...
-    expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_UINT8); // C4D bug
-    // expect( ig.subGeoms[0].buffers[1].ftype ).to.be.equal( Consts.AWD_FIELD_FLOAT32);
+    
+    // GL_ELEMENT_ARRAY_BUFFER
+    expect( ig.subGeoms[0].buffers[0].buffertype ).to.be.equal( 34963 );
+    
+    // GL_ARRAY_BUFFER
+    expect( ig.subGeoms[0].buffers[1].buffertype ).to.be.equal( 34962 );
 
   });
 
