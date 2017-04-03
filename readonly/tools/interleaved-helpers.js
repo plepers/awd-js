@@ -1,5 +1,5 @@
 function Interleaving() {
-    console.log("new ih"), this.attributes = [], this.idata = null;
+    this.attributes = [], this.idata = null;
 }
 
 var InterleavedGeom = require("../pil/InterleavedGeometry"), Attribute = InterleavedGeom.Attribute, VertexBuffer = InterleavedGeom.VertexBuffer, GL_ARRAY_BUFFER = 34962;
@@ -16,9 +16,7 @@ Interleaving.prototype = {
     process: function() {
         var attrib, i, attribs = this.attributes, stride = 0;
         for (i = 0; i < attribs.length; i++) attrib = attribs[i].attrib, stride += attrib.bytesize;
-        var numVerts = attribs[0].data.byteLength / attribs[0].attrib.bytesize, ibuffer = new ArrayBuffer(stride * numVerts);
-        console.log(stride);
-        var iarray = this.iarray = new Uint8Array(ibuffer), offset = 0;
+        var numVerts = attribs[0].data.byteLength / attribs[0].attrib.bytesize, ibuffer = new ArrayBuffer(stride * numVerts), iarray = this.iarray = new Uint8Array(ibuffer), offset = 0;
         for (i = 0; i < attribs.length; i++) {
             attrib = attribs[i].attrib;
             for (var aData = attribs[i].data, numBytes = attrib.bytesize, j = 0; numVerts > j; j++) for (var k = 0; numBytes > k; k++) iarray[offset + j * stride + k] = aData[j * numBytes + k];
