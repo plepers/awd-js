@@ -195,9 +195,9 @@
 
       }
 
-      if( nverts === -1 ){
-        console.log( "Error, Can't resolve geom buffers sizes");
-      }
+      // if( nverts === -1 ){
+      //   console.log( "Error, Can't resolve geom buffers sizes");
+      // }
 
       // solve size
       for (var i = 0, l = this.buffers.length; i < l; i++) {

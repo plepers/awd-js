@@ -65,6 +65,8 @@
 
       writer.writeBlockSize( sptr );
 
+      new Properties().write( writer );
+
       this.extras.write( writer );
     }:undefined,
 

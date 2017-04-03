@@ -10,8 +10,6 @@ var VertexBuffer = InterleavedGeom.VertexBuffer;
 var GL_ARRAY_BUFFER           = 34962;
 
 function Interleaving(){
-
-  console.log( 'new ih' );
   this.attributes = [];
   this.idata   = null;
 }
@@ -66,8 +64,6 @@ Interleaving.prototype = {
     var numVerts = attribs[0].data.byteLength / attribs[0].attrib.bytesize;
     var ibuffer = new ArrayBuffer( stride * numVerts );
 
-    console.log( stride );
-    
     var iarray = this.iarray = new Uint8Array( ibuffer );
 
     var offset = 0;
