@@ -68,6 +68,7 @@ module.exports = function(config) {
       // OSX Maverick
 
       'SL_Chrome_OSX9': {
+        base: 'SauceLabs',
         browserName: 'chrome',
         version: '40.0',
         platform: 'OS X 10.10'
